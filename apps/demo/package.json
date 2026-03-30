@@ -1,0 +1,19 @@
+{
+  "name": "ream-demo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch server.ts",
+    "start": "tsx server.ts"
+  },
+  "dependencies": {
+    "@c9up/ream": "workspace:*",
+    "@c9up/pulsar": "workspace:*",
+    "@c9up/spectrum": "workspace:*",
+    "@c9up/rune": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^4"
+  }
+}

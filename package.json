@@ -8,7 +8,8 @@
     "test:rust": "cargo test --all",
     "build:rust": "cargo build --release",
     "lint": "biome check packages/",
-    "dev": "echo 'Use: pnpm test / pnpm test:rust / cargo build'"
+    "dev": "tsx watch apps/demo/server.ts",
+    "start": "tsx apps/demo/server.ts"
   },
   "devDependencies": {
     "vitest": "^3",
