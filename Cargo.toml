@@ -1,0 +1,21 @@
+[workspace]
+resolver = "2"
+members = [
+  "packages/ream/crates/ream-napi-core",
+  "packages/ream/crates/ream-http",
+  "packages/ream/crates/ream-http-napi",
+  "packages/ream/crates/ream-security",
+  "packages/ream/crates/ream-napi-test",
+  "packages/pulsar/crates/ream-bus",
+]
+
+# Exclude ream-bus-napi from workspace — it depends on ream-napi-core via relative path
+# Build it separately with: cd packages/pulsar && cargo build
+exclude = [
+  "packages/pulsar/crates/ream-bus-napi",
+]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/C9up"

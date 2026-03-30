@@ -1,0 +1,27 @@
+[submodule "packages/ream"]
+	path = packages/ream
+	url = git@github.com:C9up/ream.git
+[submodule "packages/pulsar"]
+	path = packages/pulsar
+	url = git@github.com:C9up/pulsar.git
+[submodule "packages/atlas"]
+	path = packages/atlas
+	url = git@github.com:C9up/atlas.git
+[submodule "packages/rune"]
+	path = packages/rune
+	url = git@github.com:C9up/rune.git
+[submodule "packages/warden"]
+	path = packages/warden
+	url = git@github.com:C9up/warden.git
+[submodule "packages/spectrum"]
+	path = packages/spectrum
+	url = git@github.com:C9up/spectrum.git
+[submodule "packages/forge"]
+	path = packages/forge
+	url = git@github.com:C9up/forge.git
+[submodule "packages/create-ream"]
+	path = packages/create-ream
+	url = git@github.com:C9up/create-ream.git
+[submodule "docs"]
+	path = docs
+	url = git@github.com:C9up/v1-docs.git
