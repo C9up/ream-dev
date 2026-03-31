@@ -25,3 +25,6 @@
 [submodule "docs"]
 	path = docs
 	url = git@github.com:C9up/v1-docs.git
+[submodule "packages/photon"]
+	path = packages/photon
+	url = git@github.com:C9up/photon.git
