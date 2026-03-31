@@ -16,15 +16,12 @@
 [submodule "packages/spectrum"]
 	path = packages/spectrum
 	url = git@github.com:C9up/spectrum.git
-[submodule "packages/forge"]
-	path = packages/forge
-	url = git@github.com:C9up/forge.git
-[submodule "packages/create-ream"]
-	path = packages/create-ream
-	url = git@github.com:C9up/create-ream.git
 [submodule "docs"]
 	path = docs
 	url = git@github.com:C9up/v1-docs.git
 [submodule "packages/photon"]
 	path = packages/photon
 	url = git@github.com:C9up/photon.git
+[submodule "packages/ream-cli"]
+	path = packages/ream-cli
+	url = git@github.com:C9up/ream-cli.git
