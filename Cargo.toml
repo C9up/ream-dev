@@ -13,6 +13,7 @@ members = [
 # Build it separately with: cd packages/pulsar && cargo build
 exclude = [
   "packages/pulsar/crates/ream-bus-napi",
+  "packages/ream-cli",
 ]
 
 [workspace.package]
