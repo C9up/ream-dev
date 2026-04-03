@@ -85,6 +85,9 @@ importers:
 
   packages/atlas:
     dependencies:
+      '@c9up/ream':
+        specifier: workspace:*
+        version: link:../ream
       reflect-metadata:
         specifier: ^0.2
         version: 0.2.2
@@ -146,6 +149,10 @@ importers:
         version: 3.2.4(@types/node@22.19.15)(tsx@4.21.0)
 
   packages/spectrum:
+    dependencies:
+      '@c9up/ream':
+        specifier: workspace:*
+        version: link:../ream
     devDependencies:
       typescript:
         specifier: ^5.7
@@ -155,6 +162,10 @@ importers:
         version: 3.2.4(@types/node@22.19.15)(tsx@4.21.0)
 
   packages/warden:
+    dependencies:
+      '@c9up/ream':
+        specifier: workspace:*
+        version: link:../ream
     devDependencies:
       reflect-metadata:
         specifier: ^0.2.2
