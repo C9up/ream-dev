@@ -1,0 +1,63 @@
+[submodule "packages/ream"]
+	path = packages/ream
+	url = git@github.com:C9up/ream.git
+[submodule "packages/pulsar"]
+	path = packages/pulsar
+	url = git@github.com:C9up/pulsar.git
+[submodule "packages/atlas"]
+	path = packages/atlas
+	url = git@github.com:C9up/atlas.git
+[submodule "packages/rune"]
+	path = packages/rune
+	url = git@github.com:C9up/rune.git
+[submodule "packages/warden"]
+	path = packages/warden
+	url = git@github.com:C9up/warden.git
+[submodule "packages/spectrum"]
+	path = packages/spectrum
+	url = git@github.com:C9up/spectrum.git
+[submodule "docs"]
+	path = docs
+	url = git@github.com:C9up/v1-docs.git
+[submodule "packages/photon"]
+	path = packages/photon
+	url = git@github.com:C9up/photon.git
+[submodule "packages/ream-cli"]
+	path = packages/ream-cli
+	url = git@github.com:C9up/ream-cli.git
+[submodule "packages/atom"]
+	path = packages/atom
+	url = git@github.com:C9up/atom.git
+[submodule "packages/archive"]
+	path = packages/archive
+	url = git@github.com:C9up/archive.git
+[submodule "packages/bay"]
+	path = packages/bay
+	url = git@github.com:C9up/bay.git
+[submodule "packages/blackhole"]
+	path = packages/blackhole
+	url = git@github.com:C9up/blackhole.git
+[submodule "packages/chronos"]
+	path = packages/chronos
+	url = git@github.com:C9up/chronos.git
+[submodule "packages/echo"]
+	path = packages/echo
+	url = git@github.com:C9up/echo.git
+[submodule "packages/helix"]
+	path = packages/helix
+	url = git@github.com:C9up/helix.git
+[submodule "packages/relay"]
+	path = packages/relay
+	url = git@github.com:C9up/relay.git
+[submodule "packages/rosetta"]
+	path = packages/rosetta
+	url = git@github.com:C9up/rosetta.git
+[submodule "packages/rover"]
+	path = packages/rover
+	url = git@github.com:C9up/rover.git
+[submodule "packages/sigil"]
+	path = packages/sigil
+	url = git@github.com:C9up/sigil.git
+[submodule "apps/kitchen-sink"]
+	path = apps/kitchen-sink
+	url = git@github.com:C9up/kitchen-sink.git
