@@ -1,0 +1,27 @@
+[workspace]
+resolver = "2"
+members = [
+  "packages/ream/crates/ream-napi-core",
+  "packages/ream/crates/ream-http",
+  "packages/ream/crates/ream-http-napi",
+  # ream-security removed — extracted to @c9up/blackhole + @c9up/warden (Epic 38)
+  "packages/ream/crates/ream-napi-test",
+  "packages/ream/crates/ream-scheduler",
+  "packages/ream/crates/ream-scheduler-napi",
+  "packages/pulsar/crates/pulsar-bus",
+  "packages/ream/crates/ream-graphql",
+  "packages/atlas/crates/atlas-db",
+  "packages/atlas/crates/atlas-query",
+]
+
+# Exclude ream-bus-napi from workspace — it depends on ream-napi-core via relative path
+# Build it separately with: cd packages/pulsar && cargo build
+exclude = [
+  "packages/pulsar/crates/pulsar-bus-napi",
+  "packages/ream-cli",
+]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/C9up"
