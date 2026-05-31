@@ -64,3 +64,6 @@
 [submodule "packages/inker"]
 	path = packages/inker
 	url = git@github.com:C9up/inker.git
+[submodule "packages/nova"]
+	path = packages/nova
+	url = git@github.com:C9up/nova.git
