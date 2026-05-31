@@ -1,9 +1,0 @@
-{
-	"name": "introspect-app-fixture",
-	"version": "0.0.0",
-	"private": true,
-	"main": "app/HttpKernel.ts",
-	"dependencies": {
-		"@c9up/ream": "*"
-	}
-}

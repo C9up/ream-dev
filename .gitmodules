@@ -67,3 +67,6 @@
 [submodule "packages/nova"]
 	path = packages/nova
 	url = git@github.com:C9up/nova.git
+[submodule "packages/ream-mcp"]
+	path = packages/ream-mcp
+	url = git@github.com:C9up/ream-mcp.git
