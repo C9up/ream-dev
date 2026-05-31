@@ -10,6 +10,9 @@ dist/
 coverage/
 *.log
 
+# Separate standalone project — lives on disk, never tracked in ream
+apps/syndic/
+
 # Local-only working files (not part of the published source tree)
 .review/
 BMAD_TRACEABILITY.md
