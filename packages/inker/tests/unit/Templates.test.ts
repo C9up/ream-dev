@@ -96,6 +96,26 @@ describe("Templates — render() filesystem behaviour", () => {
 		}
 	});
 
+	it("renderString throws a clear error on circular render data (not a stack overflow)", () => {
+		const templates = new Templates({ root });
+		const cyclic: Record<string, unknown> = { name: "x" };
+		cyclic.self = cyclic;
+		try {
+			templates.renderString("hi {{ name }}", cyclic);
+			expect.fail("should have thrown");
+		} catch (e) {
+			expect(asTyped<InkerRenderError>(e).code).toBe(
+				"E_INKER_INVALID_EXPRESSION",
+			);
+		}
+	});
+
+	it("renderString renders an integer-valued number without a trailing .0 (JS String semantics)", () => {
+		const templates = new Templates({ root });
+		expect(templates.renderString("{{ n }}", { n: 100 })).toBe("100");
+		expect(templates.renderString("{{ 100 }}", {})).toBe("100");
+	});
+
 	it("renderString throws E_INKER_DISK_REQUIRED on {% layout %}", () => {
 		const templates = new Templates({ root });
 		try {

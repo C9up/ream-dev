@@ -16,7 +16,7 @@ import InkerProvider, {
 } from "../../src/InkerProvider.js";
 import type { InkerHttpContext } from "../../src/InkerRenderer.js";
 import { InkerRenderer } from "../../src/InkerRenderer.js";
-import type { HelperFn } from "../../src/render.js";
+import type { HelperFn } from "../../src/helpers.js";
 import { SafeString } from "../../src/SafeString.js";
 
 interface StubRouter {

@@ -30,7 +30,15 @@ pnpm --filter @c9up/inker test            # full suite
 pnpm --filter @c9up/inker test:coverage   # enforces v8 coverage gate
 ```
 
-The coverage gate (v8 provider) is wired in `vitest.config.ts` with thresholds at `statements: 91 / functions: 98 / branches: 86 / lines: 92`. A regression that drops below any of those floors fails CI.
+The coverage gate (v8 provider) is wired in `vitest.config.ts` with thresholds at `statements: 88 / functions: 96 / branches: 78 / lines: 89` (re-baselined for the Rust-migration src/ surface — the lex/parse/render modules moved to Rust, covered by 105 `cargo test` cases). A regression that drops below any of those floors fails CI.
+
+## Native binary
+
+The lex / parse / render hot path runs in Rust via napi-rs (Story 55.1). The TypeScript surface (`Templates`, `InkerProvider`, `SafeString`, `InkerRenderError`) is unchanged — the engine is loaded transparently from a prebuilt `.node` binary.
+
+- **Build locally:** `pnpm --filter @c9up/inker build:napi` compiles the `inker-engine-napi` crate (release) and copies `index.<platform>.node` into the package root. The 5-platform NAPI CI matrix (`linux-x64-gnu`, `linux-arm64-gnu`, `darwin-x64`, `darwin-arm64`, `win32-x64-msvc`) builds these on native runners.
+- **No JS fallback.** If the binary is missing or fails to load, every render throws `E_INKER_NAPI_REQUIRED` with an actionable hint pointing at `pnpm --filter @c9up/inker build:napi`. Run that after a fresh checkout or a platform change.
+- **Helpers stay in TypeScript.** Custom helpers registered via `TemplatesOptions.helpers` (or `InkerProvider`) are plain TS functions. The renderer resolves them TS-side before the native render pass (collect → invoke → render — no V8 callback), so no Rust knowledge is required to write one. Helpers must appear as a whole interpolation (`{{ helper(args) }}`) or a component-arg value; they are not supported inside `{% if %}` conditions, `{% each %}` iterables, operator expressions, or as nested-call arguments. Helper **arguments** are evaluated in the Rust engine and cross the NAPI boundary as JSON, so they are JSON-coerced before the helper runs: a `Date` arrives as a string, a `bigint` as a (possibly lossy) number, and `NaN`/`±Infinity` as `null`. Pass pre-stringified values for any type that does not survive JSON.
 
 ## Standalone use
 

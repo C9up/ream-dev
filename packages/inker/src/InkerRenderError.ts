@@ -20,7 +20,8 @@ export type InkerErrorCode =
 	| "E_INKER_INVALID_EXPRESSION"
 	| "E_INKER_INVALID_ITERABLE"
 	| "E_INKER_UNKNOWN_HELPER"
-	| "E_INKER_HELPER_THROW";
+	| "E_INKER_HELPER_THROW"
+	| "E_INKER_NAPI_REQUIRED";
 
 export interface InkerErrorContext {
 	readonly templatePath?: string;

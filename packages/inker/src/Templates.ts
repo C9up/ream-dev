@@ -1,19 +1,22 @@
 import * as fs from "node:fs";
 import * as fsPromises from "node:fs/promises";
 import * as path from "node:path";
+import type { HelperFn } from "./helpers.js";
 import { InkerRenderError } from "./InkerRenderError.js";
 import {
 	PROTOTYPE_POLLUTION_KEYS,
 	RESERVED_BINDING_NAMES,
 } from "./identifierGuards.js";
-import { lex } from "./lex.js";
 import {
-	type InkerNode,
-	parse,
-	type SlotNode,
-	type TemplateAst,
-} from "./parse.js";
-import { type HelperFn, renderAst } from "./render.js";
+	getNative,
+	type NapiHelperResult,
+	type NapiInkerAst,
+	type NapiInvocation,
+	type NapiNodeRef,
+	type NapiRenderContext,
+	napiThrowToInker,
+} from "./loadNapi.js";
+import { SafeString } from "./SafeString.js";
 
 export type CacheMode = "auto" | "mtime" | "never";
 
@@ -54,17 +57,17 @@ const WINDOWS_RESERVED: ReadonlySet<string> = new Set([
 ]);
 
 interface CacheEntry {
-	ast: TemplateAst;
+	ast: NapiInkerAst;
 	mtimeMs: number;
 }
 
 interface ComposedTemplate {
-	bodyAst: TemplateAst;
-	layoutAst?: TemplateAst;
+	bodyAst: NapiInkerAst;
+	layoutAst?: NapiInkerAst;
 	layoutName?: string;
 	layoutAbsPath?: string;
-	partialAsts: Map<string, TemplateAst>;
-	componentAsts: Map<string, TemplateAst>;
+	partialAsts: Map<string, NapiInkerAst>;
+	componentAsts: Map<string, NapiInkerAst>;
 }
 
 const VALID_CACHE_MODES: ReadonlySet<string> = new Set([
@@ -263,308 +266,98 @@ function wrapFsError(
 	);
 }
 
-function isWhitespaceOnlyText(node: InkerNode): boolean {
-	if (node.kind !== "Text") return false;
-	for (let i = 0; i < node.value.length; i += 1) {
-		const c = node.value[i];
-		if (c !== " " && c !== "\t" && c !== "\n" && c !== "\r") {
-			return false;
-		}
-	}
-	return true;
-}
-
-function bodyHasContent(bodyAst: TemplateAst): boolean {
-	for (const node of bodyAst.nodes) {
-		if (node.kind === "Text") {
-			if (!isWhitespaceOnlyText(node)) return true;
-			continue;
-		}
-		// Any non-Text node (Interpolation/Partial/Component/If/Each/Slot…)
-		// counts as content; an empty If/Each at the top level is still an
-		// authoring statement that needs a body slot in the layout.
-		return true;
-	}
-	return false;
-}
-
-type DiskNodeKind = "Layout" | "Partial" | "Slot" | "Component";
-
-function findFirstDiskNodeIn(
-	nodes: readonly InkerNode[],
-): { kind: DiskNodeKind; name: string } | undefined {
-	for (const node of nodes) {
-		// T10: exhaustive switch with `_exhaust: never` so a future InkerNode
-		// kind that this function fails to handle becomes a TS compile error
-		// instead of silently slipping past the disk-required walk. Same
-		// pattern should land in the other findFirst*/collect* functions on
-		// the next pass.
-		switch (node.kind) {
-			case "Layout":
-			case "Partial":
-			case "Slot":
-			case "Component":
-				return { kind: node.kind, name: node.name };
-			case "If": {
-				const inThen = findFirstDiskNodeIn(node.thenNodes);
-				if (inThen !== undefined) return inThen;
-				if (node.elseNodes !== undefined) {
-					const inElse = findFirstDiskNodeIn(node.elseNodes);
-					if (inElse !== undefined) return inElse;
-				}
-				break;
-			}
-			case "Each": {
-				const inBody = findFirstDiskNodeIn(node.bodyNodes);
-				if (inBody !== undefined) return inBody;
-				if (node.elseNodes !== undefined) {
-					const inElse = findFirstDiskNodeIn(node.elseNodes);
-					if (inElse !== undefined) return inElse;
-				}
-				break;
-			}
-			case "Text":
-			case "Interpolation":
-				break;
-			default: {
-				const _exhaust: never = node;
-				throw new InkerRenderError(
-					"E_INKER_INVALID_EXPRESSION",
-					`Unreachable: unhandled node kind in findFirstDiskNodeIn: ${JSON.stringify(_exhaust)}`,
-				);
-			}
-		}
-	}
-	return undefined;
-}
-
-function findFirstDiskNode(
-	ast: TemplateAst,
-): { kind: DiskNodeKind; name: string } | undefined {
-	return findFirstDiskNodeIn(ast.nodes);
-}
-
-function findFirstSlotInNodes(
-	nodes: readonly InkerNode[],
-): SlotNode | undefined {
-	for (const node of nodes) {
-		// P18: exhaustive switch so future kinds added to InkerNode become
-		// a TS compile error here instead of silently skipping the walk.
-		switch (node.kind) {
-			case "Slot":
-				return node;
-			case "If": {
-				const inThen = findFirstSlotInNodes(node.thenNodes);
-				if (inThen !== undefined) return inThen;
-				if (node.elseNodes !== undefined) {
-					const inElse = findFirstSlotInNodes(node.elseNodes);
-					if (inElse !== undefined) return inElse;
-				}
-				break;
-			}
-			case "Each": {
-				const inBody = findFirstSlotInNodes(node.bodyNodes);
-				if (inBody !== undefined) return inBody;
-				if (node.elseNodes !== undefined) {
-					const inElse = findFirstSlotInNodes(node.elseNodes);
-					if (inElse !== undefined) return inElse;
-				}
-				break;
-			}
-			case "Layout":
-			case "Partial":
-			case "Component":
-			case "Text":
-			case "Interpolation":
-				break;
-			default: {
-				const _exhaust: never = node;
-				throw new InkerRenderError(
-					"E_INKER_INVALID_EXPRESSION",
-					`Unreachable: unhandled node kind in findFirstSlotInNodes: ${JSON.stringify(_exhaust)}`,
-				);
-			}
-		}
-	}
-	return undefined;
-}
-
-function findFirstSlotIn(ast: TemplateAst): SlotNode | undefined {
-	return findFirstSlotInNodes(ast.nodes);
-}
-
-function hasBodySlotInNodes(nodes: readonly InkerNode[]): boolean {
-	for (const node of nodes) {
-		// P18: exhaustive switch.
-		switch (node.kind) {
-			case "Slot":
-				if (node.name === "body") return true;
-				break;
-			case "If": {
-				if (hasBodySlotInNodes(node.thenNodes)) return true;
-				if (
-					node.elseNodes !== undefined &&
-					hasBodySlotInNodes(node.elseNodes)
-				) {
-					return true;
-				}
-				break;
-			}
-			case "Each": {
-				if (hasBodySlotInNodes(node.bodyNodes)) return true;
-				if (
-					node.elseNodes !== undefined &&
-					hasBodySlotInNodes(node.elseNodes)
-				) {
-					return true;
-				}
-				break;
-			}
-			case "Layout":
-			case "Partial":
-			case "Component":
-			case "Text":
-			case "Interpolation":
-				break;
-			default: {
-				const _exhaust: never = node;
-				throw new InkerRenderError(
-					"E_INKER_INVALID_EXPRESSION",
-					`Unreachable: unhandled node kind in hasBodySlotInNodes: ${JSON.stringify(_exhaust)}`,
-				);
-			}
-		}
-	}
-	return false;
-}
-
-function findFirstLayoutInNodes(
-	nodes: readonly InkerNode[],
-): { line: number; column: number } | undefined {
-	for (const node of nodes) {
-		// P18: exhaustive switch.
-		switch (node.kind) {
-			case "Layout":
-				return { line: node.line, column: node.column };
-			case "If": {
-				const inThen = findFirstLayoutInNodes(node.thenNodes);
-				if (inThen !== undefined) return inThen;
-				if (node.elseNodes !== undefined) {
-					const inElse = findFirstLayoutInNodes(node.elseNodes);
-					if (inElse !== undefined) return inElse;
-				}
-				break;
-			}
-			case "Each": {
-				const inBody = findFirstLayoutInNodes(node.bodyNodes);
-				if (inBody !== undefined) return inBody;
-				if (node.elseNodes !== undefined) {
-					const inElse = findFirstLayoutInNodes(node.elseNodes);
-					if (inElse !== undefined) return inElse;
-				}
-				break;
-			}
-			case "Slot":
-			case "Partial":
-			case "Component":
-			case "Text":
-			case "Interpolation":
-				break;
-			default: {
-				const _exhaust: never = node;
-				throw new InkerRenderError(
-					"E_INKER_INVALID_EXPRESSION",
-					`Unreachable: unhandled node kind in findFirstLayoutInNodes: ${JSON.stringify(_exhaust)}`,
-				);
-			}
-		}
-	}
-	return undefined;
-}
-
-function collectComponentNodesInNodes(
-	nodes: readonly InkerNode[],
-	out: Array<{ name: string; line: number; column: number }>,
-): void {
-	for (const node of nodes) {
-		// P18: exhaustive switch.
-		switch (node.kind) {
-			case "Component":
-				out.push({ name: node.name, line: node.line, column: node.column });
-				break;
-			case "If":
-				collectComponentNodesInNodes(node.thenNodes, out);
-				if (node.elseNodes !== undefined) {
-					collectComponentNodesInNodes(node.elseNodes, out);
-				}
-				break;
-			case "Each":
-				collectComponentNodesInNodes(node.bodyNodes, out);
-				if (node.elseNodes !== undefined) {
-					collectComponentNodesInNodes(node.elseNodes, out);
-				}
-				break;
-			case "Layout":
-			case "Partial":
-			case "Slot":
-			case "Text":
-			case "Interpolation":
-				break;
-			default: {
-				const _exhaust: never = node;
-				throw new InkerRenderError(
-					"E_INKER_INVALID_EXPRESSION",
-					`Unreachable: unhandled node kind in collectComponentNodesInNodes: ${JSON.stringify(_exhaust)}`,
-				);
-			}
-		}
+// Run a native (NAPI) call and translate any thrown `napi::Error` carrying the
+// engine's JSON error envelope back into a typed `InkerRenderError` (preserving
+// code / line / column / templateName). Without this, the raw napi error
+// surfaces with `code === "GenericFailure"`.
+function callNative<T>(fn: () => T): T {
+	try {
+		return fn();
+	} catch (err) {
+		throw napiThrowToInker(err);
 	}
 }
 
-function collectPartialNodesInNodes(
-	nodes: readonly InkerNode[],
-	out: Array<{ name: string; line: number; column: number }>,
-): void {
-	for (const node of nodes) {
-		// P18: exhaustive switch.
-		switch (node.kind) {
-			case "Partial":
-				out.push({ name: node.name, line: node.line, column: node.column });
-				break;
-			case "If":
-				collectPartialNodesInNodes(node.thenNodes, out);
-				if (node.elseNodes !== undefined) {
-					collectPartialNodesInNodes(node.elseNodes, out);
-				}
-				break;
-			case "Each":
-				collectPartialNodesInNodes(node.bodyNodes, out);
-				if (node.elseNodes !== undefined) {
-					collectPartialNodesInNodes(node.elseNodes, out);
-				}
-				break;
-			case "Layout":
-			case "Component":
-			case "Slot":
-			case "Text":
-			case "Interpolation":
-				break;
-			default: {
-				const _exhaust: never = node;
-				throw new InkerRenderError(
-					"E_INKER_INVALID_EXPRESSION",
-					`Unreachable: unhandled node kind in collectPartialNodesInNodes: ${JSON.stringify(_exhaust)}`,
-				);
-			}
-		}
+// JS `Map` / `Set` instances do not cross the NAPI boundary as serde_json
+// values (a Map serialises to `{}`), so the renderer would see them as empty.
+// Encode them into the array-of-pairs / array-of-values shapes the Rust
+// renderer's destructured-`each` iteration expects (mirrors the pre-Rust TS
+// renderer's `Map.entries()` / `Set` iteration). Plain objects and arrays are
+// recursed (to catch nested Maps); Dates / class instances pass through so
+// napi-rs serialises them as it did before.
+// Guard against circular references: the Rust engine serialises the entire data
+// tree across the NAPI boundary, so a cycle would otherwise overflow the stack
+// here (or fail opaquely at the serde boundary). Surface a clear, catchable
+// error instead. `seen` tracks the current ancestor chain (added on entry,
+// removed on exit) so shared-but-acyclic subgraphs (a DAG) are not false-flagged.
+function enterCycleGuard(value: object, seen: WeakSet<object>): void {
+	if (seen.has(value)) {
+		throw new InkerRenderError(
+			"E_INKER_INVALID_EXPRESSION",
+			"render data contains a circular reference — Inker serialises the full data tree to the Rust engine and cannot encode cyclic structures",
+		);
 	}
+	seen.add(value);
+}
+
+function encodeData(
+	value: unknown,
+	seen: WeakSet<object> = new WeakSet(),
+): unknown {
+	if (value instanceof Map) {
+		enterCycleGuard(value, seen);
+		const out = Array.from(value, ([k, v]) => [
+			encodeData(k, seen),
+			encodeData(v, seen),
+		]);
+		seen.delete(value);
+		return out;
+	}
+	if (value instanceof Set) {
+		enterCycleGuard(value, seen);
+		const out = Array.from(value, (v) => encodeData(v, seen));
+		seen.delete(value);
+		return out;
+	}
+	if (Array.isArray(value)) {
+		enterCycleGuard(value, seen);
+		// Structural sharing: only allocate a new array if a descendant actually
+		// changed (a Map/Set was encoded). The common Map/Set-free data tree is
+		// returned by reference, avoiding a full deep clone on every render.
+		let changed = false;
+		const out = value.map((v) => {
+			const encoded = encodeData(v, seen);
+			if (encoded !== v) changed = true;
+			return encoded;
+		});
+		seen.delete(value);
+		return changed ? out : value;
+	}
+	if (value !== null && typeof value === "object") {
+		const proto = Object.getPrototypeOf(value);
+		if (proto === Object.prototype || proto === null) {
+			enterCycleGuard(value, seen);
+			let changed = false;
+			const out: Record<string, unknown> = {};
+			for (const [k, v] of Object.entries(value)) {
+				const encoded = encodeData(v, seen);
+				if (encoded !== v) changed = true;
+				out[k] = encoded;
+			}
+			seen.delete(value);
+			return changed ? out : value;
+		}
+		// Date, class instance, etc. — let napi-rs serialise as before.
+		return value;
+	}
+	return value;
 }
 
 export class Templates {
 	readonly #root: string;
 	readonly #cacheMode: "mtime" | "never";
 	readonly #cache: Map<string, CacheEntry> = new Map();
-	readonly #inflight: Map<string, Promise<TemplateAst>> = new Map();
+	readonly #inflight: Map<string, Promise<NapiInkerAst>> = new Map();
 	// T7: monotonic counter bumped by clearCache(). #loadAstUncached snapshots
 	// it before doing async I/O and refuses to write back to the cache if the
 	// generation moved during the load — prevents a pre-clear in-flight load
@@ -735,26 +528,61 @@ export class Templates {
 			new Set([absPath]),
 		);
 
-		const bodyHtml = renderAst(composed.bodyAst, data, {
-			templatePath: absPath,
+		const native = getNative();
+		const encoded = encodeData(data);
+		const partials = Object.fromEntries(composed.partialAsts);
+		const components = Object.fromEntries(composed.componentAsts);
+
+		// Body pass — collect helper invocations in render order, invoke them
+		// TS-side, then render consuming the resolved tape (ADR-007 as adapted
+		// for 55.1: collect→invoke→render, no V8 callback).
+		const bodyCtx: NapiRenderContext = {
+			partials,
+			components,
+			bodyHtml: undefined,
 			templateName: validated,
-			partialAsts: composed.partialAsts,
-			componentAsts: composed.componentAsts,
-			helpers: this.#helpers,
-		});
+			templatePath: absPath,
+		};
+		const bodyTape = callNative(() =>
+			native.collectInvocations(composed.bodyAst, encoded, bodyCtx),
+		);
+		const bodyResolved = this.#invokeHelpers(bodyTape, validated, absPath);
+		const bodyHtml = callNative(() =>
+			native.renderAst(composed.bodyAst, encoded, bodyResolved, bodyCtx),
+		);
 
 		if (composed.layoutAst === undefined) {
 			return bodyHtml;
 		}
 
-		return renderAst(composed.layoutAst, data, {
-			templatePath: composed.layoutAbsPath ?? absPath,
-			templateName: composed.layoutName ?? validated,
-			partialAsts: composed.partialAsts,
-			componentAsts: composed.componentAsts,
-			helpers: this.#helpers,
-			bodyHtml,
-		});
+		const layoutAst = composed.layoutAst;
+		const layoutName = composed.layoutName ?? validated;
+		const layoutPath = composed.layoutAbsPath ?? absPath;
+		// Layout collect ctx omits bodyHtml (slots carry no helpers); render ctx
+		// injects it. Both walk identically so the tape aligns.
+		const layoutTape = callNative(() =>
+			native.collectInvocations(layoutAst, encoded, {
+				partials,
+				components,
+				bodyHtml: undefined,
+				templateName: layoutName,
+				templatePath: layoutPath,
+			}),
+		);
+		const layoutResolved = this.#invokeHelpers(
+			layoutTape,
+			layoutName,
+			layoutPath,
+		);
+		return callNative(() =>
+			native.renderAst(layoutAst, encoded, layoutResolved, {
+				partials,
+				components,
+				bodyHtml,
+				templateName: layoutName,
+				templatePath: layoutPath,
+			}),
+		);
 	}
 
 	renderString(
@@ -770,36 +598,119 @@ export class Templates {
 		const normalisedSource = source.includes("﻿")
 			? source.replace(/﻿/g, "")
 			: source;
-		const tokens = lex(normalisedSource);
-		const ast = parse(tokens, { helpers: this.#helperNames });
+		const native = getNative();
+		const ast = callNative(() =>
+			native.parseTemplate(normalisedSource, [...this.#helperNames]),
+		);
 
-		const diskNode = findFirstDiskNode(ast);
-		if (diskNode !== undefined) {
-			if (diskNode.kind === "Layout") {
+		const info = ast.composeInfo;
+		// The Rust parser separates a leading `{% layout %}` into `ast.layout`
+		// (not a body node), so `firstDiskNode` won't surface it — check
+		// `hasLayout` explicitly to preserve the renderString disk-required guard.
+		if (info.hasLayout) {
+			throw new InkerRenderError(
+				"E_INKER_DISK_REQUIRED",
+				`Templates#renderString cannot resolve {% layout '${info.layoutName ?? ""}' %} — use Templates#render(name, data) instead`,
+			);
+		}
+		const disk = info.firstDiskNode;
+		if (disk !== null && disk !== undefined) {
+			if (disk.kind === "Layout") {
 				throw new InkerRenderError(
 					"E_INKER_DISK_REQUIRED",
-					`Templates#renderString cannot resolve {% layout '${diskNode.name}' %} — use Templates#render(name, data) instead`,
+					`Templates#renderString cannot resolve {% layout '${disk.name}' %} — use Templates#render(name, data) instead`,
 				);
 			}
-			if (diskNode.kind === "Partial") {
+			if (disk.kind === "Partial") {
 				throw new InkerRenderError(
 					"E_INKER_DISK_REQUIRED",
-					`Templates#renderString cannot resolve {% include '${diskNode.name}' %} — use Templates#render(name, data) instead`,
+					`Templates#renderString cannot resolve {% include '${disk.name}' %} — use Templates#render(name, data) instead`,
 				);
 			}
-			if (diskNode.kind === "Component") {
+			if (disk.kind === "Component") {
 				throw new InkerRenderError(
 					"E_INKER_DISK_REQUIRED",
-					`Templates#renderString cannot resolve {% component '${diskNode.name}' %} — use Templates#render(name, data) instead`,
+					`Templates#renderString cannot resolve {% component '${disk.name}' %} — use Templates#render(name, data) instead`,
 				);
 			}
 			throw new InkerRenderError(
 				"E_INKER_DISK_REQUIRED",
-				`Templates#renderString cannot use {{> ${diskNode.name} }} outside of a layout — the slot has no parent layout to inject into`,
+				`Templates#renderString cannot use {{> ${disk.name} }} outside of a layout — the slot has no parent layout to inject into`,
 			);
 		}
 
-		return renderAst(ast, data, { helpers: this.#helpers });
+		const ctx: NapiRenderContext = {
+			partials: {},
+			components: {},
+			bodyHtml: undefined,
+			templateName: undefined,
+			templatePath: undefined,
+		};
+		const encoded = encodeData(data);
+		const tape = callNative(() => native.collectInvocations(ast, encoded, ctx));
+		const resolved = this.#invokeHelpers(tape, undefined, undefined);
+		return callNative(() => native.renderAst(ast, encoded, resolved, ctx));
+	}
+
+	// Invoke each collected helper TS-side in tape order, producing the resolved
+	// values the renderer consumes. Mirrors the old `render.ts` Call-arm
+	// contract: SafeString → raw; null/undefined → ""; non-string/SafeString or
+	// a throw / thenable → E_INKER_HELPER_THROW (preserving InkerRenderError
+	// passthrough + cause chain).
+	#invokeHelpers(
+		tape: readonly NapiInvocation[],
+		templateName: string | undefined,
+		templatePath: string | undefined,
+	): NapiHelperResult[] {
+		const out: NapiHelperResult[] = [];
+		for (const inv of tape) {
+			const helper = this.#helpers.get(inv.name);
+			if (helper === undefined) {
+				throw new InkerRenderError(
+					"E_INKER_UNKNOWN_HELPER",
+					`Helper '${inv.name}' is not registered in this Templates instance`,
+					{ templatePath, templateName, expression: inv.name },
+				);
+			}
+			let result: string | SafeString;
+			let thenProp: unknown;
+			try {
+				result = helper(...inv.args);
+				if (result !== null && typeof result === "object") {
+					thenProp = Reflect.get(result, "then");
+				}
+			} catch (cause) {
+				if (cause instanceof InkerRenderError) throw cause;
+				const message = cause instanceof Error ? cause.message : String(cause);
+				throw new InkerRenderError(
+					"E_INKER_HELPER_THROW",
+					`Helper '${inv.name}' threw: ${message}`,
+					{ templatePath, templateName, expression: inv.name },
+					{ cause },
+				);
+			}
+			if (typeof thenProp === "function") {
+				throw new InkerRenderError(
+					"E_INKER_HELPER_THROW",
+					`Helper '${inv.name}' returned a Promise/thenable — Inker renderers are synchronous (D2)`,
+					{ templatePath, templateName, expression: inv.name },
+				);
+			}
+			if (result instanceof SafeString) {
+				out.push({ value: result.value, isSafe: true });
+			} else if (result === null || result === undefined) {
+				out.push({ value: "", isSafe: false });
+			} else if (typeof result === "string") {
+				out.push({ value: result, isSafe: false });
+			} else {
+				throw new InkerRenderError(
+					"E_INKER_HELPER_THROW",
+					`Helper '${inv.name}' returned ${typeof result} — Inker helpers must return string | SafeString | null | undefined (D2)`,
+					{ templatePath, templateName, expression: inv.name },
+				);
+			}
+		}
+		return out;
 	}
 
 	clearCache(): void {
@@ -813,7 +724,10 @@ export class Templates {
 		this.#inflight.clear();
 	}
 
-	async #loadAst(absPath: string, validatedName: string): Promise<TemplateAst> {
+	async #loadAst(
+		absPath: string,
+		validatedName: string,
+	): Promise<NapiInkerAst> {
 		const inflight = this.#inflight.get(absPath);
 		if (inflight !== undefined) return inflight;
 
@@ -829,7 +743,7 @@ export class Templates {
 	async #loadAstUncached(
 		absPath: string,
 		validatedName: string,
-	): Promise<TemplateAst> {
+	): Promise<NapiInkerAst> {
 		// T7: snapshot the cache generation. If clearCache() runs while this
 		// load is in flight, the snapshot will diverge from #cacheGeneration
 		// at write-back time, and we'll skip the cache.set() to avoid
@@ -920,11 +834,9 @@ export class Templates {
 			source = source.slice(1);
 		}
 
-		const tokens = lex(source, { templatePath: absPath });
-		const ast = parse(tokens, {
-			templatePath: absPath,
-			helpers: this.#helperNames,
-		});
+		const ast = callNative(() =>
+			getNative().parseTemplate(source, [...this.#helperNames]),
+		);
 
 		// T7: only populate the cache if the generation is unchanged. If
 		// clearCache() was called during the await chain above, the new
@@ -936,30 +848,27 @@ export class Templates {
 	}
 
 	async #compose(
-		entryAst: TemplateAst,
+		entryAst: NapiInkerAst,
 		entryName: string,
 		entryAbsPath: string,
 		includeStack: Set<string>,
 	): Promise<ComposedTemplate> {
-		const partialAsts = new Map<string, TemplateAst>();
-		const componentAsts = new Map<string, TemplateAst>();
+		const partialAsts = new Map<string, NapiInkerAst>();
+		const componentAsts = new Map<string, NapiInkerAst>();
 
-		// 1. Locate the optional Layout (must be first non-stripped node).
-		const firstNode = entryAst.nodes[0];
-		const hasLayout = firstNode !== undefined && firstNode.kind === "Layout";
+		// The Rust parser already separates the leading `{% layout %}` into
+		// `ast.layout` and excludes it from `ast.nodes`, so `entryAst` IS the
+		// body AST (no slice). Duplicate / mis-placed layout directives are
+		// rejected at parse time (parseTemplate throws E_INKER_DUPLICATE_LAYOUT /
+		// E_INKER_INVALID_LAYOUT_POSITION), so no body-side dup-layout check is
+		// needed here.
+		const entryInfo = entryAst.composeInfo;
+		const hasLayout = entryInfo.hasLayout;
+		const bodyAst = entryAst;
 
-		// 2. Build the body AST by stripping the LayoutNode.
-		const bodyNodes: InkerNode[] = hasLayout
-			? entryAst.nodes.slice(1)
-			: entryAst.nodes.slice();
-		const bodyAst: TemplateAst = Object.freeze({
-			nodes: Object.freeze(bodyNodes),
-		});
-
-		// Body ASTs must not contain Slot nodes: slots only have meaning in a
-		// layout-yield context. A `{{> body }}` in the body itself silently
-		// rendered empty before this check.
-		const bodySlot = findFirstSlotIn(bodyAst);
+		// Body ASTs must not contain Slot nodes: slots only mean something in a
+		// layout-yield context.
+		const bodySlot = entryInfo.slots[0];
 		if (bodySlot !== undefined) {
 			throw new InkerRenderError(
 				"E_INKER_UNKNOWN_SLOT",
@@ -973,62 +882,28 @@ export class Templates {
 			);
 		}
 
-		// T5: also reject any further {% layout %} directive in the body.
-		// The slice(1) above strips only the leading Layout; a duplicate
-		// `{% layout 'main' %}` later in the file (or inside an if/each)
-		// would otherwise silently no-op since `findFirstLayoutInNodes` was
-		// previously only invoked on layout ASTs.
-		const dupLayout = findFirstLayoutInNodes(bodyAst.nodes);
-		if (dupLayout !== undefined) {
-			throw new InkerRenderError(
-				"E_INKER_DUPLICATE_LAYOUT",
-				`{% layout %} can only appear once and must be the first directive (duplicate at line ${dupLayout.line}, column ${dupLayout.column} in '${entryName}')`,
-				{
-					templatePath: entryAbsPath,
-					templateName: entryName,
-					line: dupLayout.line,
-					column: dupLayout.column,
-				},
-			);
-		}
-
-		// 3. Resolve all PartialNodes reachable from the body AST.
+		// Resolve all partials reachable from the body AST (slot-in-partial
+		// rejection happens inside #resolvePartialsIn as each partial loads).
 		await this.#resolvePartialsIn(
-			bodyAst,
+			entryInfo.partials,
 			partialAsts,
 			includeStack,
 			entryAbsPath,
 		);
 
-		// 3b. Partial ASTs may not contain Slot nodes either.
-		for (const [partialName, partialAst] of partialAsts) {
-			const slot = findFirstSlotIn(partialAst);
-			if (slot !== undefined) {
-				throw new InkerRenderError(
-					"E_INKER_UNKNOWN_SLOT",
-					`Partial '${partialName}' contains {{> ${slot.name} }} — slot placeholders are only valid inside layout files (line ${slot.line}, column ${slot.column})`,
-					{
-						templateName: partialName,
-						line: slot.line,
-						column: slot.column,
-					},
-				);
-			}
-		}
-
-		// 3c. Resolve all ComponentNodes reachable from the body AST.
+		// Resolve all components reachable from the body AST.
 		await this.#resolveComponentsIn(
-			bodyAst.nodes,
+			entryInfo.components,
 			componentAsts,
 			includeStack,
 			entryAbsPath,
 		);
 
 		if (!hasLayout) {
-			// 3d. Resolve components transitively reachable from partials.
+			// Resolve components transitively reachable from partials.
 			for (const partialAst of partialAsts.values()) {
 				await this.#resolveComponentsIn(
-					partialAst.nodes,
+					partialAst.composeInfo.components,
 					componentAsts,
 					includeStack,
 					entryAbsPath,
@@ -1037,9 +912,19 @@ export class Templates {
 			return { bodyAst, partialAsts, componentAsts };
 		}
 
-		// 4. Resolve the layout file.
-		const layoutNode = firstNode;
-		const layoutValidated = validateName(layoutNode.name);
+		// Resolve the layout file.
+		const layoutName = entryInfo.layoutName;
+		if (layoutName === null) {
+			// hasLayout true but no name — should be impossible (parse invariant).
+			throw new InkerRenderError(
+				"E_INKER_INVALID_LAYOUT_POSITION",
+				`Internal: layout flagged but no layout name on '${entryName}'`,
+				{ templatePath: entryAbsPath, templateName: entryName },
+			);
+		}
+		const layoutLine = entryInfo.layoutLine ?? undefined;
+		const layoutColumn = entryInfo.layoutColumn ?? undefined;
+		const layoutValidated = validateName(layoutName);
 		const layoutAbsPath = path.join(this.#root, `${layoutValidated}.inker`);
 		assertContained(this.#root, layoutAbsPath, layoutValidated);
 
@@ -1050,14 +935,14 @@ export class Templates {
 				{
 					templatePath: layoutAbsPath,
 					templateName: layoutValidated,
-					line: layoutNode.line,
-					column: layoutNode.column,
+					line: layoutLine,
+					column: layoutColumn,
 				},
 			);
 		}
 
 		includeStack.add(layoutAbsPath);
-		let layoutAst: TemplateAst;
+		let layoutAst: NapiInkerAst;
 		try {
 			layoutAst = await this.#loadAst(layoutAbsPath, layoutValidated);
 		} catch (e) {
@@ -1066,23 +951,24 @@ export class Templates {
 		}
 
 		try {
-			// 5. Nested-layout rejection (recursive walk through If/Each branches too).
-			const nestedLayout = findFirstLayoutInNodes(layoutAst.nodes);
-			if (nestedLayout !== undefined) {
+			const layoutInfo = layoutAst.composeInfo;
+
+			// Nested-layout rejection.
+			if (layoutInfo.hasLayout) {
 				throw new InkerRenderError(
 					"E_INKER_NESTED_LAYOUT_UNSUPPORTED",
 					`Layout file '${layoutValidated}' itself contains {% layout %} — nested layouts are not supported`,
 					{
 						templatePath: layoutAbsPath,
 						templateName: layoutValidated,
-						line: nestedLayout.line,
-						column: nestedLayout.column,
+						line: layoutInfo.layoutLine ?? undefined,
+						column: layoutInfo.layoutColumn ?? undefined,
 					},
 				);
 			}
 
-			// 6. Unknown-slot rejection (parse-time-of-layout semantic).
-			const unknownSlot = this.#findUnknownSlot(layoutAst);
+			// Unknown-slot rejection (any slot whose name is not "body").
+			const unknownSlot = layoutInfo.slots.find((s) => s.name !== "body");
 			if (unknownSlot !== undefined) {
 				throw new InkerRenderError(
 					"E_INKER_UNKNOWN_SLOT",
@@ -1096,9 +982,9 @@ export class Templates {
 				);
 			}
 
-			// 7. Missing-slot rejection (D11) — only when the body has real content.
-			const hasBodySlot = hasBodySlotInNodes(layoutAst.nodes);
-			if (!hasBodySlot && bodyHasContent(bodyAst)) {
+			// Missing-slot rejection (D11) — only when the body has real content.
+			const hasBodySlot = layoutInfo.slots.some((s) => s.name === "body");
+			if (!hasBodySlot && entryInfo.hasContent) {
 				throw new InkerRenderError(
 					"E_INKER_MISSING_SLOT",
 					`Layout '${layoutValidated}' has no {{> body }} placeholder, cannot render body of child '${entryName}'`,
@@ -1109,40 +995,22 @@ export class Templates {
 				);
 			}
 
-			// 8. Resolve partials reachable from the layout AST.
+			// Resolve partials + components reachable from the layout AST.
 			await this.#resolvePartialsIn(
-				layoutAst,
+				layoutInfo.partials,
 				partialAsts,
 				includeStack,
 				layoutAbsPath,
 			);
-
-			// 8b. Validate slots-in-partials for any partial newly reached via the layout.
-			for (const [partialName, partialAst] of partialAsts) {
-				const slot = findFirstSlotIn(partialAst);
-				if (slot !== undefined) {
-					throw new InkerRenderError(
-						"E_INKER_UNKNOWN_SLOT",
-						`Partial '${partialName}' contains {{> ${slot.name} }} — slot placeholders are only valid inside layout files (line ${slot.line}, column ${slot.column})`,
-						{
-							templateName: partialName,
-							line: slot.line,
-							column: slot.column,
-						},
-					);
-				}
-			}
-
-			// 9. Resolve components reachable from the layout + each partial.
 			await this.#resolveComponentsIn(
-				layoutAst.nodes,
+				layoutInfo.components,
 				componentAsts,
 				includeStack,
 				layoutAbsPath,
 			);
 			for (const partialAst of partialAsts.values()) {
 				await this.#resolveComponentsIn(
-					partialAst.nodes,
+					partialAst.composeInfo.components,
 					componentAsts,
 					includeStack,
 					layoutAbsPath,
@@ -1163,16 +1031,12 @@ export class Templates {
 	}
 
 	async #resolvePartialsIn(
-		ast: TemplateAst,
-		partialAsts: Map<string, TemplateAst>,
+		refs: readonly NapiNodeRef[],
+		partialAsts: Map<string, NapiInkerAst>,
 		includeStack: Set<string>,
 		hostAbsPath: string,
 	): Promise<void> {
-		const partialRefs: Array<{ name: string; line: number; column: number }> =
-			[];
-		collectPartialNodesInNodes(ast.nodes, partialRefs);
-
-		for (const node of partialRefs) {
+		for (const node of refs) {
 			const partialValidated = validateName(node.name);
 			const partialAbsPath = path.join(this.#root, `${partialValidated}.inker`);
 			assertContained(this.#root, partialAbsPath, partialValidated);
@@ -1197,7 +1061,7 @@ export class Templates {
 			}
 
 			includeStack.add(partialAbsPath);
-			let partialAst: TemplateAst;
+			let partialAst: NapiInkerAst;
 			try {
 				partialAst = await this.#loadAst(partialAbsPath, partialValidated);
 			} catch (e) {
@@ -1206,17 +1070,31 @@ export class Templates {
 			}
 
 			try {
-				// Layout-in-partial rejection (recursive walk through If/Each too).
-				const layoutSite = findFirstLayoutInNodes(partialAst.nodes);
-				if (layoutSite !== undefined) {
+				const info = partialAst.composeInfo;
+				// Layout-in-partial rejection.
+				if (info.hasLayout) {
 					throw new InkerRenderError(
 						"E_INKER_LAYOUT_IN_PARTIAL",
 						`Partial file '${partialValidated}' contains {% layout %} — partials cannot declare layouts`,
 						{
 							templatePath: partialAbsPath,
 							templateName: partialValidated,
-							line: layoutSite.line,
-							column: layoutSite.column,
+							line: info.layoutLine ?? undefined,
+							column: info.layoutColumn ?? undefined,
+						},
+					);
+				}
+
+				// Slot-in-partial rejection: slots only mean something in layouts.
+				const slot = info.slots[0];
+				if (slot !== undefined) {
+					throw new InkerRenderError(
+						"E_INKER_UNKNOWN_SLOT",
+						`Partial '${partialValidated}' contains {{> ${slot.name} }} — slot placeholders are only valid inside layout files (line ${slot.line}, column ${slot.column})`,
+						{
+							templateName: partialValidated,
+							line: slot.line,
+							column: slot.column,
 						},
 					);
 				}
@@ -1225,7 +1103,7 @@ export class Templates {
 
 				// Recurse into nested partials.
 				await this.#resolvePartialsIn(
-					partialAst,
+					info.partials,
 					partialAsts,
 					includeStack,
 					partialAbsPath,
@@ -1237,16 +1115,12 @@ export class Templates {
 	}
 
 	async #resolveComponentsIn(
-		nodes: readonly InkerNode[],
-		componentAsts: Map<string, TemplateAst>,
+		refs: readonly NapiNodeRef[],
+		componentAsts: Map<string, NapiInkerAst>,
 		includeStack: Set<string>,
 		hostAbsPath: string,
 	): Promise<void> {
-		const componentRefs: Array<{ name: string; line: number; column: number }> =
-			[];
-		collectComponentNodesInNodes(nodes, componentRefs);
-
-		for (const node of componentRefs) {
+		for (const node of refs) {
 			const componentName = `components/${node.name}`;
 			const componentValidated = validateName(componentName);
 			const componentAbsPath = path.join(
@@ -1274,7 +1148,7 @@ export class Templates {
 			}
 
 			includeStack.add(componentAbsPath);
-			let componentAst: TemplateAst;
+			let componentAst: NapiInkerAst;
 			try {
 				componentAst = await this.#loadAst(
 					componentAbsPath,
@@ -1286,24 +1160,24 @@ export class Templates {
 			}
 
 			try {
+				const info = componentAst.composeInfo;
 				// Layout-in-component rejection (reuse E_INKER_LAYOUT_IN_PARTIAL
 				// per AC5: same axis "layout in non-entry file").
-				const layoutSite = findFirstLayoutInNodes(componentAst.nodes);
-				if (layoutSite !== undefined) {
+				if (info.hasLayout) {
 					throw new InkerRenderError(
 						"E_INKER_LAYOUT_IN_PARTIAL",
 						`Component file '${componentValidated}' contains {% layout %} — components cannot declare layouts`,
 						{
 							templatePath: componentAbsPath,
 							templateName: componentValidated,
-							line: layoutSite.line,
-							column: layoutSite.column,
+							line: info.layoutLine ?? undefined,
+							column: info.layoutColumn ?? undefined,
 						},
 					);
 				}
 
 				// Slot-leak rejection: components MUST NOT contain {{> body }}.
-				const slot = findFirstSlotInNodes(componentAst.nodes);
+				const slot = info.slots[0];
 				if (slot !== undefined) {
 					throw new InkerRenderError(
 						"E_INKER_UNKNOWN_SLOT",
@@ -1319,9 +1193,9 @@ export class Templates {
 
 				componentAsts.set(componentKey, componentAst);
 
-				// Recurse into nested components (component → component → component).
+				// Recurse into nested components.
 				await this.#resolveComponentsIn(
-					componentAst.nodes,
+					info.components,
 					componentAsts,
 					includeStack,
 					componentAbsPath,
@@ -1330,35 +1204,6 @@ export class Templates {
 				includeStack.delete(componentAbsPath);
 			}
 		}
-	}
-
-	#findUnknownSlot(ast: TemplateAst): SlotNode | undefined {
-		return this.#findUnknownSlotInNodes(ast.nodes);
-	}
-
-	#findUnknownSlotInNodes(nodes: readonly InkerNode[]): SlotNode | undefined {
-		for (const node of nodes) {
-			if (node.kind === "Slot" && node.name !== "body") {
-				return node;
-			}
-			if (node.kind === "If") {
-				const inThen = this.#findUnknownSlotInNodes(node.thenNodes);
-				if (inThen !== undefined) return inThen;
-				if (node.elseNodes !== undefined) {
-					const inElse = this.#findUnknownSlotInNodes(node.elseNodes);
-					if (inElse !== undefined) return inElse;
-				}
-			}
-			if (node.kind === "Each") {
-				const inBody = this.#findUnknownSlotInNodes(node.bodyNodes);
-				if (inBody !== undefined) return inBody;
-				if (node.elseNodes !== undefined) {
-					const inElse = this.#findUnknownSlotInNodes(node.elseNodes);
-					if (inElse !== undefined) return inElse;
-				}
-			}
-		}
-		return undefined;
 	}
 
 	#cycleString(includeStack: Set<string>, revisited: string): string {
