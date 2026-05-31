@@ -73,3 +73,6 @@
 [submodule "packages/station"]
 	path = packages/station
 	url = git@github.com:C9up/station.git
+[submodule "packages/aurora"]
+	path = packages/aurora
+	url = git@github.com:C9up/aurora.git
