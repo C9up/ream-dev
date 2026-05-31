@@ -110,7 +110,24 @@ pub fn resolve_path(
 						));
 					}
 				};
-				let idx_usize = *idx as usize;
+				// `*idx as usize` would silently truncate on a 32-bit target; a
+				// `try_from` failure means the index exceeds `usize::MAX`, which is
+				// necessarily out of range for any in-memory array.
+				let idx_usize = match usize::try_from(*idx) {
+					Ok(i) => i,
+					Err(_) => {
+						return Err(err(
+							context,
+							path,
+							format!(
+								"index {} out of range (length {}) at {}",
+								idx,
+								arr.len(),
+								format_consumed(&consumed)
+							),
+						));
+					}
+				};
 				if idx_usize >= arr.len() {
 					return Err(err(
 						context,

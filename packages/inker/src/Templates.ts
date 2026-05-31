@@ -300,10 +300,22 @@ function enterCycleGuard(value: object, seen: WeakSet<object>): void {
 	seen.add(value);
 }
 
+const MAX_SAFE_BIGINT = BigInt(Number.MAX_SAFE_INTEGER);
+const MIN_SAFE_BIGINT = BigInt(Number.MIN_SAFE_INTEGER);
+
 function encodeData(
 	value: unknown,
 	seen: WeakSet<object> = new WeakSet(),
 ): unknown {
+	if (value === undefined) {
+		// An explicit `undefined` own-property is silently dropped by JSON
+		// encoding, after which the Rust engine treats the key as missing and
+		// throws E_INKER_UNKNOWN_IDENTIFIER. The pre-Rust TS engine rendered null
+		// and undefined identically (empty string, falsy). Normalise undefined to
+		// null to preserve that behavior; the engine already maps the `undefined`
+		// literal to null too.
+		return null;
+	}
 	if (value instanceof Map) {
 		enterCycleGuard(value, seen);
 		const out = Array.from(value, ([k, v]) => [
@@ -325,11 +337,24 @@ function encodeData(
 		// changed (a Map/Set was encoded). The common Map/Set-free data tree is
 		// returned by reference, avoiding a full deep clone on every render.
 		let changed = false;
-		const out = value.map((v) => {
-			const encoded = encodeData(v, seen);
-			if (encoded !== v) changed = true;
-			return encoded;
-		});
+		const out: unknown[] = new Array(value.length);
+		for (let i = 0; i < value.length; i++) {
+			// Sparse holes survive JSON encoding as `null`, which the Rust engine
+			// would silently iterate/index. The pre-Rust TS engine rejected holes
+			// with a typed error; restore that here (eager, since the hole is only
+			// visible JS-side — slightly stricter than the old lazy check, which
+			// only fired when the hole was actually iterated or indexed).
+			if (!(i in value)) {
+				seen.delete(value);
+				throw new InkerRenderError(
+					"E_INKER_INVALID_ITERABLE",
+					`Sparse array hole at index ${i} — Inker does not support sparse arrays; fill holes with explicit values`,
+				);
+			}
+			const encoded = encodeData(value[i], seen);
+			if (encoded !== value[i]) changed = true;
+			out[i] = encoded;
+		}
 		seen.delete(value);
 		return changed ? out : value;
 	}
@@ -349,6 +374,29 @@ function encodeData(
 		}
 		// Date, class instance, etc. — let napi-rs serialise as before.
 		return value;
+	}
+	if (typeof value === "bigint") {
+		// `bigint` cannot cross the NAPI boundary (serde JSON has no bigint). The
+		// pre-Rust TS engine rendered it via `String(value)`. Preserve the common
+		// case by widening to `Number` when it round-trips exactly; refuse the
+		// lossy case rather than silently dropping precision.
+		if (value >= MIN_SAFE_BIGINT && value <= MAX_SAFE_BIGINT) {
+			return Number(value);
+		}
+		throw new InkerRenderError(
+			"E_INKER_INVALID_EXPRESSION",
+			`Cannot pass bigint ${value} as template data — it exceeds Number.MAX_SAFE_INTEGER and cannot cross the engine boundary without precision loss; convert it to a string via a helper or a precomputed field`,
+		);
+	}
+	if (typeof value === "number" && !Number.isFinite(value)) {
+		// NaN / ±Infinity have no JSON representation (serde encodes them as null,
+		// which would render as empty). The pre-Rust TS engine rendered the literal
+		// "NaN" / "Infinity"; that is unreachable through the JSON boundary, so fail
+		// loudly instead of rendering empty.
+		throw new InkerRenderError(
+			"E_INKER_INVALID_EXPRESSION",
+			`Cannot pass non-finite number ${value} as template data — NaN and Infinity have no representation across the engine boundary; format it via a helper before rendering`,
+		);
 	}
 	return value;
 }

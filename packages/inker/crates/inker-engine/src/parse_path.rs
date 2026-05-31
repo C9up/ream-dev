@@ -265,8 +265,21 @@ pub fn parse_path(
 						start,
 					));
 				}
+				// `digits` is all-ASCII-digit with no leading zero at this point,
+				// so a parse failure can only be a `u64` overflow — which is
+				// necessarily beyond Number.MAX_SAFE_INTEGER. Match the in-range
+				// guard's diagnostic instead of the generic message (TS used
+				// float parsing and always reported MAX_SAFE_INTEGER here).
 				let value: u64 = digits.parse().map_err(|_| {
-					fail(expression, "invalid numeric index", line, column, start)
+					fail(
+						expression,
+						format!(
+							"numeric index '{digits}' exceeds Number.MAX_SAFE_INTEGER ({NUMBER_MAX_SAFE_INTEGER}) — precision would be silently lost"
+						),
+						line,
+						column,
+						start,
+					)
 				})?;
 				if value > NUMBER_MAX_SAFE_INTEGER {
 					return Err(fail(

@@ -23,6 +23,7 @@
 	"scripts": {
 		"build": "tsc -p tsconfig.build.json",
 		"build:napi": "cargo build --release -p inker-engine-napi && node scripts/copy-napi.mjs",
+		"prepack": "tsc -p tsconfig.build.json",
 		"typecheck": "tsc --noEmit",
 		"test": "vitest run",
 		"lint": "biome check src/",

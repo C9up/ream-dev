@@ -27,12 +27,24 @@
 //! (b) a component-arg value `{ key: helper(args) }`. Args are literals, paths,
 //! or objects of literals/paths.
 //!
+//! Known 55.1 divergences from the pre-migration TS engine (intentional):
+//!   - A helper used as a component-arg value (case b) that returns a
+//!     `SafeString` loses its safe-ness: the resolved value is stored into the
+//!     component scope as a plain JSON string and is HTML-escaped again when the
+//!     component body interpolates it. The `serde_json::Value` scope carries no
+//!     safe-string marker. Wrap raw HTML inside the component instead.
+//!   - `each` over a non-plain object (Date, RegExp, class instance) no longer
+//!     gets the old "expected plain object" diagnostic: such values are first
+//!     serialised by napi-rs (Date → string, instance → own-key object) and then
+//!     iterated/rendered per their serialised shape.
+//!
 //! ## Map / Set encoding contract
 //!
 //! JS `Map` / `Set` cannot cross NAPI as themselves. The TS side pre-encodes
-//! `Map<K,V>` → `Array<[K,V]>` and `Set<V>` → `Array<[i,V]>`. Output stays
-//! byte-identical because destructured `as [k, v]` iteration over an array of
-//! 2-tuples produces the same bindings as `Map.entries()`.
+//! `Map<K,V>` → `Array<[K,V]>` and `Set<V>` → `Array<V>` (flat values, matching
+//! `Array.from(set)`). Output stays byte-identical: destructured `as [k, v]`
+//! iteration over a Map's 2-tuples reproduces `Map.entries()`, and single-binding
+//! `as item` iteration over a Set's values reproduces `Set` iteration order.
 
 use crate::ast::{EachBinding, InkerNode, LayoutNode, PartialNode, SlotNode};
 use crate::error::{ErrorCode, InkerError};

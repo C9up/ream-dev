@@ -824,7 +824,9 @@ fn parse_component_tag(
 			if chars[k] == '\n' {
 				obj_line += 1;
 				obj_column = 1;
-			} else {
+			} else if chars[k] != '\r' {
+				// `\r` is invisible to column counting, matching the lexer's
+				// `advance` and `parse_expression::position_at`.
 				obj_column += 1;
 			}
 		}

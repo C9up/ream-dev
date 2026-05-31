@@ -13,9 +13,9 @@
 //!
 //! Each `Call` is assigned a monotonic `id: u32` during parse via the cursor's
 //! `next_helper_id` counter — the id is the keyspace for ADR-007 helper
-//! pre-resolution at render time (the TS-side walks `ast.helperCallSites`,
-//! evaluates args, packs `Record<String(id), ResolvedHelperValue>`, and the
-//! Rust renderer dereferences by id).
+//! pre-resolution at render time (the TS-side walks the `collectInvocations`
+//! tape, evaluates args, packs `Record<String(id), ResolvedHelperValue>`, and
+//! the Rust renderer dereferences by id).
 
 use crate::error::{ErrorCode, InkerError};
 use crate::identifiers::{is_prototype_pollution_key, is_reserved_binding};

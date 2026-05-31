@@ -2,10 +2,12 @@
 //
 // NAPI boundary for `inker-engine`. Exposes:
 //   - `parseTemplate(source, helpers)` → opaque `InkerAst` handle (Arc-backed).
-//   - `InkerAst#helperCallSites` getter — array of `{ id, name, args }` where
-//     `args` is the serde_json-serialized Expression tree. The TS-side walks
-//     this list, evaluates each arg against runtime data (sync), invokes the
-//     helper, and packs `{ value, is_safe }` per ADR-007.
+//   - `InkerAst#composeInfo` getter — partials / components / layout metadata
+//     consumed by the TS-side compose walk.
+//   - `collectInvocations(ast, data, ctx)` — returns an ordered tape of
+//     `{ id, name, args }` with each arg already resolved against runtime data.
+//     The TS-side invokes each entry's helper (sync), packs `{ value, is_safe }`
+//     per ADR-007, and passes the resolved map to `renderAst`.
 //   - `renderAst(ast, data, helpers, ctx)` — synchronous render with the
 //     pre-resolved helpers map.
 //   - InkerError → napi::Error: message is `JSON.stringify(InkerNapiErrorPayload)`
