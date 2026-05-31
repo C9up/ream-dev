@@ -61,3 +61,6 @@
 [submodule "apps/kitchen-sink"]
 	path = apps/kitchen-sink
 	url = git@github.com:C9up/kitchen-sink.git
+[submodule "packages/inker"]
+	path = packages/inker
+	url = git@github.com:C9up/inker.git
