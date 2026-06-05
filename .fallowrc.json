@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+
+  // Demo apps, examples and test fixtures are not framework surface — exclude
+  // them so fallow's signal is about the publishable packages, not boilerplate.
+  "ignorePatterns": [
+    "apps/**",
+    "**/examples/**",
+    "**/tests/fixtures/**"
+  ],
+
+  "dynamicallyLoaded": [
+    // Generated NAPI/WASM artifacts + hand-written native loaders (resolved at
+    // runtime via the package's exports / prebuilt binary, invisible to static
+    // analysis).
+    "**/wasm/*.js",
+    "packages/*/src/index.js",
+    "packages/*/migrations/**",
+    "packages/helix/src/runtime/cli-worker.ts",
+    "packages/helix/src/cli/cli-worker.ts"
+
+    // Epic 24's API layer (JSON-RPC, GraphQL, OpenAPI, ApiResource) and
+    // StaticMiddleware (MISS-25) are now all wired + exported from index.ts, so
+    // no unwired-feature suppressions remain here.
+  ],
+
+  "ignoreExportsUsedInFile": true
+}

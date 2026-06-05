@@ -1,0 +1,20 @@
+node_modules/
+target/
+dist/
+*.node
+.env
+.env.*
+.env-*
+.DS_Store
+.turbo/
+coverage/
+*.log
+
+# Separate standalone project — lives on disk, never tracked in ream
+apps/syndic/
+
+# Local-only working files (not part of the published source tree)
+.review/
+BMAD_TRACEABILITY.md
+packages/IMPROVEMENTS_95_PLUS.md
+packages/*/CORRECTIONS.md
