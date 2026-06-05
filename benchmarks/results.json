@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-04-07T12:33:02.806Z",
+  "node": "v25.2.1",
+  "platform": "linux",
+  "arch": "x64",
+  "results": [
+    {
+      "name": "  router/static-first",
+      "opsPerSec": 27203275,
+      "nsPerOp": 37
+    },
+    {
+      "name": "  router/static-last",
+      "opsPerSec": 38251523,
+      "nsPerOp": 26
+    },
+    {
+      "name": "  router/param",
+      "opsPerSec": 849049,
+      "nsPerOp": 1178
+    },
+    {
+      "name": "  router/no-match",
+      "opsPerSec": 765505,
+      "nsPerOp": 1306
+    },
+    {
+      "name": "  container/singleton",
+      "opsPerSec": 25128615,
+      "nsPerOp": 40
+    },
+    {
+      "name": "  pipeline/exec",
+      "opsPerSec": 1394831,
+      "nsPerOp": 717
+    },
+    {
+      "name": "  kernel/hello-world",
+      "opsPerSec": 467024,
+      "nsPerOp": 2141
+    }
+  ]
+}

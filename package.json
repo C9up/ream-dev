@@ -1,0 +1,39 @@
+{
+  "name": "ream-dev",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Ream development workspace",
+  "scripts": {
+    "test": "pnpm -r --workspace-concurrency=1 run test",
+    "test:flat": "vitest run",
+    "test:rust": "cargo test --all",
+    "build": "pnpm -r --filter './packages/*' run build",
+    "build:rust": "cargo build --release",
+    "lint": "biome check packages/",
+    "quality:duplicates": "bash scripts/duplicate-report.sh",
+    "quality:duplicates:strict": "bash scripts/duplicate-report.sh --strict",
+    "quality:duplicates:actionable": "bash scripts/duplicate-report.sh --actionable",
+    "quality:packages": "bash scripts/quality-packages.sh",
+    "quality:all": "pnpm quality:duplicates && pnpm quality:packages",
+    "verify:all": "bash scripts/verify-all.sh",
+    "dev": "tsx watch apps/demo/server.ts",
+    "start": "tsx apps/demo/server.ts",
+    "bench": "tsx benchmarks/bench.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^4.1.5",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-uri": "^3.1.2",
+      "vite": "^7.3.2"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+[workspace]
+resolver = "2"
+members = [
+  "packages/ream/crates/ream-napi-core",
+  "packages/ream/crates/ream-http",
+  "packages/ream/crates/ream-http-napi",
+  # ream-security removed — extracted to @c9up/blackhole + @c9up/warden (Epic 38)
+  "packages/ream/crates/ream-napi-test",
+  "packages/ream/crates/ream-scheduler",
+  "packages/ream/crates/ream-scheduler-napi",
+  "packages/ream/crates/ream-events",
+  "packages/ream/crates/ream-events-napi",
+  "packages/ream/crates/ream-graphql",
+  "packages/atlas/crates/atlas-db",
+  "packages/atlas/crates/atlas-query",
+]
+
+exclude = [
+  "packages/ream-cli",
+]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/C9up"
