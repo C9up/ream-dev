@@ -59,7 +59,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-db"
-version = "0.1.0"
+version = "0.1.14"
 dependencies = [
  "serde",
  "serde_json",
@@ -69,7 +69,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-query"
-version = "0.1.0"
+version = "0.1.14"
 dependencies = [
  "serde",
  "serde_json",
@@ -122,6 +122,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "bigdecimal"
+version = "0.4.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4d6867f1565b3aad85681f1015055b087fcfd840d6aeee6eee7f2da317603695"
+dependencies = [
+ "autocfg",
+ "libm",
+ "num-bigint",
+ "num-integer",
+ "num-traits",
+]
+
+[[package]]
 name = "bitflags"
 version = "2.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -132,7 +145,8 @@ dependencies = [
 
 [[package]]
 name = "blackhole-engine"
-version = "0.1.0"
+version = "0.1.4"
+source = "git+https://github.com/C9up/blackhole?tag=v0.1.4#6d45674e2156e8291ec0210df1e594a5148b96e2"
 dependencies = [
  "ammonia",
  "base64",
@@ -1639,7 +1653,7 @@ dependencies = [
 
 [[package]]
 name = "ream-events"
-version = "0.1.0"
+version = "0.1.11"
 dependencies = [
  "redis",
  "serde",
@@ -1650,7 +1664,7 @@ dependencies = [
 
 [[package]]
 name = "ream-events-napi"
-version = "0.1.0"
+version = "0.1.11"
 dependencies = [
  "napi",
  "napi-build",
@@ -1663,7 +1677,7 @@ dependencies = [
 
 [[package]]
 name = "ream-graphql"
-version = "0.1.0"
+version = "0.1.11"
 dependencies = [
  "graphql-parser",
  "serde",
@@ -1672,7 +1686,7 @@ dependencies = [
 
 [[package]]
 name = "ream-http"
-version = "0.1.0"
+version = "0.1.12"
 dependencies = [
  "base64",
  "bytes",
@@ -1694,7 +1708,7 @@ dependencies = [
 
 [[package]]
 name = "ream-http-napi"
-version = "0.1.0"
+version = "0.1.11"
 dependencies = [
  "blackhole-engine",
  "napi",
@@ -1711,7 +1725,7 @@ dependencies = [
 
 [[package]]
 name = "ream-napi-core"
-version = "0.1.0"
+version = "0.1.11"
 dependencies = [
  "napi",
  "napi-build",
@@ -1723,7 +1737,7 @@ dependencies = [
 
 [[package]]
 name = "ream-napi-test"
-version = "0.1.0"
+version = "0.1.11"
 dependencies = [
  "napi",
  "napi-build",
@@ -1733,7 +1747,7 @@ dependencies = [
 
 [[package]]
 name = "ream-scheduler"
-version = "0.1.0"
+version = "0.1.11"
 dependencies = [
  "chrono",
  "cron",
@@ -1743,7 +1757,7 @@ dependencies = [
 
 [[package]]
 name = "ream-scheduler-napi"
-version = "0.1.0"
+version = "0.1.11"
 dependencies = [
  "napi",
  "napi-build",
@@ -1980,7 +1994,8 @@ checksum = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba"
 
 [[package]]
 name = "sigil-engine"
-version = "0.1.0"
+version = "0.1.4"
+source = "git+https://github.com/C9up/sigil?tag=v0.1.4#a7e5e9003d232f8b62a702308e31bf37dcc0c1eb"
 dependencies = [
  "argon2",
  "bcrypt",
@@ -2080,7 +2095,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ee6798b1838b6a0f69c007c133b8df5866302197e404e8b6ee8ed3e3a5e68dc6"
 dependencies = [
  "base64",
+ "bigdecimal",
  "bytes",
+ "chrono",
  "crc",
  "crossbeam-queue",
  "either",
@@ -2105,6 +2122,7 @@ dependencies = [
  "tokio-stream",
  "tracing",
  "url",
+ "uuid",
 ]
 
 [[package]]
@@ -2153,9 +2171,11 @@ checksum = "aa003f0038df784eb8fecbbac13affe3da23b45194bd57dba231c8f48199c526"
 dependencies = [
  "atoi",
  "base64",
+ "bigdecimal",
  "bitflags",
  "byteorder",
  "bytes",
+ "chrono",
  "crc",
  "digest",
  "dotenvy",
@@ -2184,6 +2204,7 @@ dependencies = [
  "stringprep",
  "thiserror 2.0.18",
  "tracing",
+ "uuid",
  "whoami",
 ]
 
@@ -2195,8 +2216,10 @@ checksum = "db58fcd5a53cf07c184b154801ff91347e4c30d17a3562a635ff028ad5deda46"
 dependencies = [
  "atoi",
  "base64",
+ "bigdecimal",
  "bitflags",
  "byteorder",
+ "chrono",
  "crc",
  "dotenvy",
  "etcetera",
@@ -2211,6 +2234,7 @@ dependencies = [
  "log",
  "md-5",
  "memchr",
+ "num-bigint",
  "once_cell",
  "rand 0.8.6",
  "serde",
@@ -2221,6 +2245,7 @@ dependencies = [
  "stringprep",
  "thiserror 2.0.18",
  "tracing",
+ "uuid",
  "whoami",
 ]
 
@@ -2231,6 +2256,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2d12fe70b2c1b4401038055f90f151b78208de1f9f89a7dbfd41587a10c3eea"
 dependencies = [
  "atoi",
+ "chrono",
  "flume",
  "futures-channel",
  "futures-core",
@@ -2246,6 +2272,7 @@ dependencies = [
  "thiserror 2.0.18",
  "tracing",
  "url",
+ "uuid",
 ]
 
 [[package]]
@@ -2636,7 +2663,8 @@ checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
 name = "warden-engine"
-version = "0.1.0"
+version = "0.1.4"
+source = "git+https://github.com/C9up/warden?tag=v0.1.4#fc885aad6cf1a5b624d7154c6b8875350e099113"
 dependencies = [
  "base64",
  "hex",
