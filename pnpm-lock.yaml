@@ -383,6 +383,9 @@ importers:
 
   packages/nova:
     dependencies:
+      '@c9up/atlas':
+        specifier: ^0.1.0
+        version: link:../atlas
       '@c9up/ream':
         specifier: ^0.1.0
         version: link:../ream
@@ -457,6 +460,9 @@ importers:
       file-type:
         specifier: ^22.0.1
         version: 22.0.1
+      mime-types:
+        specifier: ^3.0.1
+        version: 3.0.2
       reflect-metadata:
         specifier: ^0.2
         version: 0.2.2
@@ -467,6 +473,9 @@ importers:
       '@c9up/comet':
         specifier: ^0.1.0
         version: link:../comet
+      '@types/mime-types':
+        specifier: ^3.0.1
+        version: 3.0.1
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
@@ -1630,6 +1639,9 @@ packages:
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
+
+  '@types/mime-types@3.0.1':
+    resolution: {integrity: sha512-xRMsfuQbnRq1Ef+C+RKaENOxXX87Ygl38W1vDfPHRku02TgQr+Qd8iivLtAMcR0KF5/29xlnFihkTlbqFrGOVQ==}
 
   '@types/node@22.19.19':
     resolution: {integrity: sha512-dyh/xO2Fh5bYrfWaaqGrRQQGkNdmYw6AmaAUvYeUMNTWQtvb796ikLdmTchRmOlOiIJ1TDXfWgVx1QkUlQ6Hew==}
@@ -3854,6 +3866,8 @@ snapshots:
   '@types/estree@1.0.8': {}
 
   '@types/estree@1.0.9': {}
+
+  '@types/mime-types@3.0.1': {}
 
   '@types/node@22.19.19':
     dependencies:
