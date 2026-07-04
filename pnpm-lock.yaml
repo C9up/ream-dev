@@ -457,6 +457,9 @@ importers:
 
   packages/ream:
     dependencies:
+      etag:
+        specifier: ^1.8.1
+        version: 1.8.1
       file-type:
         specifier: ^22.0.1
         version: 22.0.1
@@ -473,6 +476,9 @@ importers:
       '@c9up/comet':
         specifier: ^0.1.0
         version: link:../comet
+      '@types/etag':
+        specifier: ^1.8.4
+        version: 1.8.4
       '@types/mime-types':
         specifier: ^3.0.1
         version: 3.0.1
@@ -1639,6 +1645,9 @@ packages:
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
+
+  '@types/etag@1.8.4':
+    resolution: {integrity: sha512-f1z/UMth8gQ6636NBqhFmJ3zES7EuDcUnV6K1gl1osHp+85KPKX+VixYWUpqLkw1fftCagyHJjJOZjZkEi2rHw==}
 
   '@types/mime-types@3.0.1':
     resolution: {integrity: sha512-xRMsfuQbnRq1Ef+C+RKaENOxXX87Ygl38W1vDfPHRku02TgQr+Qd8iivLtAMcR0KF5/29xlnFihkTlbqFrGOVQ==}
@@ -3866,6 +3875,10 @@ snapshots:
   '@types/estree@1.0.8': {}
 
   '@types/estree@1.0.9': {}
+
+  '@types/etag@1.8.4':
+    dependencies:
+      '@types/node': 22.19.19
 
   '@types/mime-types@3.0.1': {}
 
