@@ -632,6 +632,9 @@ importers:
       '@c9up/atlas':
         specifier: ^0.1.0
         version: link:../atlas
+      '@c9up/inker':
+        specifier: ^0.1.0
+        version: link:../inker
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
