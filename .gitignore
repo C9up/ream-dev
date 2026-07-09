@@ -18,3 +18,6 @@ apps/syndic/
 BMAD_TRACEABILITY.md
 packages/IMPROVEMENTS_95_PLUS.md
 packages/*/CORRECTIONS.md
+
+# BMAD spike scratch (throwaway, never committed)
+spikes/
