@@ -635,6 +635,9 @@ importers:
       '@c9up/inker':
         specifier: ^0.1.0
         version: link:../inker
+      '@c9up/rune':
+        specifier: ^0.1.0
+        version: link:../rune
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
