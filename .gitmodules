@@ -76,3 +76,6 @@
 [submodule "packages/comet"]
 	path = packages/comet
 	url = git@github.com:C9up/comet.git
+[submodule "packages/eon"]
+	path = packages/eon
+	url = git@github.com:C9up/eon.git
