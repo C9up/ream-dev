@@ -1,0 +1,44 @@
+name: verify
+
+# ream-dev is the umbrella above the packages. Each package is INDEPENDENT and
+# self-gates + self-publishes from its own submodule CI. This monorepo workflow
+# is the single aggregate gate: it runs `verify:all` (lint + build + typecheck +
+# test across every package, plus the Rust workspace) so a cross-cutting
+# regression is caught here before it reaches any submodule. It does NOT publish
+# — publishing is each package's own responsibility.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify:all (all packages + Rust workspace)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - uses: pnpm/action-setup@v6
+        with: { version: 9 }
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: pnpm install
+      # Build each native package's `.node` for this platform so the packages'
+      # own vitest suites can load it during `verify:all` (the `pnpm -r test`
+      # stage) — a fresh checkout has no prebuilt binary.
+      - run: pnpm -r --filter './packages/*' --if-present run build:napi
+      - run: pnpm verify:all
