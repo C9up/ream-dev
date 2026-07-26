@@ -59,8 +59,9 @@ dependencies = [
 
 [[package]]
 name = "atlas-db"
-version = "0.1.18"
+version = "0.2.0"
 dependencies = [
+ "base64",
  "serde",
  "serde_json",
  "sqlx",
@@ -69,7 +70,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-query"
-version = "0.1.18"
+version = "0.2.0"
 dependencies = [
  "serde",
  "serde_json",
