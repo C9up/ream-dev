@@ -205,6 +205,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
+      '@c9up/helix':
+        specifier: ^0.1.0
+        version: link:../helix
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
@@ -230,6 +233,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
+      '@c9up/helix':
+        specifier: ^0.1.0
+        version: link:../helix
       '@types/node':
         specifier: ^22
         version: 22.19.19
@@ -446,7 +452,7 @@ importers:
     dependencies:
       '@c9up/atlas':
         specifier: ^0.1.0
-        version: link:../atlas
+        version: 0.1.19
       '@c9up/ream':
         specifier: ^0.1.0
         version: link:../ream
@@ -540,6 +546,9 @@ importers:
       '@c9up/comet':
         specifier: ^0.1.0
         version: link:../comet
+      '@c9up/helix':
+        specifier: ^0.1.0
+        version: link:../helix
       '@types/etag':
         specifier: ^1.8.4
         version: 1.8.4
@@ -570,7 +579,7 @@ importers:
         version: 2.4.15
       '@c9up/atlas':
         specifier: ^0.1.0
-        version: link:../atlas
+        version: 0.1.19
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.19
@@ -639,6 +648,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
+      '@c9up/helix':
+        specifier: ^0.1.0
+        version: link:../helix
       '@types/node':
         specifier: '*'
         version: 22.19.19
@@ -719,7 +731,7 @@ importers:
         version: 2.4.15
       '@c9up/atlas':
         specifier: ^0.1.0
-        version: link:../atlas
+        version: 0.1.19
       '@c9up/inker':
         specifier: ^0.1.0
         version: link:../inker
@@ -951,6 +963,10 @@ packages:
   '@bramus/specificity@2.4.2':
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
     hasBin: true
+
+  '@c9up/atlas@0.1.19':
+    resolution: {integrity: sha512-u4ZuugbQxAkCgn3G5ymh54QzjheTSz1TmY3k1d/ND58vqWBFLkiXF2Dfsz4qq+T9FwZDpavJaiN9dcr1UBFl1Q==}
+    engines: {node: '>=22.0.0'}
 
   '@c9up/rosetta@0.1.9':
     resolution: {integrity: sha512-/i2Xz3nOkVVHWVshwK9n64B8KD1n0NK1BJGcJcwpS00SBgYtCgwuAPY37QgE4YhM+dN+sgRgHpf8aE9snLF7Yg==}
@@ -3624,6 +3640,10 @@ snapshots:
   '@bramus/specificity@2.4.2':
     dependencies:
       css-tree: 3.2.1
+
+  '@c9up/atlas@0.1.19':
+    dependencies:
+      reflect-metadata: 0.2.2
 
   '@c9up/rosetta@0.1.9': {}
 
