@@ -9,7 +9,7 @@
 
 import { Redis } from "ioredis";
 import { afterAll, describe, expect, it } from "vitest";
-import { RedisConnection } from "../src/RedisConnection.js";
+import { QuasarConnection } from "../src/QuasarConnection.js";
 
 const url = process.env.REDIS_TEST_URL ?? "redis://127.0.0.1:6379";
 
@@ -27,10 +27,10 @@ async function serverAnswers(): Promise<boolean> {
 }
 
 const live = await serverAnswers();
-const connections: RedisConnection[] = [];
+const connections: QuasarConnection[] = [];
 
-function open(): RedisConnection {
-	const connection = new RedisConnection("test", { url, db: 15 });
+function open(): QuasarConnection {
+	const connection = new QuasarConnection("test", { url, db: 15 });
 	connections.push(connection);
 	return connection;
 }
@@ -39,7 +39,7 @@ afterAll(() => {
 	for (const connection of connections) connection.disconnect();
 });
 
-describe.skipIf(!live)("RedisConnection against a live server", () => {
+describe.skipIf(!live)("QuasarConnection against a live server", () => {
 	it("runs ioredis commands straight off the connection", async () => {
 		const connection = open();
 		const key = `redis-test:${process.pid}:command`;
@@ -131,7 +131,7 @@ describe.skipIf(!live)("RedisConnection against a live server", () => {
 	});
 
 	it("closes both sockets on quit", async () => {
-		const connection = new RedisConnection("quit", { url, db: 15 });
+		const connection = new QuasarConnection("quit", { url, db: 15 });
 		await connection.subscribe(`redis-test:${process.pid}:quit`, () => {});
 		expect(connection.ioSubscriberConnection).toBeDefined();
 

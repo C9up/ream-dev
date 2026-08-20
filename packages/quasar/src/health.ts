@@ -2,11 +2,11 @@
  * Health checks, so a readiness endpoint can answer for Redis too.
  *
  * Both return a plain result rather than throwing: a health endpoint reports,
- * it does not crash. `RedisCheck` proves the server answers; `MemoryUsageCheck`
+ * it does not crash. `QuasarCheck` proves the server answers; `MemoryUsageCheck`
  * reads `INFO memory` and compares against the thresholds you set.
  */
 
-import type { RedisConnection } from "./RedisConnection.js";
+import type { QuasarConnection } from "./QuasarConnection.js";
 
 export type HealthStatus = "ok" | "warning" | "error";
 
@@ -18,11 +18,11 @@ export interface HealthResult {
 }
 
 /** PING the server and report whether it answered. */
-export class RedisCheck {
+export class QuasarCheck {
 	readonly name = "redis";
-	readonly #connection: RedisConnection;
+	readonly #connection: QuasarConnection;
 
-	constructor(connection: RedisConnection) {
+	constructor(connection: QuasarConnection) {
 		this.#connection = connection;
 	}
 
@@ -51,13 +51,13 @@ export class RedisCheck {
 }
 
 /** Compare `used_memory` against a warning and a failure threshold. */
-export class RedisMemoryUsageCheck {
+export class QuasarMemoryUsageCheck {
 	readonly name = "redis:memory";
-	readonly #connection: RedisConnection;
+	readonly #connection: QuasarConnection;
 	#warnAt = Number.POSITIVE_INFINITY;
 	#failAt = Number.POSITIVE_INFINITY;
 
-	constructor(connection: RedisConnection) {
+	constructor(connection: QuasarConnection) {
 		this.#connection = connection;
 	}
 

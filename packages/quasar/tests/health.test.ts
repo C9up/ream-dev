@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { RedisCheck, RedisMemoryUsageCheck } from "../src/health.js";
-import type { RedisConnection } from "../src/RedisConnection.js";
+import { QuasarCheck, QuasarMemoryUsageCheck } from "../src/health.js";
+import type { QuasarConnection } from "../src/QuasarConnection.js";
 
 /** A connection stand-in carrying only what the checks read. */
 function connectionWith(io: {
@@ -8,19 +8,19 @@ function connectionWith(io: {
 	info?: () => Promise<string>;
 }) {
 	const connection = { name: "main", ioConnection: io };
-	return connection as unknown as RedisConnection;
+	return connection as unknown as QuasarConnection;
 }
 
-describe("RedisCheck", () => {
+describe("QuasarCheck", () => {
 	it("reports ok when the server answers PONG", async () => {
-		const result = await new RedisCheck(
+		const result = await new QuasarCheck(
 			connectionWith({ ping: async () => "PONG" }),
 		).run();
 		expect(result.status).toBe("ok");
 	});
 
 	it("reports the reply verbatim when it is not PONG", async () => {
-		const result = await new RedisCheck(
+		const result = await new QuasarCheck(
 			connectionWith({ ping: async () => "LOADING" }),
 		).run();
 		expect(result.status).toBe("error");
@@ -28,7 +28,7 @@ describe("RedisCheck", () => {
 	});
 
 	it("reports unreachable rather than throwing — a health endpoint answers", async () => {
-		const result = await new RedisCheck(
+		const result = await new QuasarCheck(
 			connectionWith({
 				ping: async () => {
 					throw new Error("ECONNREFUSED");
@@ -40,12 +40,12 @@ describe("RedisCheck", () => {
 	});
 });
 
-describe("RedisMemoryUsageCheck", () => {
+describe("QuasarMemoryUsageCheck", () => {
 	const info = (used: number) => async () =>
 		`# Memory\r\nused_memory:${used}\r\nmaxmemory:0\r\n`;
 
 	it("stays ok below the warning threshold", async () => {
-		const check = new RedisMemoryUsageCheck(connectionWith({ info: info(100) }))
+		const check = new QuasarMemoryUsageCheck(connectionWith({ info: info(100) }))
 			.warnWhenExceeds(400)
 			.failWhenExceeds(800);
 		const result = await check.run();
@@ -54,21 +54,21 @@ describe("RedisMemoryUsageCheck", () => {
 	});
 
 	it("warns between the two thresholds", async () => {
-		const check = new RedisMemoryUsageCheck(connectionWith({ info: info(500) }))
+		const check = new QuasarMemoryUsageCheck(connectionWith({ info: info(500) }))
 			.warnWhenExceeds(400)
 			.failWhenExceeds(800);
 		expect((await check.run()).status).toBe("warning");
 	});
 
 	it("fails past the failure threshold", async () => {
-		const check = new RedisMemoryUsageCheck(connectionWith({ info: info(900) }))
+		const check = new QuasarMemoryUsageCheck(connectionWith({ info: info(900) }))
 			.warnWhenExceeds(400)
 			.failWhenExceeds(800);
 		expect((await check.run()).status).toBe("error");
 	});
 
 	it("says so when INFO carries no used_memory", async () => {
-		const check = new RedisMemoryUsageCheck(
+		const check = new QuasarMemoryUsageCheck(
 			connectionWith({ info: async () => "# Memory\r\n" }),
 		);
 		const result = await check.run();

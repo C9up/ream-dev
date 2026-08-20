@@ -1,8 +1,8 @@
 /**
- * The default `RedisManager`, reachable without threading it through every
+ * The default `QuasarManager`, reachable without threading it through every
  * call site — mirroring `@c9up/echo/services/main`.
  *
- *   import redis from '@c9up/redis/services/main'
+ *   import redis from '@c9up/quasar/services/main'
  *
  *   await redis.connection().set('user:42', payload)
  *
@@ -12,24 +12,24 @@
  */
 
 import type { ConnectionConfig } from "../config.js";
-import type { RedisManager } from "../RedisManager.js";
+import type { QuasarManager } from "../QuasarManager.js";
 
-type AnyManager = RedisManager<Record<string, ConnectionConfig>>;
+type AnyManager = QuasarManager<Record<string, ConnectionConfig>>;
 
 let instance: AnyManager | undefined;
 
-/** Seat the manager — called by RedisProvider, or by an app wiring its own. */
-export function setRedis(manager: AnyManager): void {
+/** Seat the manager — called by QuasarProvider, or by an app wiring its own. */
+export function setQuasar(manager: AnyManager): void {
 	instance = manager;
 }
 
 /** The seated manager, if there is one. */
-export function getRedis(): AnyManager | undefined {
+export function getQuasar(): AnyManager | undefined {
 	return instance;
 }
 
 /** Drop the manager IF it is still the one passed in (ownership guard). */
-export function clearRedis(manager: AnyManager): void {
+export function clearQuasar(manager: AnyManager): void {
 	if (instance === manager) instance = undefined;
 }
 
@@ -37,7 +37,7 @@ const redis: AnyManager = new Proxy(Object.create(null), {
 	get(_target, property) {
 		if (!instance) {
 			throw new Error(
-				"[redis] accessed before initialization — register RedisProvider, or call setRedis() yourself.",
+				"[redis] accessed before initialization — register QuasarProvider, or call setQuasar() yourself.",
 			);
 		}
 		const value = Reflect.get(instance, property, instance);

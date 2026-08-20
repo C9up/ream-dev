@@ -6,17 +6,17 @@
  * call sites share one socket instead of opening a pair each.
  */
 
-import type { ConnectionConfig, RedisConfig } from "./config.js";
-import type { ChannelHandler, PatternHandler } from "./RedisConnection.js";
-import { RedisConnection } from "./RedisConnection.js";
+import type { ConnectionConfig, QuasarConfig } from "./config.js";
+import type { ChannelHandler, PatternHandler } from "./QuasarConnection.js";
+import { QuasarConnection } from "./QuasarConnection.js";
 
-export class RedisManager<
+export class QuasarManager<
 	Connections extends Record<string, ConnectionConfig>,
 > {
-	readonly #config: RedisConfig<Connections>;
-	readonly #connections = new Map<string, RedisConnection>();
+	readonly #config: QuasarConfig<Connections>;
+	readonly #connections = new Map<string, QuasarConnection>();
 
-	constructor(config: RedisConfig<Connections>) {
+	constructor(config: QuasarConfig<Connections>) {
 		this.#config = config;
 	}
 
@@ -37,7 +37,7 @@ export class RedisManager<
 	 */
 	connection(
 		name: keyof Connections & string = this.#config.connection,
-	): RedisConnection {
+	): QuasarConnection {
 		const existing = this.#connections.get(name);
 		if (existing) return existing;
 
@@ -49,7 +49,7 @@ export class RedisManager<
 			);
 		}
 
-		const connection = new RedisConnection(name, config);
+		const connection = new QuasarConnection(name, config);
 		this.#connections.set(name, connection);
 		return connection;
 	}

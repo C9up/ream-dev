@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import type { ConnectionConfig, RedisConfig } from "../src/config.js";
+import type { ConnectionConfig, QuasarConfig } from "../src/config.js";
 import { defineConfig, isClusterConfig } from "../src/config.js";
 
 /** Widely typed, so a deliberately invalid config reaches the runtime guard
  *  instead of being caught by the compiler — the guard is what is tested. */
-type AnyConfig = RedisConfig<Record<string, ConnectionConfig>>;
+type AnyConfig = QuasarConfig<Record<string, ConnectionConfig>>;
 
 describe("defineConfig", () => {
 	it("refuses a default that is not declared", () => {

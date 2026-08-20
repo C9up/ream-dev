@@ -34,7 +34,7 @@ export type PatternHandler = (
 // without re-declaring 200 command signatures. The methods exist at runtime —
 // #forward routes them to the client — so the merge describes what is really
 // there. Same generated-method pattern as ream's ApiResponse.
-export interface RedisConnection
+export interface QuasarConnection
 	extends Omit<
 		Redis,
 		| "subscribe"
@@ -46,7 +46,7 @@ export interface RedisConnection
 		| "disconnect"
 	> {}
 
-export class RedisConnection {
+export class QuasarConnection {
 	readonly name: string;
 	readonly #config: ConnectionConfig;
 	readonly #client: RedisClient;
@@ -151,7 +151,7 @@ export class RedisConnection {
 	 */
 	#forward(): void {
 		const client = this.#client;
-		const own = new Set(Object.getOwnPropertyNames(RedisConnection.prototype));
+		const own = new Set(Object.getOwnPropertyNames(QuasarConnection.prototype));
 		for (const key of commandNames(client)) {
 			if (own.has(key) || key.startsWith("_") || key in this) continue;
 			Reflect.set(this, key, Reflect.get(client, key).bind(client));

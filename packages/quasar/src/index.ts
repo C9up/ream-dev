@@ -1,5 +1,5 @@
 /**
- * `@c9up/redis` — Redis for the Ream framework.
+ * `@c9up/quasar` — Redis connections for the Ream framework.
  *
  * Owns the connection and nothing else: named connections, pub/sub on its own
  * socket, health checks, and a clean shutdown. The packages that store things
@@ -14,20 +14,20 @@
  *   })
  *
  *   // anywhere
- *   import redis from '@c9up/redis/services/main'
+ *   import redis from '@c9up/quasar/services/main'
  *   await redis.connection().set('key', 'value')
  */
 
 export type {
 	ClusterConnectionConfig,
 	ConnectionConfig,
+	QuasarConfig,
 	RedisClient,
-	RedisConfig,
 	StandaloneConnectionConfig,
 } from "./config.js";
 export { defineConfig, isClusterConfig } from "./config.js";
 export type { HealthResult, HealthStatus } from "./health.js";
-export { RedisCheck, RedisMemoryUsageCheck } from "./health.js";
-export type { ChannelHandler, PatternHandler } from "./RedisConnection.js";
-export { RedisConnection } from "./RedisConnection.js";
-export { RedisManager } from "./RedisManager.js";
+export { QuasarCheck, QuasarMemoryUsageCheck } from "./health.js";
+export type { ChannelHandler, PatternHandler } from "./QuasarConnection.js";
+export { QuasarConnection } from "./QuasarConnection.js";
+export { QuasarManager } from "./QuasarManager.js";

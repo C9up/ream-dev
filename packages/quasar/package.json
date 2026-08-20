@@ -1,7 +1,7 @@
 {
-  "name": "@c9up/redis",
+  "name": "@c9up/quasar",
   "version": "0.1.0",
-  "description": "Redis for the Ream framework — named connections, pub/sub, health checks",
+  "description": "Quasar — Redis connections for the Ream framework: named connections, pub/sub, health checks",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",
@@ -21,6 +21,7 @@
     }
   },
   "scripts": {
+    "prebuild": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "lint": "biome check src/",
@@ -39,16 +40,33 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "files": ["src", "dist", "README.md", "LICENSE"],
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "publishConfig": {
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {
-      ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-      "./provider": { "types": "./dist/provider.d.ts", "import": "./dist/provider.js" },
-      "./services/main": { "types": "./dist/services/main.d.ts", "import": "./dist/services/main.js" }
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./provider": {
+        "types": "./dist/provider.d.ts",
+        "import": "./dist/provider.js"
+      },
+      "./services/main": {
+        "types": "./dist/services/main.d.ts",
+        "import": "./dist/services/main.js"
+      }
     },
     "access": "public"
   },
-  "repository": { "type": "git", "url": "git+https://github.com/C9up/redis.git" }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/C9up/quasar.git"
+  }
 }

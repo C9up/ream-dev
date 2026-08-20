@@ -31,7 +31,7 @@ export type ConnectionConfig =
 	| StandaloneConnectionConfig
 	| ClusterConnectionConfig;
 
-export interface RedisConfig<
+export interface QuasarConfig<
 	Connections extends Record<string, ConnectionConfig>,
 > {
 	/** The connection `redis.connection()` returns with no argument. */
@@ -57,7 +57,7 @@ export function isClusterConfig(
  */
 export function defineConfig<
 	Connections extends Record<string, ConnectionConfig>,
->(config: RedisConfig<Connections>): RedisConfig<Connections> {
+>(config: QuasarConfig<Connections>): QuasarConfig<Connections> {
 	const names = Object.keys(config.connections);
 	if (names.length === 0) {
 		throw new Error("[redis] config declares no connection");

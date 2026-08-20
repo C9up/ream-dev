@@ -1,6 +1,6 @@
 /**
  * Wires `config/redis.ts` into the container as `'redis'`, and seats the
- * manager on `@c9up/redis/services/main`.
+ * manager on `@c9up/quasar/services/main`.
  *
  * The host is duck-typed — this package stays publishable without importing
  * `@c9up/ream`. Any framework exposing a container plus a config store
@@ -11,29 +11,29 @@
  * blacklist, a cache store — finds it already seated.
  */
 
-import type { ConnectionConfig, RedisConfig } from "./config.js";
-import { RedisManager } from "./RedisManager.js";
-import { clearRedis, setRedis } from "./services/main.js";
+import type { ConnectionConfig, QuasarConfig } from "./config.js";
+import { QuasarManager } from "./QuasarManager.js";
+import { clearQuasar, setQuasar } from "./services/main.js";
 
-interface RedisContainer {
+interface QuasarContainer {
 	bindValue?(token: unknown, value: unknown): void;
 	singleton(token: unknown, factory: () => unknown): void;
 }
-interface RedisConfigStore {
+interface QuasarConfigStore {
 	get<T = unknown>(key: string): T | undefined;
 }
-export interface RedisAppContext {
-	container: RedisContainer;
-	config: RedisConfigStore;
+export interface QuasarAppContext {
+	container: QuasarContainer;
+	config: QuasarConfigStore;
 }
 
-type AnyConfig = RedisConfig<Record<string, ConnectionConfig>>;
+type AnyConfig = QuasarConfig<Record<string, ConnectionConfig>>;
 
-export default class RedisProvider {
-	readonly #app: RedisAppContext;
-	#manager: RedisManager<Record<string, ConnectionConfig>> | undefined;
+export default class QuasarProvider {
+	readonly #app: QuasarAppContext;
+	#manager: QuasarManager<Record<string, ConnectionConfig>> | undefined;
 
-	constructor(app: RedisAppContext) {
+	constructor(app: QuasarAppContext) {
 		this.#app = app;
 	}
 
@@ -43,9 +43,9 @@ export default class RedisProvider {
 			throw new Error("[redis] missing config/redis.ts");
 		}
 
-		const manager = new RedisManager(config);
+		const manager = new QuasarManager(config);
 		this.#manager = manager;
-		setRedis(manager);
+		setQuasar(manager);
 
 		if (this.#app.container.bindValue) {
 			this.#app.container.bindValue("redis", manager);
@@ -63,7 +63,7 @@ export default class RedisProvider {
 		const manager = this.#manager;
 		if (!manager) return;
 		await manager.quit();
-		clearRedis(manager);
+		clearQuasar(manager);
 		this.#manager = undefined;
 	}
 }

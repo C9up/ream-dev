@@ -1,20 +1,22 @@
-# @c9up/redis
+# @c9up/quasar
 
-Redis for the [Ream](https://github.com/C9up/ream) framework — named connections, pub/sub, health checks, clean shutdown.
+Redis connections for the [Ream](https://github.com/C9up/ream) framework — named connections, pub/sub, health checks, clean shutdown.
+
+A quasar is powered by a black hole feeding on the matter around it: this one feeds the app its data. Like every package in the cohort it is named for what it is, not for the technology it speaks — which is Redis.
 
 This package owns **the connection, and nothing else**. The packages that store things in Redis — `@c9up/echo` (cache), `@c9up/bay` (queue), `@c9up/warden` (token blacklist) — keep taking a client through a structural contract, so they stay agnostic and this package stays optional.
 
 ## Install
 
 ```sh
-pnpm add @c9up/redis
+pnpm add @c9up/quasar
 ```
 
 ## Configure
 
 ```ts
 // config/redis.ts
-import { defineConfig } from '@c9up/redis'
+import { defineConfig } from '@c9up/quasar'
 import env from '#start/env'
 
 export default defineConfig({
@@ -29,10 +31,14 @@ export default defineConfig({
 
 `defineConfig` refuses a default connection that is not declared, and an empty connection list — a typo there would otherwise surface as a connection to some default localhost.
 
+The config key and the container token stay `redis` — the **role**, matching `@c9up/echo` binding `cache` and `@c9up/bay` binding `queue`.
+
+The config key and the container token stay `redis` — the **role**, the same way `@c9up/echo` binds `cache` and `@c9up/bay` binds `queue`.
+
 Register the provider in `start/providers.ts` (or your app's provider list):
 
 ```ts
-import RedisProvider from '@c9up/redis/provider'
+import QuasarProvider from '@c9up/quasar/provider'
 ```
 
 It binds the manager as `'redis'` in the container and seats it on the service accessor. `register` opens **no socket**: connections are built on first use.
@@ -40,7 +46,7 @@ It binds the manager as `'redis'` in the container and seats it on the service a
 ## Use
 
 ```ts
-import redis from '@c9up/redis/services/main'
+import redis from '@c9up/quasar/services/main'
 
 await redis.connection().set('user:42', payload, 'EX', 60)
 await redis.connection('cache').get('user:42')
@@ -63,10 +69,10 @@ Re-subscribing to a channel replaces its handler instead of stacking a second on
 ## Health
 
 ```ts
-import { RedisCheck, RedisMemoryUsageCheck } from '@c9up/redis'
+import { QuasarCheck, QuasarMemoryUsageCheck } from '@c9up/quasar'
 
-const ping = await new RedisCheck(redis.connection()).run()
-const memory = await new RedisMemoryUsageCheck(redis.connection())
+const ping = await new QuasarCheck(redis.connection()).run()
+const memory = await new QuasarMemoryUsageCheck(redis.connection())
   .warnWhenExceeds(400_000_000)
   .failWhenExceeds(800_000_000)
   .run()
@@ -76,7 +82,7 @@ Both return `{ status: 'ok' | 'warning' | 'error', message }` rather than throwi
 
 ## Shutdown
 
-`RedisProvider.shutdown()` QUITs every open connection. Without it a stopped process keeps its sockets and ioredis' reconnection timer keeps the event loop alive, so the server looks hung instead of exiting.
+`QuasarProvider.shutdown()` QUITs every open connection. Without it a stopped process keeps its sockets and ioredis' reconnection timer keeps the event loop alive, so the server looks hung instead of exiting.
 
 ## Tests
 
