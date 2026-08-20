@@ -79,3 +79,6 @@
 [submodule "packages/eon"]
 	path = packages/eon
 	url = git@github.com:C9up/eon.git
+[submodule "packages/helix-plugin-ream"]
+	path = packages/helix-plugin-ream
+	url = git@github.com:C9up/helix-plugin-ream.git
