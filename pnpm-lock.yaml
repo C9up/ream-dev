@@ -304,6 +304,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
@@ -372,6 +375,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
@@ -828,6 +834,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
