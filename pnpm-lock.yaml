@@ -73,6 +73,9 @@ importers:
       '@c9up/photon':
         specifier: workspace:*
         version: link:../../packages/photon
+      '@c9up/quasar':
+        specifier: workspace:*
+        version: link:../../packages/quasar
       '@c9up/ream':
         specifier: workspace:*
         version: link:../../packages/ream
@@ -116,6 +119,9 @@ importers:
       '@c9up/helix':
         specifier: workspace:*
         version: link:../../packages/helix
+      '@c9up/helix-plugin-ream':
+        specifier: workspace:*
+        version: link:../../packages/helix-plugin-ream
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5
         version: 5.1.1(svelte@5.56.3)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
@@ -297,6 +303,9 @@ importers:
 
   packages/bay:
     dependencies:
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@c9up/ream':
         specifier: ^0.1.0
         version: link:../ream
@@ -304,9 +313,6 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
-      '@c9up/quasar':
-        specifier: ^0.1.0
-        version: link:../quasar
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
@@ -368,6 +374,9 @@ importers:
 
   packages/echo:
     dependencies:
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@c9up/ream':
         specifier: ^0.1.0
         version: link:../ream
@@ -375,9 +384,6 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
-      '@c9up/quasar':
-        specifier: ^0.1.0
-        version: link:../quasar
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
@@ -582,6 +588,9 @@ importers:
 
   packages/ream:
     dependencies:
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       etag:
         specifier: ^1.8.1
         version: 1.8.1
@@ -827,6 +836,9 @@ importers:
 
   packages/warden:
     dependencies:
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@c9up/ream':
         specifier: ^0.1.10
         version: link:../ream
@@ -834,9 +846,6 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.4.15
-      '@c9up/quasar':
-        specifier: ^0.1.0
-        version: link:../quasar
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
