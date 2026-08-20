@@ -82,3 +82,6 @@
 [submodule "packages/helix-plugin-ream"]
 	path = packages/helix-plugin-ream
 	url = git@github.com:C9up/helix-plugin-ream.git
+[submodule "packages/quasar"]
+	path = packages/quasar
+	url = git@github.com:C9up/quasar.git
