@@ -47,7 +47,7 @@ new Ignitor({ port: 3000, serverFactory: createHyperServer })
 | Concern | How Ream solves it |
 |---|---|
 | **Packaged** | IoC container, ORM, auth, validation, event bus, cache, queue, logging, realtime, and CLI included. |
-| **Performant** | HTTP, DB, security, GraphQL parsing, and WebSocket all run in Rust via NAPI. TypeScript handles business logic only. |
+| **Performant** | HTTP, DB, security, and GraphQL parsing all run in Rust via NAPI. TypeScript handles business logic only. |
 | **Flexible** | Every component is swappable via the container. Override any binding in one line. |
 
 ---
@@ -55,7 +55,7 @@ new Ignitor({ port: 3000, serverFactory: createHyperServer })
 ## Architecture
 
 ```
-RUST:  Hyper HTTP / WebSocket
+RUST:  Hyper HTTP / SSE streaming
        → Security filter (ammonia XSS, CSRF, rate limit)
        → GraphQL query validation
        → DB queries (sqlx — SQLite, PostgreSQL, MySQL)
@@ -70,29 +70,85 @@ RUST:  XSS response sanitization → Hyper sends response
 
 ## Ecosystem
 
+Every package is standalone and publishable on its own; they consume the Ream
+universe through the container, never via a static import.
+
+### Core
+
 | Package | Description |
 |---|---|
-| `@c9up/ream` | Core — Ignitor, IoC container, router, middleware, lifecycle, event bus (`@c9up/ream/events`), session, mail, hash, security |
-| `@c9up/atlas` | ORM — entity decorators, QueryBuilder, migrations, transactions, soft deletes, relations (Rust DB driver) |
-| `@c9up/rune` | Validation — fluent schema, nested objects, arrays, custom rules (Rust validation engine) |
-| `@c9up/warden` | Auth — JWT, session, API key, OAuth2 (FirstContact), RBAC, token revocation, brute force protection |
-| `@c9up/spectrum` | Logging — structured, file channels with rotation, correlation IDs |
-| `@c9up/raytrace` | Realtime — SSE transport, Hub pattern for bidirectional WebSocket |
-| `@c9up/echo` | Echo — Memory + Redis cache drivers, tags, stampede prevention |
-| `@c9up/bay` | Bay — Background jobs, retry, dead letter queue, Memory + Redis drivers |
+| `@c9up/ream` | Core — Ignitor, IoC container, router, middleware, lifecycle, event bus (`@c9up/ream/events`), session, scheduler, console kernel |
 | `ream-cli` | CLI — project scaffolding, code generators, migrations, doctor (Rust binary) |
+| `@c9up/ream-mcp` | MCP server — agent-ready framework assistant (docs, introspection, actions) |
 
-### Rust Crates
+### Data
+
+| Package | Description |
+|---|---|
+| `@c9up/atlas` | ORM — entity decorators, QueryBuilder, migrations, transactions, soft deletes, relations (Rust DB driver) |
+| `@c9up/eon` | Time-series data layer (TDengine-backed) |
+| `@c9up/atom` | Exact decimal arithmetic (TypeScript + Rust N-API) |
+| `@c9up/chronos` | Date/time and recurrence engine — RRULE (TypeScript + Rust N-API) |
+
+### Security & auth
+
+| Package | Description |
+|---|---|
+| `@c9up/warden` | Auth — JWT, session, API key, OAuth2, RBAC, token revocation, brute-force protection |
+| `@c9up/sigil` | Password hashing — argon2, bcrypt, scrypt |
+| `@c9up/blackhole` | Rust-native security filter — XSS, CSRF, rate limiting (works with any Node.js framework) |
+| `@c9up/rune` | Validation — fluent schema, nested objects, arrays, custom rules (Rust validation engine) |
+
+### Frontend & protocols
+
+| Package | Description |
+|---|---|
+| `@c9up/aurora` | Reactive UI runtime — tagged-template DOM, signals, isomorphic SSR + hydration, zero build step |
+| `@c9up/photon` | Frontend rendering engine — SSR, client hydration, SPA navigation, SEO/`<head>` injection |
+| `@c9up/inker` | Server-side templating — hand-rolled lexer/parser/renderer, HTML-escape by default |
+| `@c9up/station` | Admin scaffolding — `defineResource` catalogue backing list/show/create/edit/destroy, audit, policies |
+| `@c9up/comet` | Agnostic JSON-RPC 2.0 protocol + isomorphic, transport-injectable client |
+| `@c9up/relay` | Realtime client transport — SSE. The WebSocket Hub and SignalR protocols are implemented but have no server-side transport yet (see `ream-http` below) |
+
+### Infrastructure
+
+| Package | Description |
+|---|---|
+| `@c9up/echo` | Cache — memory + Redis drivers, tags, stampede prevention |
+| `@c9up/bay` | Background jobs — retry, lease, dead letter queue, memory + Redis drivers |
+| `@c9up/quasar` | Redis connections — named connections, pub/sub on its own socket, health checks |
+| `@c9up/archive` | File storage — Local + S3-compatible drivers |
+| `@c9up/rover` | Mail transport — SMTP, log, pluggable transports |
+| `@c9up/nova` | Web Push notifications — VAPID, subscription endpoint, service worker scaffolding |
+| `@c9up/spectrum` | Logging — structured, file channels with rotation, correlation IDs |
+| `@c9up/rosetta` | Internationalization — locale fallback, message formatting |
+
+### Testing
+
+| Package | Description |
+|---|---|
+| `@c9up/helix` | Framework-agnostic test runtime — Vitest-compatible runner, spies, container overrides, time-travel |
+| `@c9up/helix-plugin-ream` | The ream↔helix bridge — boots a Ream app under test and injects a `TestClient` |
+
+### Rust crates
+
+Root Cargo workspace (`cargo check --all`):
 
 | Crate | Role |
 |---|---|
-| `ream-http` | Hyper HTTP server, WebSocket upgrade (RFC 6455) |
-| `ream-security` | Ammonia XSS sanitizer, CSRF, rate limiting, Argon2/Bcrypt hashing, JWT HS256 |
-| `ream-db` | Async database driver — SQLite, PostgreSQL, MySQL via sqlx |
-| `ream-graphql` | GraphQL query parser (graphql-parser crate) |
-| `ream-bus` | Event bus core — dispatch, routing, wildcards, correlation, retry |
-| `ream-query` | SQL query compiler — identifier quoting, parameterization |
+| `ream-http` / `ream-http-napi` | Hyper HTTP server core + NAPI bindings — request/response and SSE streaming. **No WebSocket upgrade point:** `websocket.rs` holds the handshake helpers but `server.rs` never calls them, and no `onUpgrade` is exposed over NAPI |
+| `ream-events` / `ream-events-napi` | Event bus core — dispatch, routing, wildcards + NAPI bindings |
+| `ream-scheduler` / `ream-scheduler-napi` | Cron parser + task ticker + NAPI bindings |
+| `ream-graphql` | GraphQL query parser and validator |
 | `ream-napi-core` | Shared NAPI utilities — error handling, panic catching, shared Tokio runtime |
+| `ream-napi-test` | NAPI roundtrip test crate — validates Rust→NAPI→TS→NAPI→Rust |
+| `atlas-db` | Async database driver — SQLite, PostgreSQL, MySQL via sqlx |
+| `atlas-query` | SQL query compiler — identifier quoting, parameterization |
+
+`ream-cli` is a standalone binary crate, deliberately excluded from the root
+workspace. Every other Rust-backed package carries its own Cargo workspace under
+`packages/<name>/crates/` — an engine crate plus its `-napi` binding: atom,
+blackhole, chronos, eon, helix, inker, ream-mcp, rover, rune, sigil, warden.
 
 ---
 
@@ -106,7 +162,7 @@ RUST:  XSS response sanitization → Hyper sends response
 | GraphQL | Query parsing + validation | Resolver execution |
 | Event bus | Dispatch, routing, wildcards | Listener classes, DI |
 | Auth | JWT sign/verify, Argon2/Bcrypt hash | Strategy selection, guards |
-| WebSocket | Upgrade handshake, frame management | Hub handlers |
+| WebSocket | — (not wired) | Hub / SignalR protocol only — no transport to carry it |
 | Validation | Type checking, string/number rules | Custom rules, transforms |
 
 ---
