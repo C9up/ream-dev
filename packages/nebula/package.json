@@ -1,0 +1,125 @@
+{
+  "name": "@c9up/nebula",
+  "version": "0.1.0",
+  "description": "Nebula \u2014 shadcn/ui ported to Aurora, organised as atomic design. Zero-dependency headless primitives, cva reimplemented, copy-the-source registry.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "bin": {
+    "nebula": "./bin/nebula.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./lib": {
+      "types": "./src/lib/index.ts",
+      "import": "./src/lib/index.ts"
+    },
+    "./primitives": {
+      "types": "./src/primitives/index.ts",
+      "import": "./src/primitives/index.ts"
+    },
+    "./atoms": {
+      "types": "./src/atoms/index.ts",
+      "import": "./src/atoms/index.ts"
+    },
+    "./molecules": {
+      "types": "./src/molecules/index.ts",
+      "import": "./src/molecules/index.ts"
+    },
+    "./organisms": {
+      "types": "./src/organisms/index.ts",
+      "import": "./src/organisms/index.ts"
+    },
+    "./templates": {
+      "types": "./src/templates/index.ts",
+      "import": "./src/templates/index.ts"
+    },
+    "./registry.json": "./registry.json",
+    "./theme.css": "./theme.css",
+    "./nebula.css": "./nebula.css",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "biome check src/ bin/",
+    "test:coverage": "vitest run --coverage",
+    "registry": "node --experimental-strip-types scripts/build-registry.ts",
+    "css": "node --experimental-strip-types scripts/build-css.ts",
+    "prepublishOnly": "pnpm registry && pnpm css && pnpm build"
+  },
+  "peerDependencies": {
+    "@c9up/aurora": "^0.1.30"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "@c9up/aurora": "workspace:*",
+    "@tailwindcss/cli": "^4.3.3",
+    "@types/node": "^22.19.15",
+    "happy-dom": "^15.11.7",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.2",
+    "vitest": "4.1.9"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "bin",
+    "dist",
+    "nebula.css",
+    "registry.json",
+    "src",
+    "theme.css"
+  ],
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./lib": {
+        "types": "./dist/lib/index.d.ts",
+        "import": "./dist/lib/index.js"
+      },
+      "./primitives": {
+        "types": "./dist/primitives/index.d.ts",
+        "import": "./dist/primitives/index.js"
+      },
+      "./atoms": {
+        "types": "./dist/atoms/index.d.ts",
+        "import": "./dist/atoms/index.js"
+      },
+      "./molecules": {
+        "types": "./dist/molecules/index.d.ts",
+        "import": "./dist/molecules/index.js"
+      },
+      "./organisms": {
+        "types": "./dist/organisms/index.d.ts",
+        "import": "./dist/organisms/index.js"
+      },
+      "./templates": {
+        "types": "./dist/templates/index.d.ts",
+        "import": "./dist/templates/index.js"
+      },
+      "./registry.json": "./registry.json",
+      "./theme.css": "./theme.css",
+      "./nebula.css": "./nebula.css",
+      "./package.json": "./package.json"
+    },
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/C9up/nebula.git"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
