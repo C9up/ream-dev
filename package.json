@@ -15,6 +15,7 @@
     "quality:duplicates:actionable": "bash scripts/duplicate-report.sh --actionable",
     "quality:packages": "bash scripts/quality-packages.sh",
     "quality:peer-ranges": "node scripts/check-peer-ranges.mjs",
+    "release:notes": "node scripts/release-notes.mjs",
     "quality:all": "pnpm quality:duplicates && pnpm quality:packages && pnpm quality:peer-ranges",
     "verify:all": "bash scripts/verify-all.sh",
     "dev": "tsx watch apps/demo/server.ts",
