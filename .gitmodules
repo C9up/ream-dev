@@ -85,3 +85,6 @@
 [submodule "packages/quasar"]
 	path = packages/quasar
 	url = git@github.com:C9up/quasar.git
+[submodule "packages/nebula"]
+	path = packages/nebula
+	url = git@github.com:C9up/nebula.git
