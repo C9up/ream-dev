@@ -1,3 +1,25 @@
 packages:
   - "packages/*"
   - "apps/*"
+
+# A dependency on another package of this workspace resolves to the checkout,
+# not to the published tarball, so a change is visible to its consumers before
+# it is released.
+linkWorkspacePackages: true
+
+# pnpm reads `overrides` and the install-script decisions here, not from
+# package.json.
+overrides:
+  fast-uri: "^3.1.2"
+  vite: "^7.3.2"
+
+# Which dependencies may run install scripts. The native ones have to build or
+# they load nothing at runtime; es5-ext only prints a donation notice.
+allowBuilds:
+  "@parcel/watcher": true
+  "@swc/core": true
+  better-sqlite3: true
+  bufferutil: true
+  esbuild: true
+  utf-8-validate: true
+  es5-ext: false
