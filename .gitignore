@@ -21,3 +21,6 @@ packages/*/CORRECTIONS.md
 
 # BMAD spike scratch (throwaway, never committed)
 spikes/
+
+# ream-mcp local index
+.ream-mcp/
