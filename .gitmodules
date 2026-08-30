@@ -88,3 +88,6 @@
 [submodule "packages/nebula"]
 	path = packages/nebula
 	url = git@github.com:C9up/nebula.git
+[submodule "packages/transit"]
+	path = packages/transit
+	url = git@github.com:C9up/transit.git
