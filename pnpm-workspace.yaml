@@ -12,6 +12,12 @@ linkWorkspacePackages: true
 overrides:
   fast-uri: "^3.1.2"
   vite: "^7.3.2"
+  # One vitest for the whole workspace. Two packages pinned 4.1.9 while the
+  # rest asked for ^4.1.2, so both landed in the store and a package could end
+  # up running one version against the other's coverage provider — a mix
+  # vitest refuses to support.
+  vitest: "4.1.9"
+  "@vitest/coverage-v8": "4.1.9"
 
 # Which dependencies may run install scripts. The native ones have to build or
 # they load nothing at runtime; es5-ext only prints a donation notice.
