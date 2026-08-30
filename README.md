@@ -95,7 +95,7 @@ universe through the container, never via a static import.
 | Package | Description |
 |---|---|
 | `@c9up/warden` | Auth — JWT, session, API key, RBAC, token revocation, brute-force protection |
-| `@c9up/transit` | Federated sign-in — SAML 2.0, generic OpenID Connect, OAuth1 and OAuth2 |
+| `@c9up/transit` | Federated sign-in — SAML 2.0, LDAP, generic OpenID Connect, OAuth1 and OAuth2 |
 | `@c9up/sigil` | Password hashing — argon2, bcrypt, scrypt |
 | `@c9up/blackhole` | Rust-native security filter — XSS, CSRF, rate limiting (works with any Node.js framework) |
 | `@c9up/rune` | Validation — fluent schema, nested objects, arrays, custom rules (Rust validation engine) |
