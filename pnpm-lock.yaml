@@ -325,6 +325,9 @@ importers:
 
   packages/blackhole:
     dependencies:
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@c9up/ream':
         specifier: ^0.2.0
         version: link:../ream
@@ -519,6 +522,9 @@ importers:
       '@c9up/atlas':
         specifier: ^0.3.0
         version: link:../atlas
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@c9up/ream':
         specifier: ^0.2.0
         version: link:../ream
@@ -679,6 +685,9 @@ importers:
 
   packages/relay:
     dependencies:
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
       '@c9up/ream':
         specifier: ^0.2.0
         version: link:../ream
@@ -839,6 +848,10 @@ importers:
         version: 4.1.6(@types/node@22.19.19)(@vitest/coverage-v8@4.1.6)(happy-dom@15.11.7)(jsdom@29.1.1)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
 
   packages/transit:
+    dependencies:
+      '@c9up/quasar':
+        specifier: ^0.1.0
+        version: link:../quasar
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.10
@@ -846,12 +859,15 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.19
+      '@vitest/coverage-v8':
+        specifier: ^4.1.5
+        version: 4.1.6(@vitest/browser@4.1.6)(vitest@4.1.9)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: ^4.1.2
-        version: 4.1.9(@types/node@22.19.19)(@vitest/browser-playwright@4.1.9)(@vitest/coverage-v8@4.1.6(@vitest/browser@4.1.6)(vitest@4.1.6))(happy-dom@15.11.7)(jsdom@29.1.1)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
+        version: 4.1.9(@types/node@22.19.19)(@vitest/browser-playwright@4.1.9)(@vitest/coverage-v8@4.1.6)(happy-dom@15.11.7)(jsdom@29.1.1)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
 
   packages/warden:
     devDependencies:
@@ -4824,6 +4840,24 @@ snapshots:
       - vite
     optional: true
 
+  '@vitest/browser@4.1.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))(vitest@4.1.9)':
+    dependencies:
+      '@blazediff/core': 1.9.1
+      '@vitest/mocker': 4.1.6(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
+      '@vitest/utils': 4.1.6
+      magic-string: 0.30.21
+      pngjs: 7.0.0
+      sirv: 3.0.2
+      tinyrainbow: 3.1.0
+      vitest: 4.1.9(@types/node@22.19.19)(@vitest/browser-playwright@4.1.9)(@vitest/coverage-v8@4.1.6)(happy-dom@15.11.7)(jsdom@29.1.1)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
+      ws: 8.21.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - msw
+      - utf-8-validate
+      - vite
+    optional: true
+
   '@vitest/browser@4.1.9(bufferutil@4.1.0)(utf-8-validate@5.0.10)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))(vitest@4.1.9)':
     dependencies:
       '@blazediff/core': 1.9.1
@@ -4856,6 +4890,22 @@ snapshots:
       vitest: 4.1.6(@types/node@22.19.19)(@vitest/coverage-v8@4.1.6)(happy-dom@15.11.7)(jsdom@29.1.1)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
     optionalDependencies:
       '@vitest/browser': 4.1.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))(vitest@4.1.6)
+
+  '@vitest/coverage-v8@4.1.6(@vitest/browser@4.1.6)(vitest@4.1.9)':
+    dependencies:
+      '@bcoe/v8-coverage': 1.0.2
+      '@vitest/utils': 4.1.6
+      ast-v8-to-istanbul: 1.0.0
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-reports: 3.2.0
+      magicast: 0.5.2
+      obug: 2.1.1
+      std-env: 4.1.0
+      tinyrainbow: 3.1.0
+      vitest: 4.1.9(@types/node@22.19.19)(@vitest/browser-playwright@4.1.9)(@vitest/coverage-v8@4.1.6)(happy-dom@15.11.7)(jsdom@29.1.1)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
+    optionalDependencies:
+      '@vitest/browser': 4.1.6(bufferutil@4.1.0)(utf-8-validate@5.0.10)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))(vitest@4.1.9)
 
   '@vitest/expect@4.1.6':
     dependencies:
@@ -6432,6 +6482,37 @@ snapshots:
       '@types/node': 22.19.19
       '@vitest/browser-playwright': 4.1.9(bufferutil@4.1.0)(playwright@1.61.1)(utf-8-validate@5.0.10)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))(vitest@4.1.9)
       '@vitest/coverage-v8': 4.1.6(@vitest/browser@4.1.6)(vitest@4.1.6)
+      happy-dom: 15.11.7
+      jsdom: 29.1.1
+    transitivePeerDependencies:
+      - msw
+
+  vitest@4.1.9(@types/node@22.19.19)(@vitest/browser-playwright@4.1.9)(@vitest/coverage-v8@4.1.6)(happy-dom@15.11.7)(jsdom@29.1.1)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)):
+    dependencies:
+      '@vitest/expect': 4.1.9
+      '@vitest/mocker': 4.1.9(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))
+      '@vitest/pretty-format': 4.1.9
+      '@vitest/runner': 4.1.9
+      '@vitest/snapshot': 4.1.9
+      '@vitest/spy': 4.1.9
+      '@vitest/utils': 4.1.9
+      es-module-lexer: 2.1.0
+      expect-type: 1.3.0
+      magic-string: 0.30.21
+      obug: 2.1.1
+      pathe: 2.0.3
+      picomatch: 4.0.4
+      std-env: 4.1.0
+      tinybench: 2.9.0
+      tinyexec: 1.1.2
+      tinyglobby: 0.2.16
+      tinyrainbow: 3.1.0
+      vite: 7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)
+      why-is-node-running: 2.3.0
+    optionalDependencies:
+      '@types/node': 22.19.19
+      '@vitest/browser-playwright': 4.1.9(bufferutil@4.1.0)(playwright@1.61.1)(utf-8-validate@5.0.10)(vite@7.3.3(@types/node@22.19.19)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0))(vitest@4.1.9)
+      '@vitest/coverage-v8': 4.1.6(@vitest/browser@4.1.6)(vitest@4.1.9)
       happy-dom: 15.11.7
       jsdom: 29.1.1
     transitivePeerDependencies:
