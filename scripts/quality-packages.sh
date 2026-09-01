@@ -28,4 +28,9 @@ fi
 echo "[quality] rust workspace tests"
 cargo test --all
 
+# Cheap, and it is the check that would have stopped atlas 0.3.10 going to npm
+# with a red integration job.
+echo "[quality] publish gates"
+node scripts/check-publish-gates.mjs
+
 echo "[quality] all checks passed"

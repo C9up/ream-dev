@@ -11,6 +11,7 @@
     "build:rust": "cargo build --release",
     "lint": "biome check packages/",
     "quality:duplicates": "bash scripts/duplicate-report.sh",
+    "quality:gates": "node scripts/check-publish-gates.mjs",
     "quality:duplicates:strict": "bash scripts/duplicate-report.sh --strict",
     "quality:duplicates:actionable": "bash scripts/duplicate-report.sh --actionable",
     "quality:packages": "bash scripts/quality-packages.sh",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "@types/node": "^22.0.0",
+    "yaml": "^2.8.1",
     "@vitest/coverage-v8": "^4.1.5",
     "typescript": "^6.0.2",
     "vitest": "^4.1.2"
