@@ -25,13 +25,21 @@ overrides:
   esbuild: "^0.28.1"
   body-parser: "^2.3.0"
   "@hono/node-server": "^1.19.15"
-  vite: "^7.3.2"
+  vite: "^7.3.5"
   # One vitest for the whole workspace. Two packages pinned 4.1.9 while the
   # rest asked for ^4.1.2, so both landed in the store and a package could end
   # up running one version against the other's coverage provider — a mix
   # vitest refuses to support.
-  vitest: "4.1.9"
-  "@vitest/coverage-v8": "4.1.9"
+  vitest: "4.1.11"
+  "@vitest/coverage-v8": "4.1.11"
+  # Advisory pins, all dev-only. @vitest/browser <4.1.10 lets a Browser Mode
+  # provider command bypass the file-access control (GHSA-p63j-vcc4-9vmv);
+  # undici <7.29.0 has the TLS-validation bypass and the cross-origin routing
+  # pair; vite <7.3.5 the server.fs.deny bypass. jsdom asks for undici ^7, so
+  # the pin stays inside 7 rather than forcing 8 on it.
+  "@vitest/browser": "4.1.11"
+  "@vitest/browser-playwright": "4.1.11"
+  undici: "^7.29.0"
 
 # Which dependencies may run install scripts. The native ones have to build or
 # they load nothing at runtime; es5-ext only prints a donation notice.
