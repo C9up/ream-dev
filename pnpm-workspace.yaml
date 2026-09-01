@@ -10,7 +10,21 @@ linkWorkspacePackages: true
 # pnpm reads `overrides` and the install-script decisions here, not from
 # package.json.
 overrides:
-  fast-uri: "^3.1.2"
+  # Security advisories on transitive dependencies. Each one is the lowest
+  # version the advisory says is patched — pinned here because nothing in the
+  # workspace declares them directly, so there is no package.json to bump.
+  fast-uri: "^3.1.4"
+  hono: "^4.12.25"
+  axios: "^1.18.0"
+  brace-expansion: "^5.0.8"
+  ip-address: "^10.2.2"
+  postcss: "^8.5.23"
+  nanoid: "^3.3.18"
+  uuid: "^11.1.1"
+  qs: "^6.15.2"
+  esbuild: "^0.28.1"
+  body-parser: "^2.3.0"
+  "@hono/node-server": "^1.19.15"
   vite: "^7.3.2"
   # One vitest for the whole workspace. Two packages pinned 4.1.9 while the
   # rest asked for ^4.1.2, so both landed in the store and a package could end
