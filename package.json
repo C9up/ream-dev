@@ -12,6 +12,7 @@
     "lint": "biome check packages/",
     "quality:duplicates": "bash scripts/duplicate-report.sh",
     "quality:gates": "node scripts/check-publish-gates.mjs",
+    "quality:rust": "bash scripts/quality-rust.sh",
     "quality:duplicates:strict": "bash scripts/duplicate-report.sh --strict",
     "quality:duplicates:actionable": "bash scripts/duplicate-report.sh --actionable",
     "quality:packages": "bash scripts/quality-packages.sh",

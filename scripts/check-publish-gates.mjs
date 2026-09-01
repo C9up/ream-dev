@@ -26,8 +26,15 @@ import { join } from 'node:path'
 import { parse } from 'yaml'
 
 const PACKAGES = 'packages'
-/** Commands whose failure must stop a release. */
-const VERIFIES = /vitest|cargo\s+(test|clippy|fmt)|tsc\b|biome|pnpm\s+(test|lint)|npm\s+test/i
+/**
+ * Commands whose failure must stop a release.
+ *
+ * `cargo build` and `pnpm build` are in here because a build IS a
+ * verification: ream-cli's release is a set of compiled binaries, and dropping
+ * its build job would have left this check with nothing to complain about.
+ */
+const VERIFIES =
+  /vitest|cargo\s+(test|clippy|fmt|deny|build)|tsc\b|biome|pnpm\s+(test|lint|build)|npm\s+test|quality-rust/i
 /** `|| true`, `|| :`, `|| exit 0` — an exit code thrown away. */
 const SWALLOWS = /\|\|\s*(true|:|exit\s+0)\b/
 

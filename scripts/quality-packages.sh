@@ -25,8 +25,13 @@ else
   pnpm -r --filter './packages/*' --if-present run test
 fi
 
-echo "[quality] rust workspace tests"
-cargo test --all
+# Every package workspace, not just the root one: fmt, strict clippy, tests and
+# advisories. `cargo test --all` here covered the ROOT workspace only — a
+# handful of crates — while five packages were failing strict clippy and a
+# yanked `spin`, an `ammonia` two XSS advisories behind and an `h2` DoS sat
+# unread in their lockfiles.
+echo "[quality] rust workspaces"
+bash scripts/quality-rust.sh
 
 # Cheap, and it is the check that would have stopped atlas 0.3.10 going to npm
 # with a red integration job.

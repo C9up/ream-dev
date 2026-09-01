@@ -1,0 +1,49 @@
+# What `cargo deny` refuses, and the two things it is told to tolerate.
+#
+# Nothing ran this before: `pnpm quality:packages` tested the ROOT cargo
+# workspace only, which is two crates, and never looked at an advisory. Five
+# packages were failing strict clippy at the same time and nothing said so.
+#
+# Run it with `pnpm quality:rust`, which walks every package workspace.
+
+[advisories]
+yanked = "deny"
+ignore = [
+  # RUSTSEC-2023-0071 — Marvin, a timing sidechannel in `rsa`'s private-key
+  # operation. It arrives through `sqlx-mysql`, which uses it ONLY to encrypt
+  # the password during MySQL's `caching_sha2_password` handshake — a public-key
+  # operation, on data the attacker supplied in the first place. There is no
+  # private-key operation on this path and no fixed 0.9.x to move to; the RSA
+  # crate's own fix is the unreleased 0.10 line.
+  #
+  # Revisit when sqlx ships against rsa 0.10.
+  { id = "RUSTSEC-2023-0071", reason = "rsa via sqlx-mysql: public-key handshake only, no private-key operation, no fixed 0.9.x" },
+  # RUSTSEC-2024-0436 — `paste` is unmaintained. A proc-macro that pastes
+  # identifiers together at compile time: it ships no runtime code, so an
+  # unmaintained release is a maintenance risk rather than an exposure. It comes
+  # in transitively and cannot be dropped without dropping its parent.
+  { id = "RUSTSEC-2024-0436", reason = "paste is a compile-time proc-macro with no runtime surface; transitive and unmaintained upstream" },
+]
+
+[bans]
+multiple-versions = "allow"
+
+[licenses]
+allow = [
+  "MIT",
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "ISC",
+  "Unicode-3.0",
+  "Zlib",
+  "CC0-1.0",
+  "MPL-2.0",
+  "BSL-1.0",
+  "OpenSSL",
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "allow"
