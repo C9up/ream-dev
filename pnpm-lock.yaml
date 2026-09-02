@@ -121,19 +121,19 @@ importers:
         specifier: workspace:*
         version: link:../../packages/warden
       react:
-        specifier: ^19.2.8
+        specifier: ^19
         version: 19.2.8
       react-dom:
-        specifier: ^19.2.8
+        specifier: ^19
         version: 19.2.8(react@19.2.8)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
       svelte:
-        specifier: ^5.57.0
+        specifier: ^5
         version: 5.57.0
       vue:
-        specifier: ^3.5.42
+        specifier: ^3
         version: 3.5.42(typescript@6.0.3)
     devDependencies:
       '@c9up/helix':
@@ -143,40 +143,40 @@ importers:
         specifier: workspace:*
         version: link:../../packages/helix-plugin-ream
       '@sveltejs/vite-plugin-svelte':
-        specifier: ^5.1.1
+        specifier: ^5
         version: 5.1.1(supports-color@10.2.2)(svelte@5.57.0)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       '@swc-node/register':
-        specifier: ^1.12.1
+        specifier: ^1.11.1
         version: 1.12.1(@swc/core@1.16.1)(@swc/types@0.1.28)(supports-color@10.2.2)(typescript@6.0.3)
       '@tailwindcss/vite':
-        specifier: ^4.3.3
+        specifier: ^4
         version: 4.3.3(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       '@types/node':
-        specifier: ^22.20.1
+        specifier: '*'
         version: 22.20.1
       '@types/react':
-        specifier: ^19.2.18
+        specifier: ^19
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.5
+        specifier: ^19
         version: 19.2.5(@types/react@19.2.18)
       '@vitejs/plugin-react':
-        specifier: ^4.7.0
+        specifier: ^4
         version: 4.7.0(supports-color@10.2.2)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       '@vitejs/plugin-vue':
-        specifier: ^5.2.4
+        specifier: ^5
         version: 5.2.4(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))(vue@3.5.42(typescript@6.0.3))
       tailwindcss:
-        specifier: ^4.3.3
+        specifier: ^4
         version: 4.3.3
       tsx:
-        specifier: ^4.23.13
+        specifier: ^4.20.6
         version: 4.23.13
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vite:
-        specifier: ^7.3.6
+        specifier: ^7.3.5
         version: 7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0)
 
   apps/syndic:
@@ -229,16 +229,16 @@ importers:
         version: link:../ream
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/helix':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../helix
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -247,26 +247,26 @@ importers:
   packages/atlas:
     dependencies:
       '@c9up/chronos':
-        specifier: workspace:^
+        specifier: ^0.1.8
         version: link:../chronos
       reflect-metadata:
-        specifier: ^0.2.2
+        specifier: ^0.2
         version: 0.2.2
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/helix':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../helix
       '@faker-js/faker':
-        specifier: ^9.9.0
-        version: 9.9.0
+        specifier: ^10.4.1
+        version: 10.6.0
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -275,13 +275,13 @@ importers:
   packages/atom:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -294,13 +294,13 @@ importers:
         version: link:../ream
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/comet':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../comet
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       '@vitest/browser':
         specifier: 4.1.11
@@ -312,10 +312,10 @@ importers:
         specifier: ^20.12.0
         version: 20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       playwright:
-        specifier: ^1.62.1
+        specifier: ^1.61.1
         version: 1.62.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -328,16 +328,16 @@ importers:
         version: link:../ream
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/quasar':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../quasar
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -353,13 +353,13 @@ importers:
         version: link:../ream
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -368,13 +368,13 @@ importers:
   packages/chronos:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -383,13 +383,13 @@ importers:
   packages/comet:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -402,16 +402,16 @@ importers:
         version: link:../ream
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/quasar':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../quasar
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -423,20 +423,20 @@ importers:
         specifier: 3.5.0
         version: 3.5.0(supports-color@10.2.2)
       reflect-metadata:
-        specifier: ^0.2.2
+        specifier: ^0.2
         version: 0.2.2
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22
         version: 22.20.1
       tsx:
-        specifier: ^4.23.13
+        specifier: ^4.19.0
         version: 4.23.13
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -445,16 +445,16 @@ importers:
   packages/helix:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: '*'
         version: 22.20.1
       tsx:
-        specifier: ^4.23.13
+        specifier: ^4.21.0
         version: 4.23.13
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -463,22 +463,22 @@ importers:
   packages/helix-plugin-ream:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/helix':
-        specifier: workspace:^
+        specifier: ^0.2.3
         version: link:../helix
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.7
         version: link:../ream
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       tsx:
-        specifier: ^4.23.13
+        specifier: ^4
         version: 4.23.13
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -494,16 +494,16 @@ importers:
         version: link:../rosetta
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       '@vitest/coverage-v8':
         specifier: 4.1.11
         version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -512,16 +512,16 @@ importers:
   packages/nebula:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/aurora':
-        specifier: workspace:^
+        specifier: ^0.1.30
         version: link:../aurora
       '@tailwindcss/cli':
         specifier: ^4.3.3
         version: 4.3.3
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       happy-dom:
         specifier: ^20.12.0
@@ -530,7 +530,7 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -552,10 +552,10 @@ importers:
         version: 3.6.7(supports-color@10.2.2)
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: '*'
         version: 22.20.1
       '@types/web-push':
         specifier: ^3.6.4
@@ -564,10 +564,10 @@ importers:
         specifier: ^29.1.1
         version: 29.1.1
       nock:
-        specifier: ^14.0.17
+        specifier: ^14.0.14
         version: 14.0.17
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -576,43 +576,43 @@ importers:
   packages/photon:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       '@types/react':
-        specifier: ^19.2.18
+        specifier: ^19
         version: 19.2.18
       '@types/react-dom':
-        specifier: ^19.2.5
+        specifier: ^19
         version: 19.2.5(@types/react@19.2.18)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
       react:
-        specifier: ^19.2.8
+        specifier: ^19
         version: 19.2.8
       react-dom:
-        specifier: ^19.2.8
+        specifier: ^19
         version: 19.2.8(react@19.2.8)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
       svelte:
-        specifier: ^5.57.0
+        specifier: ^5
         version: 5.57.0
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
         version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@29.1.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       vue:
-        specifier: ^3.5.42
+        specifier: ^3
         version: 3.5.42(typescript@6.0.3)
 
   packages/quasar:
@@ -622,13 +622,13 @@ importers:
         version: 6.0.0(supports-color@10.2.2)
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -640,20 +640,20 @@ importers:
         specifier: ^0.1.0
         version: link:../quasar
       file-type:
-        specifier: ^22.0.2
+        specifier: ^22.0.1
         version: 22.0.2(supports-color@10.2.2)
       reflect-metadata:
-        specifier: ^0.2.2
+        specifier: ^0.2
         version: 0.2.2
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/comet':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../comet
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       mime-db:
         specifier: ^1.54.0
@@ -662,7 +662,7 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -671,26 +671,26 @@ importers:
   packages/ream-mcp:
     dependencies:
       '@modelcontextprotocol/sdk':
-        specifier: ^1.30.0
+        specifier: ^1.29.0
         version: 1.30.0(supports-color@10.2.2)(zod@4.4.3)
       ts-morph:
         specifier: ^28.0.0
         version: 28.0.0
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/atlas':
-        specifier: workspace:^
+        specifier: ^0.3.3
         version: link:../atlas
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.0.0
         version: 22.20.1
       tsx:
-        specifier: ^4.23.13
+        specifier: ^4.0.0
         version: 4.23.13
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -706,13 +706,13 @@ importers:
         version: link:../ream
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -721,13 +721,13 @@ importers:
   packages/rosetta:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -739,23 +739,23 @@ importers:
         specifier: ^0.2.0
         version: link:../ream
       nodemailer:
-        specifier: ^9.1.0
+        specifier: ^9.0.1
         version: 9.1.0
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/helix':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../helix
       '@types/node':
-        specifier: ^22.20.1
+        specifier: '*'
         version: 22.20.1
       '@types/nodemailer':
-        specifier: ^7.0.12
+        specifier: ^7.0.0
         version: 7.0.12
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -764,13 +764,13 @@ importers:
   packages/rune:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -783,13 +783,13 @@ importers:
         version: link:../ream
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -802,13 +802,13 @@ importers:
         version: link:../ream
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -824,19 +824,19 @@ importers:
         version: link:../warden
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/atlas':
-        specifier: workspace:^
+        specifier: ^0.3.0
         version: link:../atlas
       '@c9up/inker':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../inker
       '@c9up/rune':
-        specifier: workspace:^
+        specifier: ^0.1.8
         version: link:../rune
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       '@vitest/coverage-v8':
         specifier: 4.1.11
@@ -845,7 +845,7 @@ importers:
         specifier: ^0.2.2
         version: 0.2.2
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -858,16 +858,16 @@ importers:
         version: link:../quasar
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       '@vitest/coverage-v8':
         specifier: 4.1.11
         version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -876,22 +876,22 @@ importers:
   packages/warden:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.5.11
+        specifier: ^2.4.10
         version: 2.5.11
       '@c9up/quasar':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../quasar
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
-        specifier: ^22.20.1
+        specifier: ^22.19.15
         version: 22.20.1
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
       typescript:
-        specifier: ^6.0.3
+        specifier: ^6.0.2
         version: 6.0.3
       vitest:
         specifier: 4.1.11
@@ -1285,9 +1285,9 @@ packages:
       '@noble/hashes':
         optional: true
 
-  '@faker-js/faker@9.9.0':
-    resolution: {integrity: sha512-OEl393iCOoo/z8bMezRlJu+GlRGlsKbUAN7jKB6LhnKoqKve5DXRpalbItIIcwnCjs1k/FOPjFzcA6Qn+H+YbA==}
-    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+  '@faker-js/faker@10.6.0':
+    resolution: {integrity: sha512-3RQHgEtvL1Frl/d1cSreo7qhJ3Gk1OdNUai/CtZ8G+wYeRQnJih3s9xJ9/kgYekPQRdwgh0HXRPqMlzWGwivIQ==}
+    engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
 
   '@hono/node-server@1.19.17':
     resolution: {integrity: sha512-dSneS5qhiauZWGDCeK4o695Xd9nUNjviSZCMQrj10eetr8Uln1ucn6bbphOM6UynAMMtNIzZNSpL9vnASJwrPQ==}
@@ -1307,9 +1307,6 @@ packages:
   '@jridgewell/resolve-uri@3.1.2':
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
     engines: {node: '>=6.0.0'}
-
-  '@jridgewell/sourcemap-codec@1.5.5':
-    resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
 
   '@jridgewell/sourcemap-codec@1.6.0':
     resolution: {integrity: sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw==}
@@ -2043,9 +2040,6 @@ packages:
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
-
-  '@types/node@22.19.19':
-    resolution: {integrity: sha512-dyh/xO2Fh5bYrfWaaqGrRQQGkNdmYw6AmaAUvYeUMNTWQtvb796ikLdmTchRmOlOiIJ1TDXfWgVx1QkUlQ6Hew==}
 
   '@types/node@22.20.1':
     resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==}
@@ -3069,10 +3063,6 @@ packages:
     resolution: {integrity: sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==}
     engines: {node: '>=8.6'}
 
-  picomatch@4.0.4:
-    resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
-    engines: {node: '>=12'}
-
   picomatch@4.0.7:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
@@ -3331,17 +3321,9 @@ packages:
     resolution: {integrity: sha512-QKAl9m8gWWGHV8jZcPeym6j+XULi6tOf1mT83WYJ4Lk2ytW/uwAWkrP0uFsdoYMdueVJ0qs26wZ+23xeB4ibNQ==}
     engines: {node: '>=18'}
 
-  tinyglobby@0.2.16:
-    resolution: {integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==}
-    engines: {node: '>=12.0.0'}
-
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
-
-  tinyrainbow@3.1.0:
-    resolution: {integrity: sha512-Bf+ILmBgretUrdJxzXM0SgXLZ3XfiaUuOj/IKQHuTXip+05Xn+uyEYdVg0kYDipTBcLrCVyUzAPz7QmArb0mmw==}
-    engines: {node: '>=14.0.0'}
 
   tinyrainbow@3.1.1:
     resolution: {integrity: sha512-yau8yJdTt989Mm0Bd/236QnzEiPf2xLLTqUZRUJOo/3CB078LSwzei343DgtJVmfJKJE3TMINY1u42SQsP6mXw==}
@@ -3955,7 +3937,7 @@ snapshots:
 
   '@exodus/bytes@1.15.0': {}
 
-  '@faker-js/faker@9.9.0': {}
+  '@faker-js/faker@10.6.0': {}
 
   '@hono/node-server@1.19.17(hono@4.13.5)':
     dependencies:
@@ -3974,8 +3956,6 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/resolve-uri@3.1.2': {}
-
-  '@jridgewell/sourcemap-codec@1.5.5': {}
 
   '@jridgewell/sourcemap-codec@1.6.0': {}
 
@@ -4553,10 +4533,6 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
-  '@types/node@22.19.19':
-    dependencies:
-      undici-types: 6.21.0
-
   '@types/node@22.20.1':
     dependencies:
       undici-types: 6.21.0
@@ -4583,7 +4559,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
 
   '@vitejs/plugin-react@4.7.0(supports-color@10.2.2)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))':
     dependencies:
@@ -4607,7 +4583,7 @@ snapshots:
       '@vitest/browser': 4.1.11(bufferutil@4.1.0)(utf-8-validate@5.0.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))(vitest@4.1.11)
       '@vitest/mocker': 4.1.11(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       playwright: 1.62.1
-      tinyrainbow: 3.1.0
+      tinyrainbow: 3.1.1
       vitest: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@29.1.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
     transitivePeerDependencies:
       - bufferutil
@@ -4623,7 +4599,7 @@ snapshots:
       magic-string: 0.30.21
       pngjs: 7.0.0
       sirv: 3.0.2
-      tinyrainbow: 3.1.0
+      tinyrainbow: 3.1.1
       vitest: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@29.1.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       ws: 8.21.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
@@ -4687,7 +4663,7 @@ snapshots:
     dependencies:
       '@vitest/pretty-format': 4.1.11
       convert-source-map: 2.0.0
-      tinyrainbow: 3.1.0
+      tinyrainbow: 3.1.1
 
   '@vue/compiler-core@3.5.42':
     dependencies:
@@ -4853,7 +4829,7 @@ snapshots:
 
   buffer-image-size@0.6.4:
     dependencies:
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
 
   buffer@5.7.1:
     dependencies:
@@ -5158,10 +5134,6 @@ snapshots:
 
   fast-uri@3.1.6: {}
 
-  fdir@6.5.0(picomatch@4.0.4):
-    optionalDependencies:
-      picomatch: 4.0.4
-
   fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
       picomatch: 4.0.7
@@ -5242,7 +5214,7 @@ snapshots:
 
   happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10):
     dependencies:
-      '@types/node': 22.19.19
+      '@types/node': 22.20.1
       '@types/whatwg-mimetype': 3.0.2
       '@types/ws': 8.18.1
       buffer-image-size: 0.6.4
@@ -5481,7 +5453,7 @@ snapshots:
 
   magic-string@0.30.21:
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/sourcemap-codec': 1.6.0
 
   magicast@0.5.4:
     dependencies:
@@ -5627,8 +5599,6 @@ snapshots:
   picocolors@1.1.1: {}
 
   picomatch@2.3.2: {}
-
-  picomatch@4.0.4: {}
 
   picomatch@4.0.7: {}
 
@@ -5942,17 +5912,10 @@ snapshots:
 
   tinyexec@1.3.0: {}
 
-  tinyglobby@0.2.16:
-    dependencies:
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
-
   tinyglobby@0.2.17:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.7)
       picomatch: 4.0.7
-
-  tinyrainbow@3.1.0: {}
 
   tinyrainbow@3.1.1: {}
 
@@ -6046,11 +6009,11 @@ snapshots:
   vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0):
     dependencies:
       esbuild: 0.28.2
-      fdir: 6.5.0(picomatch@4.0.4)
-      picomatch: 4.0.4
+      fdir: 6.5.0(picomatch@4.0.7)
+      picomatch: 4.0.7
       postcss: 8.5.26
       rollup: 4.60.3
-      tinyglobby: 0.2.16
+      tinyglobby: 0.2.17
     optionalDependencies:
       '@types/node': 22.20.1
       fsevents: 2.3.3
