@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "@c9up/ream": "workspace:*",
-    "@c9up/spectrum": "workspace:*",
-    "@c9up/rune": "workspace:*"
+    "@c9up/rune": "workspace:*",
+    "@c9up/spectrum": "workspace:*"
   },
   "devDependencies": {
-    "tsx": "^4.21.0"
+    "tsx": "^4.23.13"
   }
 }
