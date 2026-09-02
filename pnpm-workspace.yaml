@@ -40,6 +40,10 @@ overrides:
   "@vitest/browser": "4.1.11"
   "@vitest/browser-playwright": "4.1.11"
   undici: "^7.29.0"
+  # Two high advisories, both dev-only and transitive: unbounded memory growth
+  # with no cache bound (GHSA-c83g-rgw3-j3cx) and a crash / prototype write
+  # (GHSA-73wf-gq98-2v4g).
+  browserslist: "^4.28.7"
 
 # Which dependencies may run install scripts. The native ones have to build or
 # they load nothing at runtime; es5-ext only prints a donation notice.
