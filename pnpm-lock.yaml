@@ -259,6 +259,9 @@ importers:
       '@c9up/helix':
         specifier: ^0.2.0
         version: link:../helix
+      '@c9up/ream':
+        specifier: ^0.2.0
+        version: link:../ream
       '@faker-js/faker':
         specifier: ^10.4.1
         version: 10.6.0
@@ -322,10 +325,6 @@ importers:
         version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/bay:
-    dependencies:
-      '@c9up/ream':
-        specifier: ^0.2.0
-        version: link:../ream
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.10
@@ -333,6 +332,9 @@ importers:
       '@c9up/quasar':
         specifier: ^0.1.0
         version: link:../quasar
+      '@c9up/ream':
+        specifier: ^0.2.0
+        version: link:../ream
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
@@ -796,14 +798,13 @@ importers:
         version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/spectrum:
-    dependencies:
-      '@c9up/ream':
-        specifier: ^0.2.0
-        version: link:../ream
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.5.11
+      '@c9up/ream':
+        specifier: ^0.2.0
+        version: link:../ream
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
