@@ -91,3 +91,6 @@
 [submodule "packages/transit"]
 	path = packages/transit
 	url = git@github.com:C9up/transit.git
+[submodule "packages/vellum"]
+	path = packages/vellum
+	url = git@github.com:C9up/vellum.git
