@@ -810,8 +810,8 @@ importers:
         specifier: ^2.4.10
         version: 2.5.11
       '@c9up/bay':
-        specifier: ^0.2.0
-        version: link:../bay
+        specifier: ^0.1.13
+        version: 0.1.13(@c9up/quasar@packages+quasar)(@c9up/ream@packages+ream)
       '@c9up/helix':
         specifier: ^0.2.0
         version: link:../helix
@@ -1223,6 +1223,18 @@ packages:
   '@bramus/specificity@2.4.2':
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
     hasBin: true
+
+  '@c9up/bay@0.1.13':
+    resolution: {integrity: sha512-Uw1stir1QuABorPvWUAOUDO/cA0KxsL2K1UDtvx/6DYd1HiOE+Possao6J1+dRgF3hu20CZJzlaSI2iY6vVPNg==}
+    engines: {node: '>=22.0.0'}
+    peerDependencies:
+      '@c9up/quasar': ^0.1.0
+      '@c9up/ream': ^0.2.0
+    peerDependenciesMeta:
+      '@c9up/quasar':
+        optional: true
+      '@c9up/ream':
+        optional: true
 
   '@colors/colors@1.6.0':
     resolution: {integrity: sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==}
@@ -3998,6 +4010,11 @@ snapshots:
   '@bramus/specificity@2.4.2':
     dependencies:
       css-tree: 3.2.1
+
+  '@c9up/bay@0.1.13(@c9up/quasar@packages+quasar)(@c9up/ream@packages+ream)':
+    optionalDependencies:
+      '@c9up/quasar': link:packages/quasar
+      '@c9up/ream': link:packages/ream
 
   '@colors/colors@1.6.0': {}
 
