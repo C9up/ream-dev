@@ -236,6 +236,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -267,6 +270,9 @@ importers:
       '@types/node':
         specifier: ^22
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -312,6 +318,9 @@ importers:
       '@vitest/browser-playwright':
         specifier: 4.1.11
         version: 4.1.11(bufferutil@4.1.0)(playwright@1.62.1)(utf-8-validate@5.0.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))(vitest@4.1.11)
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       jsdom:
         specifier: ^30.0.1
         version: 30.0.1
@@ -339,6 +348,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -361,6 +373,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -376,6 +391,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -415,6 +433,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -440,6 +461,9 @@ importers:
       '@types/node':
         specifier: ^22
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       tsx:
         specifier: ^4.19.0
         version: 4.23.13
@@ -458,6 +482,9 @@ importers:
       '@types/node':
         specifier: '*'
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       tsx:
         specifier: ^4.21.0
         version: 4.23.13
@@ -482,6 +509,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       tsx:
         specifier: ^4
         version: 4.23.13
@@ -493,10 +523,6 @@ importers:
         version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/inker:
-    dependencies:
-      '@c9up/rosetta':
-        specifier: ^0.3.0
-        version: link:../rosetta
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.10
@@ -504,6 +530,9 @@ importers:
       '@c9up/ream':
         specifier: ^0.2.0
         version: link:../ream
+      '@c9up/rosetta':
+        specifier: ^0.3.0
+        version: link:../rosetta
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
@@ -531,6 +560,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       jsdom:
         specifier: ^30.0.1
         version: 30.0.1
@@ -546,9 +578,6 @@ importers:
 
   packages/nova:
     dependencies:
-      '@c9up/atlas':
-        specifier: ^0.3.0
-        version: link:../atlas
       '@c9up/quasar':
         specifier: ^0.1.0
         version: link:../quasar
@@ -562,6 +591,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.5.11
+      '@c9up/atlas':
+        specifier: ^0.3.0
+        version: link:../atlas
       '@types/node':
         specifier: '*'
         version: 22.20.1
@@ -601,6 +633,9 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.2.5(@types/react@19.2.18)
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       jsdom:
         specifier: ^30.0.1
         version: 30.0.1
@@ -641,6 +676,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -669,6 +707,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       mime-db:
         specifier: ^1.54.0
         version: 1.54.0
@@ -700,6 +741,9 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       tsx:
         specifier: ^4.0.0
         version: 4.23.13
@@ -725,6 +769,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -743,6 +790,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -774,6 +824,9 @@ importers:
       '@types/nodemailer':
         specifier: ^7.0.0
         version: 7.0.12
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -789,6 +842,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -807,6 +863,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -836,10 +895,6 @@ importers:
         version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/station:
-    dependencies:
-      '@c9up/warden':
-        specifier: ^0.1.0
-        version: link:../warden
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.10
@@ -856,6 +911,9 @@ importers:
       '@c9up/rune':
         specifier: ^0.1.8
         version: link:../rune
+      '@c9up/warden':
+        specifier: ^0.1.0
+        version: link:../warden
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
@@ -908,6 +966,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
@@ -929,6 +990,9 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
