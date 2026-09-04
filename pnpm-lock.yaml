@@ -759,6 +759,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.10
         version: 2.5.11
+      '@c9up/bay':
+        specifier: ^0.2.0
+        version: link:../bay
       '@c9up/helix':
         specifier: ^0.2.0
         version: link:../helix
