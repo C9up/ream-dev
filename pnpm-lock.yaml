@@ -592,7 +592,7 @@ importers:
         specifier: ^2.4.10
         version: 2.5.11
       '@c9up/atlas':
-        specifier: ^0.3.0
+        specifier: ^0.3.0 || ^0.4.0
         version: link:../atlas
       '@types/node':
         specifier: '*'
@@ -736,7 +736,7 @@ importers:
         specifier: ^2.4.10
         version: 2.5.11
       '@c9up/atlas':
-        specifier: ^0.3.3
+        specifier: ^0.3.3 || ^0.4.0
         version: link:../atlas
       '@types/node':
         specifier: ^22.0.0
@@ -900,7 +900,7 @@ importers:
         specifier: ^2.4.10
         version: 2.5.11
       '@c9up/atlas':
-        specifier: ^0.3.0
+        specifier: ^0.3.0 || ^0.4.0
         version: link:../atlas
       '@c9up/inker':
         specifier: ^0.1.0
