@@ -35,6 +35,11 @@ const UNITS = [
     target: 'src/vendor/nodeEnv.ts',
     packages: ['bay', 'blackhole', 'inker'],
   },
+  {
+    source: 'quasarConnection.ts',
+    target: 'src/vendor/quasarConnection.ts',
+    packages: ['bay', 'blackhole', 'echo', 'nova', 'relay', 'transit', 'warden'],
+  },
 ]
 
 /** The copy, byte for byte: the header plus the authored file. */
