@@ -133,14 +133,18 @@ pnpm -r --filter './packages/*' --if-present run test
 
 # -----------------------------------------------------------------------------
 
-stage "[6/8] cargo check --all (root workspace, 11 crates)"
+stage "[6/8] cargo check --locked --all (root workspace, 11 crates)"
 if ! command -v cargo >/dev/null 2>&1; then
   echo "[verify] cargo not found on PATH."
   echo "[verify] Install via https://rustup.rs/ — the workspace pins toolchain"
   echo "[verify]   via rust-toolchain.toml so rustup will pick the right version."
   exit 1
 fi
-cargo check --all
+# `--locked` on every cargo invocation below. Without it a stale Cargo.lock is
+# silently REWRITTEN by the gate, so the run verifies a dependency resolution
+# that was never committed and the next checkout resolves something else. It
+# fails loudly instead: regenerate the lock deliberately and commit it.
+cargo check --locked --all
 
 # -----------------------------------------------------------------------------
 
@@ -148,12 +152,12 @@ stage "[7/8] cargo check, workspace-excluded crate"
 # The root Cargo.toml's [workspace.exclude] list keeps this crate out of
 # `cargo check --all`.
 echo "[verify] → packages/ream-cli"
-( cd packages/ream-cli && cargo check )
+( cd packages/ream-cli && cargo check --locked )
 
 # -----------------------------------------------------------------------------
 
-stage "[8/8] cargo test --all (root workspace)"
-cargo test --all
+stage "[8/8] cargo test --locked --all (root workspace)"
+cargo test --locked --all
 
 # -----------------------------------------------------------------------------
 
