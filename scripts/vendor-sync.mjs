@@ -36,6 +36,15 @@ const UNITS = [
     packages: ['bay', 'blackhole', 'inker'],
   },
   {
+    source: 'nativeBinary.ts',
+    target: 'src/vendor/nativeBinary.ts',
+    // atom and chronos are absent on purpose: both have a browser/WASM path and
+    // load node builtins dynamically, so a copy importing `node:module` at the
+    // top would break their bundle. The boundary of a unit is set by the
+    // consumers' constraints, not by how alike the code looks.
+    packages: ['rune', 'sigil', 'vellum', 'warden'],
+  },
+  {
     source: 'quasarConnection.ts',
     target: 'src/vendor/quasarConnection.ts',
     packages: ['bay', 'blackhole', 'echo', 'nova', 'relay', 'transit', 'warden'],
