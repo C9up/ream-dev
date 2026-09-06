@@ -33,7 +33,7 @@ const UNITS = [
   {
     source: 'nodeEnv.ts',
     target: 'src/vendor/nodeEnv.ts',
-    packages: ['bay', 'blackhole', 'inker'],
+    packages: ['bay', 'blackhole', 'inker', 'station', 'transit'],
   },
   {
     source: 'nativeBinary.ts',
@@ -42,7 +42,18 @@ const UNITS = [
     // load node builtins dynamically, so a copy importing `node:module` at the
     // top would break their bundle. The boundary of a unit is set by the
     // consumers' constraints, not by how alike the code looks.
-    packages: ['rune', 'sigil', 'vellum', 'warden'],
+    packages: [
+      'atlas',
+      'blackhole',
+      'eon',
+      'helix',
+      'inker',
+      'rover',
+      'rune',
+      'sigil',
+      'vellum',
+      'warden',
+    ],
   },
   {
     source: 'quasarConnection.ts',
