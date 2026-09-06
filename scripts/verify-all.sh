@@ -42,7 +42,8 @@
 #   [6/8] cargo check --all         (root Cargo.toml workspace — 11 crates)
 #   [7/8] cargo check, excluded crate (ream-cli)
 #   [8/9] cargo test --all          (root Cargo.toml workspace)
-#   [9/9] cargo audit               (RustSec advisories, .cargo/audit.toml)
+#   [9/10] cargo audit              (RustSec advisories, .cargo/audit.toml)
+#   [10/10] vendored copies         (scripts/vendor-sync.mjs --check)
 #
 # Each stage runs only if the previous one succeeded (`set -e`). A failure
 # trap reports which stage broke so the message in the terminal points at
@@ -162,7 +163,7 @@ cargo test --locked --all
 
 # -----------------------------------------------------------------------------
 
-stage "[9/9] cargo audit (RustSec advisories)"
+stage "[9/10] cargo audit (RustSec advisories)"
 # The one gate nothing else covered: `cargo check` and `cargo test` say nothing
 # about a dependency with a published vulnerability, and neither does anything
 # on the Node side. Skipped with a message when the tool is absent rather than
@@ -180,7 +181,16 @@ fi
 
 # -----------------------------------------------------------------------------
 
+stage "[10/10] vendored copies match their source"
+# Code that belongs in several packages and cannot be a dependency: each
+# package is published from its own repository, so the file has to exist in
+# each one. The copies are generated from scripts/vendor/, never edited, and
+# this fails when one has drifted.
+node scripts/vendor-sync.mjs --check
+
+# -----------------------------------------------------------------------------
+
 echo ""
-echo "[verify] ✅ all 9 stages passed."
+echo "[verify] ✅ all 10 stages passed."
 echo "[verify]   Node $(node -v) — Rust $(cargo --version | awk '{print $2}')"
 echo "[verify]   The workspace is consistent. Safe to commit / ship."
