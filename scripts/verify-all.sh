@@ -34,14 +34,14 @@
 #
 # WHAT IT RUNS, IN ORDER
 # ----------------------
-#   [1/8] node engine >= 22
-#   [2/8] pnpm -r lint              (--if-present, all workspace packages)
-#   [3/8] pnpm -r build             (--if-present, all workspace packages)
-#   [4/8] pnpm -r typecheck         (--if-present, all workspace packages)
-#   [5/8] pnpm -r test              (--if-present, all workspace packages)
-#   [6/8] cargo check --all         (root Cargo.toml workspace — 11 crates)
-#   [7/8] cargo check, excluded crate (ream-cli)
-#   [8/9] cargo test --all          (root Cargo.toml workspace)
+#   [1/10] node engine >= 22
+#   [2/10] pnpm -r lint              (--if-present, all workspace packages)
+#   [3/10] pnpm -r build             (--if-present, all workspace packages)
+#   [4/10] pnpm -r typecheck         (--if-present, all workspace packages)
+#   [5/10] pnpm -r test              (--if-present, all workspace packages)
+#   [6/10] cargo check --all         (root Cargo.toml workspace — 11 crates)
+#   [7/10] cargo check, excluded crate (ream-cli)
+#   [8/10] cargo test --all          (root Cargo.toml workspace)
 #   [9/10] cargo audit              (RustSec advisories, .cargo/audit.toml)
 #   [10/10] vendored copies         (scripts/vendor-sync.mjs --check)
 #
@@ -99,7 +99,7 @@ stage() {
 
 # -----------------------------------------------------------------------------
 
-stage "[1/8] node engine >= 22"
+stage "[1/10] node engine >= 22"
 NODE_MAJOR="$(node -p "process.versions.node.split('.')[0]")"
 if [ "$NODE_MAJOR" -lt 22 ]; then
   echo "[verify] Node >= 22 is required (engines.node = >=22.0.0)."
@@ -111,17 +111,17 @@ echo "[verify] node $(node -v) ✓"
 
 # -----------------------------------------------------------------------------
 
-stage "[2/8] pnpm -r lint (--if-present)"
+stage "[2/10] pnpm -r lint (--if-present)"
 pnpm -r --filter './packages/*' --if-present run lint
 
 # -----------------------------------------------------------------------------
 
-stage "[3/8] pnpm -r build (--if-present)"
+stage "[3/10] pnpm -r build (--if-present)"
 pnpm -r --filter './packages/*' --if-present run build
 
 # -----------------------------------------------------------------------------
 
-stage "[4/8] pnpm -r typecheck (--if-present)"
+stage "[4/10] pnpm -r typecheck (--if-present)"
 # Source-first packages typically declare `typecheck: tsc --noEmit`; packages
 # with a real build pipeline get typecheck via their build step. --if-present
 # skips packages that have neither (those have nothing to ship the type
@@ -130,12 +130,12 @@ pnpm -r --filter './packages/*' --if-present run typecheck
 
 # -----------------------------------------------------------------------------
 
-stage "[5/8] pnpm -r test (--if-present)"
+stage "[5/10] pnpm -r test (--if-present)"
 pnpm -r --filter './packages/*' --if-present run test
 
 # -----------------------------------------------------------------------------
 
-stage "[6/8] cargo check --locked --all (root workspace, 11 crates)"
+stage "[6/10] cargo check --locked --all (root workspace, 11 crates)"
 if ! command -v cargo >/dev/null 2>&1; then
   echo "[verify] cargo not found on PATH."
   echo "[verify] Install via https://rustup.rs/ — the workspace pins toolchain"
@@ -150,7 +150,7 @@ cargo check --locked --all
 
 # -----------------------------------------------------------------------------
 
-stage "[7/8] cargo check, workspace-excluded crate"
+stage "[7/10] cargo check, workspace-excluded crate"
 # The root Cargo.toml's [workspace.exclude] list keeps this crate out of
 # `cargo check --all`.
 echo "[verify] → packages/ream-cli"
@@ -158,7 +158,7 @@ echo "[verify] → packages/ream-cli"
 
 # -----------------------------------------------------------------------------
 
-stage "[8/9] cargo test --locked --all (root workspace)"
+stage "[8/10] cargo test --locked --all (root workspace)"
 cargo test --locked --all
 
 # -----------------------------------------------------------------------------
