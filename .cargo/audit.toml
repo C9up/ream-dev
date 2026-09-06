@@ -1,0 +1,25 @@
+# What `cargo audit` is allowed to pass over, and why.
+#
+# An entry here is a claim that the advisory does not reach this codebase, and
+# it has to be checkable. Anything not listed fails the gate.
+
+[advisories]
+ignore = [
+  # RUSTSEC-2023-0071 — Marvin Attack on `rsa`, a timing sidechannel in RSA
+  # DECRYPTION. No fixed version exists upstream.
+  #
+  # Reached through atlas-db → sqlx → sqlx-mysql → rsa, where the crate is used
+  # in one direction only: encrypting the password with the MySQL server's
+  # PUBLIC key during the caching_sha2_password handshake
+  # (sqlx-mysql/src/connection/auth.rs, `rsa_backend::encrypt`). The private key
+  # and the decryption both live in the server; the vulnerable operation is
+  # never performed here.
+  #
+  # The dependency is not removable without cost: `mysql-rsa` is what lets a
+  # MySQL 8 connection authenticate at all when it is not already TLS, which is
+  # why atlas-db/Cargo.toml enables it deliberately. Drop that feature and every
+  # non-TLS MySQL 8 connection fails at the handshake.
+  #
+  # Revisit if sqlx ever decrypts with `rsa`, or if a fixed release appears.
+  "RUSTSEC-2023-0071",
+]

@@ -41,7 +41,8 @@
 #   [5/8] pnpm -r test              (--if-present, all workspace packages)
 #   [6/8] cargo check --all         (root Cargo.toml workspace — 11 crates)
 #   [7/8] cargo check, excluded crate (ream-cli)
-#   [8/8] cargo test --all          (root Cargo.toml workspace)
+#   [8/9] cargo test --all          (root Cargo.toml workspace)
+#   [9/9] cargo audit               (RustSec advisories, .cargo/audit.toml)
 #
 # Each stage runs only if the previous one succeeded (`set -e`). A failure
 # trap reports which stage broke so the message in the terminal points at
@@ -156,12 +157,30 @@ echo "[verify] → packages/ream-cli"
 
 # -----------------------------------------------------------------------------
 
-stage "[8/8] cargo test --locked --all (root workspace)"
+stage "[8/9] cargo test --locked --all (root workspace)"
 cargo test --locked --all
 
 # -----------------------------------------------------------------------------
 
+stage "[9/9] cargo audit (RustSec advisories)"
+# The one gate nothing else covered: `cargo check` and `cargo test` say nothing
+# about a dependency with a published vulnerability, and neither does anything
+# on the Node side. Skipped with a message when the tool is absent rather than
+# failing — it is a separate install (`cargo install cargo-audit --locked`) and
+# a missing tool is not a broken workspace.
+#
+# `.cargo/audit.toml` lists what may pass, each entry with the reason it does
+# not reach this code. Anything not listed fails here.
+if command -v cargo-audit >/dev/null 2>&1; then
+  cargo audit
+else
+  echo "[verify] cargo-audit not installed — RustSec advisories NOT checked."
+  echo "[verify]   cargo install cargo-audit --locked"
+fi
+
+# -----------------------------------------------------------------------------
+
 echo ""
-echo "[verify] ✅ all 8 stages passed."
+echo "[verify] ✅ all 9 stages passed."
 echo "[verify]   Node $(node -v) — Rust $(cargo --version | awk '{print $2}')"
 echo "[verify]   The workspace is consistent. Safe to commit / ship."
