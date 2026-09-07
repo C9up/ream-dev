@@ -31,11 +31,7 @@ const packagesDir = join(root, 'packages')
  * An entry is a claim with a reason, checkable against the code it names —
  * not a way to quiet the gate.
  */
-const DELIBERATE = {
-  inker:
-    'InkerProvider.shutdown() documents it: the renderer outlives shutdown so a ' +
-    'late-arriving handler does not meet a torn-down proxy mid-render.',
-}
+const DELIBERATE = {}
 
 /** Every `<pkg>/src/services/main.ts` in the workspace. */
 function accessors() {
@@ -112,6 +108,14 @@ if (problems.length > 0) {
 }
 
 const total = accessors().length
+const exempted = Object.keys(DELIBERATE)
+// The summary has to account for what was SKIPPED. It used to claim every
+// accessor was released while quietly stepping over an exemption, so the gate
+// read as green on exactly the package that did not comply — a gate that
+// misreports is worse than no gate, because it is believed.
 console.log(
-  `[service-accessors] ok — ${total} accessor(s), each released on shutdown by the provider that bound it`,
+  exempted.length === 0
+    ? `[service-accessors] ok — ${total} accessor(s), each released on shutdown by the provider that bound it`
+    : `[service-accessors] ok — ${total - exempted.length} of ${total} accessor(s) released on shutdown; ` +
+        `${exempted.length} exempted and NOT checked: ${exempted.join(', ')}`,
 )
