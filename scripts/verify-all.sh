@@ -34,16 +34,17 @@
 #
 # WHAT IT RUNS, IN ORDER
 # ----------------------
-#   [1/10] node engine >= 22
-#   [2/10] pnpm -r lint              (--if-present, all workspace packages)
-#   [3/10] pnpm -r build             (--if-present, all workspace packages)
-#   [4/10] pnpm -r typecheck         (--if-present, all workspace packages)
-#   [5/10] pnpm -r test              (--if-present, all workspace packages)
-#   [6/10] cargo check --all         (root Cargo.toml workspace — 11 crates)
-#   [7/10] cargo check, excluded crate (ream-cli)
-#   [8/10] cargo test --all          (root Cargo.toml workspace)
-#   [9/10] cargo audit              (RustSec advisories, .cargo/audit.toml)
-#   [10/10] vendored copies         (scripts/vendor-sync.mjs --check)
+#   [1/11] node engine >= 22
+#   [2/11] pnpm -r lint              (--if-present, all workspace packages)
+#   [3/11] pnpm -r build             (--if-present, all workspace packages)
+#   [4/11] pnpm -r typecheck         (--if-present, all workspace packages)
+#   [5/11] pnpm -r test              (--if-present, all workspace packages)
+#   [6/11] cargo fmt --check          (every crate, incl. the excluded one)
+#   [7/11] cargo check --all         (root Cargo.toml workspace — 11 crates)
+#   [8/11] cargo check, excluded crate (ream-cli)
+#   [9/11] cargo test --all          (root Cargo.toml workspace)
+#   [10/11] cargo audit             (RustSec advisories, .cargo/audit.toml)
+#   [11/11] vendored copies         (scripts/vendor-sync.mjs --check)
 #
 # Each stage runs only if the previous one succeeded (`set -e`). A failure
 # trap reports which stage broke so the message in the terminal points at
@@ -99,7 +100,7 @@ stage() {
 
 # -----------------------------------------------------------------------------
 
-stage "[1/10] node engine >= 22"
+stage "[1/11] node engine >= 22"
 NODE_MAJOR="$(node -p "process.versions.node.split('.')[0]")"
 if [ "$NODE_MAJOR" -lt 22 ]; then
   echo "[verify] Node >= 22 is required (engines.node = >=22.0.0)."
@@ -111,17 +112,17 @@ echo "[verify] node $(node -v) ✓"
 
 # -----------------------------------------------------------------------------
 
-stage "[2/10] pnpm -r lint (--if-present)"
+stage "[2/11] pnpm -r lint (--if-present)"
 pnpm -r --filter './packages/*' --if-present run lint
 
 # -----------------------------------------------------------------------------
 
-stage "[3/10] pnpm -r build (--if-present)"
+stage "[3/11] pnpm -r build (--if-present)"
 pnpm -r --filter './packages/*' --if-present run build
 
 # -----------------------------------------------------------------------------
 
-stage "[4/10] pnpm -r typecheck (--if-present)"
+stage "[4/11] pnpm -r typecheck (--if-present)"
 # Source-first packages typically declare `typecheck: tsc --noEmit`; packages
 # with a real build pipeline get typecheck via their build step. --if-present
 # skips packages that have neither (those have nothing to ship the type
@@ -130,12 +131,34 @@ pnpm -r --filter './packages/*' --if-present run typecheck
 
 # -----------------------------------------------------------------------------
 
-stage "[5/10] pnpm -r test (--if-present)"
+stage "[5/11] pnpm -r test (--if-present)"
 pnpm -r --filter './packages/*' --if-present run test
 
 # -----------------------------------------------------------------------------
 
-stage "[6/10] cargo check --locked --all (root workspace, 11 crates)"
+stage "[6/11] cargo fmt --check (every crate)"
+if ! command -v cargo >/dev/null 2>&1; then
+  echo "[verify] cargo not found on PATH."
+  echo "[verify] Install via https://rustup.rs/ — the workspace pins toolchain"
+  echo "[verify]   via rust-toolchain.toml so rustup will pick the right version."
+  exit 1
+fi
+# CI runs `cargo fmt --check` and this gate did not, so formatting drift got
+# through here and failed there — on a commit already tagged. A gate that
+# checks less than CI is not a gate. Every crate: the root workspace covers
+# most, `[workspace.exclude]` and the per-package crates need their own pass.
+cargo fmt --all --check
+for manifest in $(find packages -maxdepth 3 -name Cargo.toml -not -path "*/target/*"); do
+  crate_dir=$(dirname "$manifest")
+  ( cd "$crate_dir" && cargo fmt --check ) || {
+    echo "[verify] rustfmt drift in ${crate_dir} — run: (cd ${crate_dir} && cargo fmt)"
+    exit 1
+  }
+done
+
+# -----------------------------------------------------------------------------
+
+stage "[7/11] cargo check --locked --all (root workspace, 11 crates)"
 if ! command -v cargo >/dev/null 2>&1; then
   echo "[verify] cargo not found on PATH."
   echo "[verify] Install via https://rustup.rs/ — the workspace pins toolchain"
@@ -150,7 +173,7 @@ cargo check --locked --all
 
 # -----------------------------------------------------------------------------
 
-stage "[7/10] cargo check, workspace-excluded crate"
+stage "[8/11] cargo check, workspace-excluded crate"
 # The root Cargo.toml's [workspace.exclude] list keeps this crate out of
 # `cargo check --all`.
 echo "[verify] → packages/ream-cli"
@@ -158,12 +181,12 @@ echo "[verify] → packages/ream-cli"
 
 # -----------------------------------------------------------------------------
 
-stage "[8/10] cargo test --locked --all (root workspace)"
+stage "[9/11] cargo test --locked --all (root workspace)"
 cargo test --locked --all
 
 # -----------------------------------------------------------------------------
 
-stage "[9/10] cargo audit (RustSec advisories)"
+stage "[10/11] cargo audit (RustSec advisories)"
 # The one gate nothing else covered: `cargo check` and `cargo test` say nothing
 # about a dependency with a published vulnerability, and neither does anything
 # on the Node side. Skipped with a message when the tool is absent rather than
@@ -181,7 +204,7 @@ fi
 
 # -----------------------------------------------------------------------------
 
-stage "[10/10] vendored copies match their source"
+stage "[11/11] vendored copies match their source"
 # Code that belongs in several packages and cannot be a dependency: each
 # package is published from its own repository, so the file has to exist in
 # each one. The copies are generated from scripts/vendor/, never edited, and
@@ -191,6 +214,6 @@ node scripts/vendor-sync.mjs --check
 # -----------------------------------------------------------------------------
 
 echo ""
-echo "[verify] ✅ all 10 stages passed."
+echo "[verify] ✅ all 11 stages passed."
 echo "[verify]   Node $(node -v) — Rust $(cargo --version | awk '{print $2}')"
 echo "[verify]   The workspace is consistent. Safe to commit / ship."
