@@ -18,8 +18,22 @@ echo "[quality] build packages"
 pnpm -r --filter './packages/*' --if-present run build
 
 if [ "${COVERAGE:-1}" = "1" ]; then
-  echo "[quality] test packages (with coverage thresholds)"
-  pnpm -r --filter './packages/*' --if-present run test:coverage
+  # ONE AT A TIME, unless told otherwise.
+  #
+  # Coverage instrumentation makes every suite CPU-bound, and vitest's default
+  # per-test timeout is five seconds of WALL CLOCK. Run the workspaces in
+  # parallel and the slowest tests — the ones that shell out to `tsc`, or hash,
+  # or sleep — lose that race on a loaded machine and the gate reports a
+  # failure that has nothing to do with the code. It reproduces here at full
+  # parallelism (vellum's generated-config test) and it was reported from a
+  # smaller runner as six timeouts across echo and atlas.
+  #
+  # A gate that fails for reasons unrelated to what it checks is worse than a
+  # slow one: it teaches everyone to re-run it. `QUALITY_COVERAGE_CONCURRENCY`
+  # is there for anyone with the cores to spare.
+  echo "[quality] test packages (with coverage thresholds, one workspace at a time)"
+  pnpm -r --workspace-concurrency="${QUALITY_COVERAGE_CONCURRENCY:-1}" \
+    --filter './packages/*' --if-present run test:coverage
 else
   echo "[quality] test packages"
   pnpm -r --filter './packages/*' --if-present run test
