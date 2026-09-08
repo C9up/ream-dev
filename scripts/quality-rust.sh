@@ -41,4 +41,12 @@ for ws in "${workspaces[@]}"; do
   fi
 done
 
-echo "[rust] all workspaces clean"
+# "Clean" has to mean everything was checked. With cargo-deny absent the
+# advisory pass never ran, and announcing clean anyway is a green light for
+# something nobody looked at.
+if [ "$have_deny" -eq 1 ]; then
+  echo "[rust] all workspaces clean"
+else
+  echo "[rust] ⚠️  fmt, clippy and tests passed on all workspaces — advisories NOT checked (cargo-deny missing)"
+  echo "[rust]   cargo install cargo-deny --locked"
+fi

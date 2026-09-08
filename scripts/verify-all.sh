@@ -92,6 +92,10 @@ on_error() {
 }
 trap on_error ERR
 
+# Stages that could not run, so the summary can say so instead of implying
+# they passed.
+SKIPPED=()
+
 stage() {
   CURRENT_STAGE="$1"
   echo ""
@@ -200,6 +204,7 @@ if command -v cargo-audit >/dev/null 2>&1; then
 else
   echo "[verify] cargo-audit not installed — RustSec advisories NOT checked."
   echo "[verify]   cargo install cargo-audit --locked"
+  SKIPPED+=("cargo audit (cargo-audit not installed)")
 fi
 
 # -----------------------------------------------------------------------------
@@ -214,6 +219,18 @@ node scripts/vendor-sync.mjs --check
 # -----------------------------------------------------------------------------
 
 echo ""
-echo "[verify] ✅ all 11 stages passed."
+# The summary has to account for what was SKIPPED. "All 11 stages passed" on a
+# run where the advisory check never happened is a green light for something
+# nobody looked at — and a gate that misreports is worse than no gate, because
+# it is believed.
+if [ ${#SKIPPED[@]} -eq 0 ]; then
+  echo "[verify] ✅ all 11 stages passed."
+else
+  echo "[verify] ⚠️  $((11 - ${#SKIPPED[@]})) of 11 stages passed; ${#SKIPPED[@]} SKIPPED and not verified:"
+  for skipped in "${SKIPPED[@]}"; do
+    echo "[verify]   - ${skipped}"
+  done
+  echo "[verify] Install the missing tool before treating this run as a release gate."
+fi
 echo "[verify]   Node $(node -v) — Rust $(cargo --version | awk '{print $2}')"
 echo "[verify]   The workspace is consistent. Safe to commit / ship."
