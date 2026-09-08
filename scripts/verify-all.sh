@@ -136,7 +136,21 @@ pnpm -r --filter './packages/*' --if-present run typecheck
 # -----------------------------------------------------------------------------
 
 stage "[5/11] pnpm -r test (--if-present)"
-pnpm -r --filter './packages/*' --if-present run test
+# ONE WORKSPACE AT A TIME, unless told otherwise.
+#
+# vitest's per-test timeout is five seconds of WALL CLOCK. Run 29 suites at
+# once, each spawning its own workers, and the tests that do real work — a
+# Tailwind compile, a filesystem walk, a `tsc` — lose that race and the gate
+# reports a failure that has nothing to do with the code. Measured: nebula's
+# two heaviest tests take 786ms alone and time out at 5000ms under full
+# parallelism.
+#
+# A gate that fails for reasons unrelated to what it checks is worse than a
+# slow one: it teaches everyone to re-run it until it passes. The lint, build
+# and typecheck stages stay parallel — none of them asserts on wall clock.
+# `VERIFY_TEST_CONCURRENCY` is there for anyone with the cores to spare.
+pnpm -r --workspace-concurrency="${VERIFY_TEST_CONCURRENCY:-1}" \
+  --filter './packages/*' --if-present run test
 
 # -----------------------------------------------------------------------------
 
