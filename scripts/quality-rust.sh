@@ -20,7 +20,9 @@ for dir in packages/*/; do
 done
 
 have_deny=0
-if command -v cargo-deny >/dev/null 2>&1; then
+# Detected the way it is invoked: `cargo deny` resolves through cargo's
+# subcommand lookup in ~/.cargo/bin, which need not be on PATH.
+if cargo deny --version >/dev/null 2>&1; then
   have_deny=1
 else
   echo "[rust] cargo-deny not installed — skipping the advisory check"

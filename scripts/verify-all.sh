@@ -199,7 +199,12 @@ stage "[10/11] cargo audit (RustSec advisories)"
 #
 # `.cargo/audit.toml` lists what may pass, each entry with the reason it does
 # not reach this code. Anything not listed fails here.
-if command -v cargo-audit >/dev/null 2>&1; then
+# Detected the way it is INVOKED, not the way it is installed. `cargo audit`
+# resolves through cargo's own subcommand lookup, which searches ~/.cargo/bin
+# whether or not that directory is on PATH — so `command -v cargo-audit` said
+# "missing" for a tool that was installed and working, and the gate skipped the
+# advisory check on machines that had it.
+if cargo audit --version >/dev/null 2>&1; then
   cargo audit
 else
   echo "[verify] cargo-audit not installed — RustSec advisories NOT checked."
