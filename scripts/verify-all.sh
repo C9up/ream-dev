@@ -17,10 +17,14 @@
 #      immediately. Nothing in the TS dev loop runs cargo, so the break sat
 #      uncaught for 4 days until a code review checked.
 #
-#   2. Excluded Cargo crates. One crate lives OUTSIDE the root workspace and
-#      needs a separate `cargo build` invocation:
-#        - packages/ream-cli
-#      The root `cargo test --all` does NOT cover it.
+#   2. Cargo workspaces outside the root one. The root workspace holds ream's
+#      and atlas's crates; EVERY other package carries its own workspace, and
+#      `cargo check --all` / `cargo test --all` / `cargo audit` at the root see
+#      none of them. This gate walked only the root and `packages/ream-cli`,
+#      and said "the workspace is consistent" — while atom, blackhole, chronos,
+#      eon, helix, inker, ream-mcp, rover, rune, sigil, vellum and warden went
+#      unchecked and unaudited. Vellum's lockfile in particular was outside the
+#      advisory pass that exists to read it.
 #
 #   3. Source-first packages without a `build` script. Per ADR-003 most
 #      packages ship raw TypeScript (consumed via @swc-node/register). Those
@@ -41,8 +45,8 @@
 #   [5/11] pnpm -r test              (--if-present, all workspace packages)
 #   [6/11] cargo fmt --check          (every crate, incl. the excluded one)
 #   [7/11] cargo check --all         (root Cargo.toml workspace — 11 crates)
-#   [8/11] cargo check, excluded crate (ream-cli)
-#   [9/11] cargo test --all          (root Cargo.toml workspace)
+#   [8/11] cargo check           (every package's own Cargo workspace)
+#   [9/11] cargo test            (root workspace + every package workspace)
 #   [10/11] cargo audit             (RustSec advisories, .cargo/audit.toml)
 #   [11/11] vendored copies         (scripts/vendor-sync.mjs --check)
 #
@@ -191,16 +195,30 @@ cargo check --locked --all
 
 # -----------------------------------------------------------------------------
 
-stage "[8/11] cargo check, workspace-excluded crate"
-# The root Cargo.toml's [workspace.exclude] list keeps this crate out of
-# `cargo check --all`.
-echo "[verify] → packages/ream-cli"
-( cd packages/ream-cli && cargo check --locked )
+stage "[8/11] cargo check, every package workspace"
+# Each package carries its OWN Cargo workspace; the root one holds ream's and
+# atlas's crates and nothing else. This walked `packages/ream-cli` alone and
+# left twelve workspaces unchecked.
+for manifest in packages/*/Cargo.toml; do
+  workspace="$(dirname "$manifest")"
+  echo "[verify] → ${workspace}"
+  ( cd "$workspace" && cargo check --locked --workspace )
+done
 
 # -----------------------------------------------------------------------------
 
-stage "[9/11] cargo test --locked --all (root workspace)"
+stage "[9/11] cargo test --locked (root and every package workspace)"
 cargo test --locked --all
+# What each package's own `test:rust` sets, and this gate did not: ream-mcp
+# warms the fastembed model on a background thread, and the ONNX runtime's
+# atexit handler aborts the process when that is still in flight at exit —
+# SIGABRT after a green run.
+export REAM_MCP_DISABLE_EMBEDDINGS=1
+for manifest in packages/*/Cargo.toml; do
+  workspace="$(dirname "$manifest")"
+  echo "[verify] → ${workspace}"
+  ( cd "$workspace" && cargo test --locked --workspace )
+done
 
 # -----------------------------------------------------------------------------
 
@@ -220,6 +238,17 @@ stage "[10/11] cargo audit (RustSec advisories)"
 # advisory check on machines that had it.
 if cargo audit --version >/dev/null 2>&1; then
   cargo audit
+  # One lockfile per workspace, and the root's is not the others'. Vellum's —
+  # which is where the RSA advisory lives — was outside this pass entirely.
+  #
+  # Read from HERE with `--file` rather than by walking into each workspace:
+  # `.cargo/audit.toml` is resolved against the working directory, so a `cd`
+  # left every per-package run without the exception list and failed on
+  # advisories the root had already accounted for.
+  for lockfile in packages/*/Cargo.lock; do
+    echo "[verify] → ${lockfile}"
+    cargo audit --file "$lockfile"
+  done
 else
   echo "[verify] cargo-audit not installed — RustSec advisories NOT checked."
   echo "[verify]   cargo install cargo-audit --locked"
