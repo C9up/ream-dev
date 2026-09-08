@@ -14,6 +14,15 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT="$PWD"
 
+# What a package's own `test:rust` script sets, and this gate did not.
+#
+# ream-mcp warms the fastembed model up on a background thread; the ONNX
+# runtime then registers an atexit handler that aborts the process — SIGABRT,
+# after a green run — when the warm-up is still in flight at exit. The gate
+# reported "test failed" for 41 passing tests, on nothing to do with the code.
+# Set for every workspace: a package that does not read it does not care.
+export REAM_MCP_DISABLE_EMBEDDINGS=1
+
 workspaces=(".")
 for dir in packages/*/; do
   [ -f "${dir}Cargo.toml" ] && workspaces+=("${dir%/}")

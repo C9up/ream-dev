@@ -23,6 +23,22 @@ ignore = [
   # unmaintained release is a maintenance risk rather than an exposure. It comes
   # in transitively and cannot be dropped without dropping its parent.
   { id = "RUSTSEC-2024-0436", reason = "paste is a compile-time proc-macro with no runtime surface; transitive and unmaintained upstream" },
+  # RUSTSEC-2026-0206 / RUSTSEC-2026-0192 — `rustybuzz` and `ttf-parser` are
+  # unmaintained. Both reach vellum through krilla, which is what draws the
+  # PDF; krilla 0.8.2 is the latest release and has not moved to the named
+  # replacements (`harfrust`, `skrifa`) yet.
+  #
+  # These are the only two entries here on code that parses UNTRUSTED input:
+  # an application embedding a font it did not author hands these crates bytes
+  # from outside. That is the exposure, and it is accepted knowingly rather
+  # than dismissed — both advisories say "No safe upgrade is available", so
+  # there is no version to move to and no configuration that avoids them short
+  # of dropping PDF output entirely.
+  #
+  # REVISIT ON EVERY krilla BUMP: the day it ships against harfrust/skrifa,
+  # both of these come out. Nothing else in the tree pulls them.
+  { id = "RUSTSEC-2026-0206", reason = "rustybuzz via krilla: unmaintained with no fixed release; revisit when krilla moves to harfrust" },
+  { id = "RUSTSEC-2026-0192", reason = "ttf-parser via krilla/rustybuzz: unmaintained with no fixed release; revisit when krilla moves to skrifa" },
 ]
 
 [bans]
