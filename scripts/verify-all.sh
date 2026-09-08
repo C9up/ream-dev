@@ -233,4 +233,10 @@ else
   echo "[verify] Install the missing tool before treating this run as a release gate."
 fi
 echo "[verify]   Node $(node -v) — Rust $(cargo --version | awk '{print $2}')"
-echo "[verify]   The workspace is consistent. Safe to commit / ship."
+if [ ${#SKIPPED[@]} -eq 0 ]; then
+  echo "[verify]   The workspace is consistent. Safe to commit / ship."
+else
+  # Saying "safe to ship" one line under "not verified" is how the warning
+  # above gets ignored: the last line is the one that is read.
+  echo "[verify]   Consistent as far as it was checked — NOT a release gate while a stage is skipped."
+fi
