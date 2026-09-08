@@ -31,15 +31,25 @@ ignore = [
   # vellum, which signs PDFs: `cms.rs` loads an `RsaPrivateKey` and runs the
   # private-key operation the advisory is actually about, on a digest a caller
   # can influence and repeat. That is NOT covered by the sentence above, and
-  # writing it as if it were is how it stopped being looked at. The exposure is
-  # answered in the code instead: the signer blinds, by handing `rsa` a
-  # generator through `RandomizedSigner` — which is what the advisory's own
-  # mitigation amounts to while no fixed release exists.
+  # writing it as if it were is how it stopped being looked at.
+  #
+  # vellum's signer BLINDS — it hands `rsa` a generator through
+  # `RandomizedSigner`, which is what the advisory's own mitigation amounts to
+  # while no fixed release exists. That REDUCES the exposure; it does not close
+  # it. `rsa` remains an affected version, the advisory recognises no fixed
+  # one, and RustCrypto/RSA#626 still tracks side channels in the padding
+  # modes. What is accepted here is a residual risk, not a resolved finding.
+  #
+  # Where that residual risk stops being acceptable: a signer reachable from
+  # remote input — an HTTP signing endpoint, a queue a client can feed — puts
+  # the timing of a private-key operation under an attacker's control and
+  # repetition. That deployment wants an HSM, a remote signing service or an
+  # audited constant-time backend, not this exception.
   #
   # Still live on rsa 0.10.0-rc.18, which is what sqlx-mysql 0.9 resolves to:
   # the advisory says "No safe upgrade is available" because the constant-time
   # rewrite has not shipped in any release. Reaching 0.10 did not close it.
-  { id = "RUSTSEC-2023-0071", reason = "atlas: public-key handshake only. vellum: a private-key operation, blinded in cms.rs. No fixed release in any line" },
+  { id = "RUSTSEC-2023-0071", reason = "atlas: public-key handshake only. vellum: a private-key operation, blinded in cms.rs — residual risk accepted, NOT closed; a remotely-reachable signer wants an HSM. No fixed release in any line" },
   # RUSTSEC-2024-0436 — `paste` is unmaintained. A proc-macro that pastes
   # identifiers together at compile time: it ships no runtime code, so an
   # unmaintained release is a maintenance risk rather than an exposure. It comes
