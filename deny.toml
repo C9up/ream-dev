@@ -21,16 +21,25 @@ yanked = "deny"
 # way — rsa fails the root, atlas and vellum; paste fails ream-mcp.
 ignore = [
   # RUSTSEC-2023-0071 — Marvin, a timing sidechannel in `rsa`'s private-key
-  # operation. It arrives through `sqlx-mysql`, which uses it ONLY to encrypt
-  # the password during MySQL's `caching_sha2_password` handshake — a public-key
-  # operation, on data the attacker supplied in the first place. There is no
-  # private-key operation on this path and no fixed 0.9.x to move to; the RSA
-  # crate's own fix is the unreleased 0.10 line.
+  # operation. TWO packages reach it, and only one of them for the reason this
+  # exception used to give.
+  #
+  # atlas, through `sqlx-mysql`, which uses it ONLY to encrypt the password
+  # during MySQL's `caching_sha2_password` handshake — a public-key operation,
+  # on data the attacker supplied in the first place.
+  #
+  # vellum, which signs PDFs: `cms.rs` loads an `RsaPrivateKey` and runs the
+  # private-key operation the advisory is actually about, on a digest a caller
+  # can influence and repeat. That is NOT covered by the sentence above, and
+  # writing it as if it were is how it stopped being looked at. The exposure is
+  # answered in the code instead: the signer blinds, by handing `rsa` a
+  # generator through `RandomizedSigner` — which is what the advisory's own
+  # mitigation amounts to while no fixed release exists.
   #
   # Still live on rsa 0.10.0-rc.18, which is what sqlx-mysql 0.9 resolves to:
   # the advisory says "No safe upgrade is available" because the constant-time
   # rewrite has not shipped in any release. Reaching 0.10 did not close it.
-  { id = "RUSTSEC-2023-0071", reason = "rsa via sqlx-mysql: public-key handshake only, no private-key operation, and no fixed release in any line" },
+  { id = "RUSTSEC-2023-0071", reason = "atlas: public-key handshake only. vellum: a private-key operation, blinded in cms.rs. No fixed release in any line" },
   # RUSTSEC-2024-0436 — `paste` is unmaintained. A proc-macro that pastes
   # identifiers together at compile time: it ships no runtime code, so an
   # unmaintained release is a maintenance risk rather than an exposure. It comes
