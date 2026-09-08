@@ -39,7 +39,23 @@ for (const entry of readdirSync(packagesDir)) {
   manifests.push({ dir: entry, manifest })
 }
 
-/** Whether `version` satisfies a caret range, for the 0.x rules npm applies. */
+/**
+ * Whether `version` satisfies a range, for the 0.x rules npm applies.
+ *
+ * `||` is a real range and a legitimate answer to a breaking bump: a package
+ * that works with BOTH lines should say so. Requiring a single caret pushed the
+ * manifest to claim something narrower than the truth, which is the opposite of
+ * what this gate is for — so each alternative is tried and one match is enough.
+ */
+function satisfiesRange(range, version) {
+  return range
+    .split('||')
+    .map((part) => part.trim())
+    .filter((part) => part !== '')
+    .some((part) => satisfiesCaret(part, version))
+}
+
+/** Whether `version` satisfies ONE caret range, for the 0.x rules npm applies. */
 function satisfiesCaret(range, version) {
   const match = /^\^(\d+)\.(\d+)\.(\d+)/.exec(range)
   if (!match) return true // not a caret range — out of scope, leave it alone
@@ -65,7 +81,7 @@ for (const { dir, manifest } of manifests) {
       const shipped = workspace.get(dep)
       if (!shipped) continue // not a workspace package
       if (typeof range !== 'string' || range.startsWith('workspace:')) continue
-      if (!satisfiesCaret(range, shipped)) {
+      if (!satisfiesRange(range, shipped)) {
         offenders.push({ dir, section, dep, range, shipped })
       }
     }
