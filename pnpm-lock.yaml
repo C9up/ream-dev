@@ -915,7 +915,7 @@ importers:
         specifier: ^0.2.0
         version: link:../ream
       '@c9up/rune':
-        specifier: ^0.1.8
+        specifier: ^0.2.0
         version: link:../rune
       '@c9up/warden':
         specifier: ^0.2.0
