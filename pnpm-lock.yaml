@@ -657,6 +657,9 @@ importers:
       typescript:
         specifier: ^6.0.2
         version: 6.0.3
+      vite:
+        specifier: ^7.3.5
+        version: 7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0)
       vitest:
         specifier: 4.1.11
         version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
@@ -809,8 +812,8 @@ importers:
   packages/rover:
     dependencies:
       nodemailer:
-        specifier: ^9.0.1
-        version: 9.1.0
+        specifier: ^9.1.1
+        version: 9.1.1
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.4.10
@@ -915,10 +918,10 @@ importers:
         specifier: ^0.2.0
         version: link:../ream
       '@c9up/rune':
-        specifier: ^0.2.0
+        specifier: ^0.1.8 || ^0.2.0
         version: link:../rune
       '@c9up/warden':
-        specifier: ^0.2.0
+        specifier: ^0.1.0 || ^0.2.0
         version: link:../warden
       '@types/node':
         specifier: ^22.19.15
@@ -3214,8 +3217,8 @@ packages:
     resolution: {integrity: sha512-YHs7BmmcsdAI5Ozuf8JZo6PT0mv2GIWC9vMfvUC3dp65M8hn7Ux8CPL+2oBI7juNuj9d0ndhTcznq2ODBps9cQ==}
     engines: {node: '>=18'}
 
-  nodemailer@9.1.0:
-    resolution: {integrity: sha512-xj1Ri5Sau3qpPffHJwi2bY0oWVVWYq62Ph17l+2v1xXpxjqTls3YPc3L8dub9mcJpxj+1ucNnuYVqLlgh4pmDA==}
+  nodemailer@9.1.1:
+    resolution: {integrity: sha512-izw9mVKFix6YSnC9eLgV6g1opl9DUlRio9ZNcq+Wu9Ujn2UwF+8Nl0B8nz22kEC+CTZCvinkxwJ0DeFbb6NwcQ==}
     engines: {node: '>=6.0.0'}
 
   normalize-package-data@8.0.0:
@@ -5913,7 +5916,7 @@ snapshots:
 
   node-releases@2.0.54: {}
 
-  nodemailer@9.1.0: {}
+  nodemailer@9.1.1: {}
 
   normalize-package-data@8.0.0:
     dependencies:
