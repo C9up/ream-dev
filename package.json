@@ -9,7 +9,7 @@
     "test:rust": "cargo test --all",
     "build": "pnpm -r --filter './packages/*' run build",
     "build:rust": "cargo build --release",
-    "lint": "biome check packages/",
+    "lint": "pnpm -r --workspace-concurrency=1 run lint",
     "quality:duplicates": "bash scripts/duplicate-report.sh",
     "quality:gates": "node scripts/check-publish-gates.mjs",
     "quality:rust": "bash scripts/quality-rust.sh",
@@ -28,7 +28,7 @@
     "bench": "tsx benchmarks/bench.ts"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.11",
+    "@biomejs/biome": "^2.5.12",
     "@types/node": "^22.20.1",
     "@vitest/coverage-v8": "4.1.11",
     "typescript": "^6.0.3",
