@@ -118,7 +118,7 @@ app.routes((router) => {
   })
 
   router.post('/api/users', async ({ request, response }) => {
-    const result = CreateUserSchema.validate(request.body())
+    const result = CreateUserSchema.validateResult(request.body())
 
     if (!result.valid) {
       response.status(400).json({ errors: result.errors })
