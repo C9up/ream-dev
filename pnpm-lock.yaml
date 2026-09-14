@@ -141,6 +141,9 @@ importers:
       '@c9up/spectrum':
         specifier: workspace:*
         version: link:../../packages/spectrum
+      '@c9up/station':
+        specifier: workspace:*
+        version: link:../../packages/station
       '@c9up/transit':
         specifier: workspace:*
         version: link:../../packages/transit
