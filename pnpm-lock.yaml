@@ -43,7 +43,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 4.1.11
-        version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
+        version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
@@ -72,6 +72,9 @@ importers:
       '@c9up/atlas':
         specifier: workspace:*
         version: link:../../packages/atlas
+      '@c9up/atom':
+        specifier: workspace:*
+        version: link:../../packages/atom
       '@c9up/aurora':
         specifier: workspace:*
         version: link:../../packages/aurora
@@ -84,15 +87,33 @@ importers:
       '@c9up/chronos':
         specifier: workspace:*
         version: link:../../packages/chronos
+      '@c9up/comet':
+        specifier: workspace:*
+        version: link:../../packages/comet
       '@c9up/echo':
         specifier: workspace:*
         version: link:../../packages/echo
+      '@c9up/eclipse':
+        specifier: workspace:*
+        version: link:../../packages/eclipse
+      '@c9up/eon':
+        specifier: workspace:*
+        version: link:../../packages/eon
+      '@c9up/nebula':
+        specifier: workspace:*
+        version: link:../../packages/nebula
       '@c9up/nova':
         specifier: workspace:*
         version: link:../../packages/nova
+      '@c9up/parsec':
+        specifier: workspace:*
+        version: link:../../packages/parsec
       '@c9up/photon':
         specifier: workspace:*
         version: link:../../packages/photon
+      '@c9up/prism':
+        specifier: workspace:*
+        version: link:../../packages/prism
       '@c9up/quasar':
         specifier: workspace:*
         version: link:../../packages/quasar
@@ -117,6 +138,12 @@ importers:
       '@c9up/spectrum':
         specifier: workspace:*
         version: link:../../packages/spectrum
+      '@c9up/transit':
+        specifier: workspace:*
+        version: link:../../packages/transit
+      '@c9up/vellum':
+        specifier: workspace:*
+        version: link:../../packages/vellum
       '@c9up/warden':
         specifier: workspace:*
         version: link:../../packages/warden
@@ -228,10 +255,10 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/helix':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../helix
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -249,7 +276,7 @@ importers:
   packages/atlas:
     dependencies:
       '@c9up/chronos':
-        specifier: workspace:^
+        specifier: ^0.1.8
         version: link:../chronos
       reflect-metadata:
         specifier: ^0.2.2
@@ -259,10 +286,10 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/helix':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../helix
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@faker-js/faker':
         specifier: ^10.6.0
@@ -304,10 +331,10 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/comet':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../comet
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -340,10 +367,10 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/quasar':
-        specifier: workspace:^
+        specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -362,7 +389,7 @@ importers:
     dependencies:
       '@c9up/quasar':
         specifier: ^0.1.0
-        version: link:../quasar
+        version: 0.1.5(@c9up/ream@packages+ream)(supports-color@10.2.2)
       '@c9up/ream':
         specifier: ^0.2.0
         version: link:../ream
@@ -425,10 +452,34 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/quasar':
-        specifier: workspace:^
+        specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
+        version: link:../ream
+      '@types/node':
+        specifier: ^22.20.1
+        version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
+
+  packages/eclipse:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.5.12
+        version: 2.5.12
+      '@c9up/quasar':
+        specifier: ^0.1.0 || ^0.2.0
+        version: link:../quasar
+      '@c9up/ream':
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -456,7 +507,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -501,10 +552,10 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/helix':
-        specifier: workspace:^
+        specifier: ^0.2.3
         version: link:../helix
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.7
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -528,10 +579,10 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@c9up/rosetta':
-        specifier: workspace:^
+        specifier: ^0.3.0
         version: link:../rosetta
       '@types/node':
         specifier: ^22.20.1
@@ -552,7 +603,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/aurora':
-        specifier: workspace:^
+        specifier: ^0.1.30
         version: link:../aurora
       '@tailwindcss/cli':
         specifier: ^4.3.3
@@ -583,7 +634,7 @@ importers:
     dependencies:
       '@c9up/quasar':
         specifier: ^0.1.0
-        version: link:../quasar
+        version: 0.1.5(@c9up/ream@packages+ream)(supports-color@10.2.2)
       '@c9up/ream':
         specifier: ^0.2.0
         version: link:../ream
@@ -595,7 +646,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/atlas':
-        specifier: workspace:^
+        specifier: ^0.3.0
         version: link:../atlas
       '@types/node':
         specifier: ^22.20.1
@@ -619,13 +670,38 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
 
+  packages/parsec:
+    dependencies:
+      '@opentelemetry/api':
+        specifier: ^1.9.0
+        version: 1.9.1
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.5.12
+        version: 2.5.12
+      '@c9up/ream':
+        specifier: ^0.2.0
+        version: link:../ream
+      '@types/node':
+        specifier: ^22.20.1
+        version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
+
   packages/photon:
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -667,6 +743,27 @@ importers:
         specifier: ^3.5.42
         version: 3.5.42(typescript@6.0.3)
 
+  packages/prism:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.5.12
+        version: 2.5.12
+      '@c9up/ream':
+        specifier: ^0.2.0
+        version: link:../ream
+      '@types/node':
+        specifier: ^22.20.1
+        version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.11
+        version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
+
   packages/quasar:
     dependencies:
       ioredis:
@@ -677,7 +774,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -696,7 +793,7 @@ importers:
     dependencies:
       '@c9up/quasar':
         specifier: ^0.1.0
-        version: link:../quasar
+        version: 0.1.5(@c9up/ream@packages+ream)(supports-color@10.2.2)
       file-type:
         specifier: ^22.0.2
         version: 22.0.2(supports-color@10.2.2)
@@ -711,7 +808,7 @@ importers:
         specifier: 2.5.12
         version: 2.5.12
       '@c9up/comet':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../comet
       '@types/node':
         specifier: ^22.20.1
@@ -745,7 +842,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/atlas':
-        specifier: workspace:^
+        specifier: ^0.3.3
         version: link:../atlas
       '@types/node':
         specifier: ^22.20.1
@@ -766,14 +863,14 @@ importers:
   packages/relay:
     dependencies:
       '@c9up/quasar':
-        specifier: ^0.1.0
+        specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -794,7 +891,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -819,13 +916,13 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/bay':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../bay
       '@c9up/helix':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../helix
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -836,6 +933,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 4.1.11
         version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
+      ical-generator:
+        specifier: ^11.1.1
+        version: 11.1.1(@types/node@22.20.1)(moment-timezone@0.5.48)(moment@2.30.1)
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -867,7 +967,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -888,7 +988,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -909,19 +1009,19 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/atlas':
-        specifier: workspace:^
+        specifier: ^0.3.0
         version: link:../atlas
       '@c9up/inker':
-        specifier: workspace:^
+        specifier: ^0.1.0
         version: link:../inker
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@c9up/rune':
-        specifier: workspace:^
+        specifier: ^0.1.8 || ^0.2.0
         version: link:../rune
       '@c9up/warden':
-        specifier: workspace:^
+        specifier: ^0.1.0 || ^0.2.0
         version: link:../warden
       '@types/node':
         specifier: ^22.20.1
@@ -943,13 +1043,13 @@ importers:
     dependencies:
       '@c9up/quasar':
         specifier: ^0.1.0
-        version: link:../quasar
+        version: 0.1.5(@c9up/ream@packages+ream)(supports-color@10.2.2)
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -970,7 +1070,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -991,10 +1091,10 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/quasar':
-        specifier: workspace:^
+        specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
       '@c9up/ream':
-        specifier: workspace:^
+        specifier: ^0.2.0
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -1175,6 +1275,15 @@ packages:
   '@bramus/specificity@2.4.2':
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
     hasBin: true
+
+  '@c9up/quasar@0.1.5':
+    resolution: {integrity: sha512-nwxLbPeI/LvSqDU1Hpw+pLlICvY1dJLyDRDDeL7kdyTYJeKVDPXf9XM8P87AxLaWAkA/q0TyVJ1yKUmLxiVZVw==}
+    engines: {node: '>=22.0.0'}
+    peerDependencies:
+      '@c9up/ream': ^0.2.0
+    peerDependenciesMeta:
+      '@c9up/ream':
+        optional: true
 
   '@colors/colors@1.6.0':
     resolution: {integrity: sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==}
@@ -1553,6 +1662,10 @@ packages:
 
   '@open-draft/until@2.1.0':
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
+
+  '@opentelemetry/api@1.9.1':
+    resolution: {integrity: sha512-gLyJlPHPZYdAk1JENA9LeHejZe1Ti77/pTeFm/nMXmQH/HFZlcS/O2XJB+L8fkbrNSqhdtlvjBVjxwUYanNH5Q==}
+    engines: {node: '>=8.0.0'}
 
   '@oxc-resolver/binding-android-arm-eabi@11.24.2':
     resolution: {integrity: sha512-y09e0L0SRI2OA2tUIrjBgoV3eH5hvUKXNkJqXmNo5V2WxIjyC7I7aJfRLMEVpA8yi95f90gFDvO0VMgrDw+vwA==}
@@ -2827,6 +2940,39 @@ packages:
     resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
     engines: {node: '>= 14'}
 
+  ical-generator@11.1.1:
+    resolution: {integrity: sha512-1m50e+BOMzxtE3lFXlFiOKvze4Mmiiq2+QoEMw7w7EDtWSq8OxWrdN6mmQdaymBVjmkP1pg0BAPUesBL1ZHQMQ==}
+    engines: {node: 22 || >=24.0.0}
+    peerDependencies:
+      '@touch4it/ical-timezones': '>=1.6.0'
+      '@types/luxon': '>= 1.26.0'
+      '@types/mocha': '>= 8.2.1'
+      '@types/node': '*'
+      dayjs: '>= 1.10.0'
+      luxon: '>= 1.26.0'
+      moment: '>= 2.29.0'
+      moment-timezone: '>= 0.5.33'
+      rrule: '>= 2.6.8'
+    peerDependenciesMeta:
+      '@touch4it/ical-timezones':
+        optional: true
+      '@types/luxon':
+        optional: true
+      '@types/mocha':
+        optional: true
+      '@types/node':
+        optional: true
+      dayjs:
+        optional: true
+      luxon:
+        optional: true
+      moment:
+        optional: true
+      moment-timezone:
+        optional: true
+      rrule:
+        optional: true
+
   iconv-lite@0.7.3:
     resolution: {integrity: sha512-IKXpvIzjnC9XTAUbVBcMfGS0EPaIXtW6v+zr+RRp+hqULEpo0owZax6wyRwPOJbWbzjYspQwusTsfVr0ifh4uQ==}
     engines: {node: '>=0.10.0'}
@@ -4038,6 +4184,14 @@ snapshots:
     dependencies:
       css-tree: 3.2.1
 
+  '@c9up/quasar@0.1.5(@c9up/ream@packages+ream)(supports-color@10.2.2)':
+    dependencies:
+      ioredis: 6.0.0(supports-color@10.2.2)
+    optionalDependencies:
+      '@c9up/ream': link:packages/ream
+    transitivePeerDependencies:
+      - supports-color
+
   '@colors/colors@1.6.0': {}
 
   '@colors/colors@1.6.1': {}
@@ -4308,6 +4462,9 @@ snapshots:
       outvariant: 1.4.3
 
   '@open-draft/until@2.1.0': {}
+
+  '@opentelemetry/api@1.9.1':
+    optional: true
 
   '@oxc-resolver/binding-android-arm-eabi@11.24.2':
     optional: true
@@ -4831,7 +4988,7 @@ snapshots:
       '@vitest/mocker': 4.1.11(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       playwright: 1.63.0
       tinyrainbow: 3.1.1
-      vitest: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
+      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
     transitivePeerDependencies:
       - bufferutil
       - msw
@@ -4847,7 +5004,7 @@ snapshots:
       pngjs: 7.0.0
       sirv: 3.0.2
       tinyrainbow: 3.1.1
-      vitest: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
+      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
       ws: 8.21.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
@@ -4867,7 +5024,7 @@ snapshots:
       obug: 2.1.4
       std-env: 4.2.0
       tinyrainbow: 3.1.1
-      vitest: 4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
+      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
     optionalDependencies:
       '@vitest/browser': 4.1.11(bufferutil@4.1.0)(utf-8-validate@5.0.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))(vitest@4.1.11)
 
@@ -5541,6 +5698,12 @@ snapshots:
       debug: 4.4.3(supports-color@10.2.2)
     transitivePeerDependencies:
       - supports-color
+
+  ical-generator@11.1.1(@types/node@22.20.1)(moment-timezone@0.5.48)(moment@2.30.1):
+    optionalDependencies:
+      '@types/node': 22.20.1
+      moment: 2.30.1
+      moment-timezone: 0.5.48
 
   iconv-lite@0.7.3:
     dependencies:
@@ -6383,6 +6546,38 @@ snapshots:
   vitefu@1.1.3(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0)):
     optionalDependencies:
       vite: 7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0)
+
+  vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0)):
+    dependencies:
+      '@vitest/expect': 4.1.11
+      '@vitest/mocker': 4.1.11(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))
+      '@vitest/pretty-format': 4.1.11
+      '@vitest/runner': 4.1.11
+      '@vitest/snapshot': 4.1.11
+      '@vitest/spy': 4.1.11
+      '@vitest/utils': 4.1.11
+      es-module-lexer: 2.3.2
+      expect-type: 1.4.0
+      magic-string: 0.30.21
+      obug: 2.1.4
+      pathe: 2.0.3
+      picomatch: 4.0.7
+      std-env: 4.2.0
+      tinybench: 2.9.0
+      tinyexec: 1.3.1
+      tinyglobby: 0.2.17
+      tinyrainbow: 3.1.1
+      vite: 7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0)
+      why-is-node-running: 2.3.0
+    optionalDependencies:
+      '@opentelemetry/api': 1.9.1
+      '@types/node': 22.20.1
+      '@vitest/browser-playwright': 4.1.11(bufferutil@4.1.0)(playwright@1.63.0)(utf-8-validate@5.0.10)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0))(vitest@4.1.11)
+      '@vitest/coverage-v8': 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
+      happy-dom: 20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+      jsdom: 30.0.1
+    transitivePeerDependencies:
+      - msw
 
   vitest@4.1.11(@types/node@22.20.1)(@vitest/browser-playwright@4.1.11)(@vitest/coverage-v8@4.1.11)(happy-dom@20.12.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(jsdom@30.0.1)(vite@7.3.6(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0)):
     dependencies:

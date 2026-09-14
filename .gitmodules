@@ -94,3 +94,12 @@
 [submodule "packages/vellum"]
 	path = packages/vellum
 	url = git@github.com:C9up/vellum.git
+[submodule "packages/eclipse"]
+	path = packages/eclipse
+	url = git@github.com:C9up/eclipse.git
+[submodule "packages/parsec"]
+	path = packages/parsec
+	url = git@github.com:C9up/parsec.git
+[submodule "packages/prism"]
+	path = packages/prism
+	url = git@github.com:C9up/prism.git

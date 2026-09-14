@@ -118,11 +118,14 @@ universe through the container, never via a static import.
 | `@c9up/echo` | Cache — memory + Redis drivers, tags, stampede prevention |
 | `@c9up/bay` | Background jobs — retry, lease, dead letter queue, memory + Redis drivers |
 | `@c9up/quasar` | Redis connections — named connections, pub/sub on its own socket, health checks |
+| `@c9up/eclipse` | Distributed locks — owner-checked leases, memory + Redis stores, adapter for the core scheduler |
 | `@c9up/archive` | File storage — Local + S3-compatible drivers |
 | `@c9up/vellum` | PDF — render pages to images, read text and metadata, merge/split/rotate, stamp, fill and flatten forms, sign and verify |
+| `@c9up/prism` | Images — resize, convert, crop, composite and watermark, on a Rust engine; upload guards (content sniffing, pixel ceiling, panic net) |
 | `@c9up/rover` | Mail transport — SMTP, log, pluggable transports |
 | `@c9up/nova` | Web Push notifications — VAPID, subscription endpoint, service worker scaffolding |
 | `@c9up/spectrum` | Logging — structured, file channels with rotation, correlation IDs |
+| `@c9up/parsec` | Metrics — counters, gauges, histograms; zero-dependency Prometheus exporter, optional OpenTelemetry meter, HTTP middleware |
 | `@c9up/rosetta` | Internationalization — locale fallback, message formatting |
 
 ### Testing
