@@ -106,3 +106,6 @@
 [submodule "packages/lumen"]
 	path = packages/lumen
 	url = git@github.com:C9up/lumen.git
+[submodule "packages/visa"]
+	path = packages/visa
+	url = git@github.com:C9up/visa.git
