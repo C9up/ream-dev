@@ -109,3 +109,6 @@
 [submodule "packages/visa"]
 	path = packages/visa
 	url = git@github.com:C9up/visa.git
+[submodule "packages/ephemeris"]
+	path = packages/ephemeris
+	url = git@github.com:C9up/ephemeris.git
