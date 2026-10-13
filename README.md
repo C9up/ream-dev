@@ -106,6 +106,7 @@ universe through the container, never via a static import.
 |---|---|
 | `@c9up/aurora` | Reactive UI runtime — tagged-template DOM, signals, isomorphic SSR + hydration, zero build step |
 | `@c9up/photon` | Frontend rendering engine — SSR, client hydration, SPA navigation, SEO/`<head>` injection |
+| `@c9up/ephemeris` | Structured data — schema.org JSON-LD: the whole vocabulary typed, an `@graph` of linked entities, a script tag no value can break out of, Google's rich-result requirements checked |
 | `@c9up/inker` | Server-side templating — hand-rolled lexer/parser/renderer, HTML-escape by default |
 | `@c9up/station` | Admin scaffolding — `defineResource` catalogue backing list/show/create/edit/destroy, audit, policies |
 | `@c9up/comet` | Agnostic JSON-RPC 2.0 protocol + isomorphic, transport-injectable client |
