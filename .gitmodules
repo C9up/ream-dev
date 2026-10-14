@@ -115,3 +115,6 @@
 [submodule "packages/neutrino"]
 	path = packages/neutrino
 	url = git@github.com:C9up/neutrino.git
+[submodule "packages/goldstone"]
+	path = packages/goldstone
+	url = git@github.com:C9up/goldstone.git
