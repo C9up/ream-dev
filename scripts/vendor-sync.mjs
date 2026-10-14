@@ -46,6 +46,7 @@ const UNITS = [
       'atlas',
       'blackhole',
       'eon',
+      'goldstone',
       'helix',
       'inker',
       'rover',
