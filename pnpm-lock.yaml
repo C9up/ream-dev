@@ -396,13 +396,13 @@ importers:
       '@c9up/quasar':
         specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
-      '@c9up/ream':
-        specifier: ^0.2.26
-        version: link:../ream
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.5.12
         version: 2.5.12
+      '@c9up/ream':
+        specifier: ^0.2.26
+        version: link:../ream
       '@types/node':
         specifier: ^22.20.1
         version: 22.20.1
