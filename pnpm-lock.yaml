@@ -1198,7 +1198,7 @@ importers:
         specifier: ^0.1.5
         version: link:../prism
       '@c9up/ream':
-        specifier: ^0.2.29
+        specifier: ^0.2.28
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
