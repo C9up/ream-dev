@@ -60,11 +60,14 @@ function readPackages() {
       for (const section of ['dependencies', 'peerDependencies', 'devDependencies', 'optionalDependencies']) {
         for (const [dep, range] of Object.entries(manifest[section] ?? {})) {
           if (!dep.startsWith('@c9up/') || typeof range !== 'string') continue
-          // An optional peer the package does not install for itself is never
-          // fetched by its CI: the application brings it, so nothing waits on it.
-          const optionalPeer =
-            section === 'peerDependencies' && manifest.peerDependenciesMeta?.[dep]?.optional === true
-          if (optionalPeer && !installed.has(dep)) continue
+          // A peer range never fails an install by itself (pnpm warns). It only
+          // decides what CI fetches when the package does not install the
+          // sibling itself and the peer is required — pnpm then installs it from
+          // that range. Otherwise the dependency or devDependency range decides.
+          if (section === 'peerDependencies') {
+            const optional = manifest.peerDependenciesMeta?.[dep]?.optional === true
+            if (optional || installed.has(dep)) continue
+          }
           ranges.push({ dep, range, section })
         }
       }
