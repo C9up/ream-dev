@@ -929,6 +929,9 @@ importers:
       '@c9up/comet':
         specifier: ^0.1.0
         version: link:../comet
+      '@c9up/inker':
+        specifier: ^0.1.20
+        version: link:../inker
       '@types/node':
         specifier: ^22.20.1
         version: 22.20.1
@@ -1043,6 +1046,9 @@ importers:
       '@c9up/helix':
         specifier: ^0.2.0
         version: link:../helix
+      '@c9up/inker':
+        specifier: ^0.1.20
+        version: link:../inker
       '@c9up/ream':
         specifier: ^0.2.25
         version: link:../ream
@@ -1236,6 +1242,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.5.12
         version: 2.5.12
+      '@c9up/inker':
+        specifier: ^0.1.20
+        version: link:../inker
       '@c9up/quasar':
         specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
