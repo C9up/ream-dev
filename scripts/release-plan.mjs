@@ -53,9 +53,19 @@ function readPackages() {
       const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
       if (!manifest.name || !manifest.version || manifest.private === true) continue
       const ranges = []
+      const installed = new Set([
+        ...Object.keys(manifest.dependencies ?? {}),
+        ...Object.keys(manifest.devDependencies ?? {}),
+      ])
       for (const section of ['dependencies', 'peerDependencies', 'devDependencies', 'optionalDependencies']) {
         for (const [dep, range] of Object.entries(manifest[section] ?? {})) {
-          if (dep.startsWith('@c9up/') && typeof range === 'string') ranges.push({ dep, range, section })
+          if (!dep.startsWith('@c9up/') || typeof range !== 'string') continue
+          // An optional peer the package does not install for itself is never
+          // fetched by its CI: the application brings it, so nothing waits on it.
+          const optionalPeer =
+            section === 'peerDependencies' && manifest.peerDependenciesMeta?.[dep]?.optional === true
+          if (optionalPeer && !installed.has(dep)) continue
+          ranges.push({ dep, range, section })
         }
       }
       found.push({ dir, name: manifest.name, version: manifest.version, ranges })
