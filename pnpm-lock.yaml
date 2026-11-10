@@ -758,9 +758,6 @@ importers:
       jsdom:
         specifier: ^30.0.1
         version: 30.0.1(@noble/hashes@1.8.0)
-      nock:
-        specifier: ^14.0.17
-        version: 14.0.17
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
