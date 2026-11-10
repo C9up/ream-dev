@@ -124,9 +124,10 @@ async function gitState(pkg) {
 }
 
 const packages = readPackages()
+// --prefer-online: a cached answer hid a version published minutes earlier.
 const npmVersions = await inBatches(packages, 8, async (pkg) => {
-  const latest = await attempt('npm', ['view', pkg.name, 'version'], '/')
-  const exact = latest === pkg.version ? latest : await attempt('npm', ['view', `${pkg.name}@${pkg.version}`, 'version'], '/')
+  const latest = await attempt('npm', ['view', pkg.name, 'version', '--prefer-online'], '/')
+  const exact = latest === pkg.version ? latest : await attempt('npm', ['view', `${pkg.name}@${pkg.version}`, 'version', '--prefer-online'], '/')
   return { latest: latest || undefined, published: exact === pkg.version }
 })
 const byName = new Map(packages.map((pkg, i) => [pkg.name, { ...pkg, ...npmVersions[i] }]))
