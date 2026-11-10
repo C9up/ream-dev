@@ -33,7 +33,7 @@ const UNITS = [
   {
     source: 'nodeEnv.ts',
     target: 'src/vendor/nodeEnv.ts',
-    packages: ['bay', 'blackhole', 'inker', 'station', 'transit', 'warden'],
+    packages: ['blackhole', 'inker', 'station', 'transit', 'warden'],
   },
   {
     source: 'nativeBinary.ts',
@@ -49,6 +49,7 @@ const UNITS = [
       'goldstone',
       'helix',
       'inker',
+      'prism',
       'rover',
       'rune',
       'sigil',
@@ -59,7 +60,7 @@ const UNITS = [
   {
     source: 'quasarConnection.ts',
     target: 'src/vendor/quasarConnection.ts',
-    packages: ['bay', 'blackhole', 'echo', 'nova', 'relay', 'transit', 'warden'],
+    packages: ['bay', 'blackhole', 'echo', 'eclipse', 'nova', 'relay', 'transit', 'warden'],
   },
 ]
 
