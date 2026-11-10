@@ -20,6 +20,7 @@
     "quality:service-accessors": "node scripts/check-service-accessors.mjs",
     "vendor:sync": "node scripts/vendor-sync.mjs",
     "vendor:check": "node scripts/vendor-sync.mjs --check",
+    "release:plan": "node scripts/release-plan.mjs",
     "release:notes": "node scripts/release-notes.mjs",
     "quality:all": "pnpm quality:duplicates && pnpm quality:packages && pnpm quality:peer-ranges && pnpm quality:service-accessors && pnpm vendor:check",
     "verify:all": "bash scripts/verify-all.sh",

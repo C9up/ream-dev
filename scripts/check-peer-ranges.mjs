@@ -18,6 +18,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { satisfiesRange } from './lib/semver.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const packagesDir = join(root, 'packages')
@@ -37,41 +38,6 @@ for (const entry of readdirSync(packagesDir)) {
   if (!manifest.name || !manifest.version) continue
   workspace.set(manifest.name, manifest.version)
   manifests.push({ dir: entry, manifest })
-}
-
-/**
- * Whether `version` satisfies a range, for the 0.x rules npm applies.
- *
- * `||` is a real range and a legitimate answer to a breaking bump: a package
- * that works with BOTH lines should say so. Requiring a single caret pushed the
- * manifest to claim something narrower than the truth, which is the opposite of
- * what this gate is for — so each alternative is tried and one match is enough.
- */
-function satisfiesRange(range, version) {
-  return range
-    .split('||')
-    .map((part) => part.trim())
-    .filter((part) => part !== '')
-    .some((part) => satisfiesCaret(part, version))
-}
-
-/** Whether `version` satisfies ONE caret range, for the 0.x rules npm applies. */
-function satisfiesCaret(range, version) {
-  const match = /^\^(\d+)\.(\d+)\.(\d+)/.exec(range)
-  if (!match) return true // not a caret range — out of scope, leave it alone
-  const [, rMajor, rMinor, rPatch] = match.map(Number)
-  const parsed = /^(\d+)\.(\d+)\.(\d+)/.exec(version)
-  if (!parsed) return true
-  const [, vMajor, vMinor, vPatch] = parsed.map(Number)
-
-  if (vMajor !== rMajor) return false
-  // Below 1.0.0, caret pins the MINOR: ^0.1.0 does not admit 0.2.0.
-  if (rMajor === 0) {
-    if (vMinor !== rMinor) return false
-    return vPatch >= rPatch
-  }
-  if (vMinor !== rMinor) return vMinor > rMinor
-  return vPatch >= rPatch
 }
 
 const offenders = []
