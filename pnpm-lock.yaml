@@ -282,7 +282,7 @@ importers:
   packages/atlas:
     dependencies:
       '@c9up/chronos':
-        specifier: ^0.1.8
+        specifier: ^0.1.16
         version: link:../chronos
       reflect-metadata:
         specifier: ^0.2.2
@@ -607,7 +607,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/helix':
-        specifier: ^0.2.3
+        specifier: ^0.2.13
         version: link:../helix
       '@c9up/ream':
         specifier: ^0.2.7
@@ -734,7 +734,7 @@ importers:
         specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
       '@c9up/ream':
-        specifier: ^0.2.26
+        specifier: ^0.2.29
         version: link:../ream
       web-push:
         specifier: ^3.6.7
@@ -778,7 +778,7 @@ importers:
         specifier: ^2.5.12
         version: 2.5.12
       '@c9up/ream':
-        specifier: ^0.2.25
+        specifier: ^0.2.29
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -911,7 +911,7 @@ importers:
   packages/ream:
     dependencies:
       '@c9up/lumen':
-        specifier: ^0.1.0
+        specifier: ^0.1.2
         version: link:../lumen
       '@c9up/quasar':
         specifier: ^0.1.0 || ^0.2.0
@@ -1201,7 +1201,7 @@ importers:
         specifier: ^0.1.5
         version: link:../prism
       '@c9up/ream':
-        specifier: ^0.2.25
+        specifier: ^0.2.29
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
