@@ -34,4 +34,12 @@ ignore = [
   #
   # Revisit if sqlx ever decrypts with `rsa`, or if a fixed release appears.
   "RUSTSEC-2023-0071",
+
+  # RUSTSEC-2026-0459 — libsqlite3-sys, patched in 0.39. atlas reaches it
+  # through atlas-db → sqlx → sqlx-sqlite 0.9.0, the latest release, which
+  # requires `libsqlite3-sys >=0.30.1, <0.38.0`: no version of sqlx can build
+  # against the fix yet. The same exception is in atlas-ci.yml's audit job.
+  #
+  # Revisit when sqlx-sqlite widens that range.
+  "RUSTSEC-2026-0459",
 ]
