@@ -38,17 +38,18 @@
 #
 # WHAT IT RUNS, IN ORDER
 # ----------------------
-#   [1/11] node engine >= 22
-#   [2/11] pnpm -r lint              (--if-present, all workspace packages)
-#   [3/11] pnpm -r build             (--if-present, all workspace packages)
-#   [4/11] pnpm -r typecheck         (--if-present, all workspace packages)
-#   [5/11] pnpm -r test              (--if-present, all workspace packages)
-#   [6/11] cargo fmt --check          (every crate, incl. the excluded one)
-#   [7/11] cargo check --all         (root Cargo.toml workspace — 11 crates)
-#   [8/11] cargo check           (every package's own Cargo workspace)
-#   [9/11] cargo test            (root workspace + every package workspace)
-#   [10/11] cargo audit             (RustSec advisories, .cargo/audit.toml)
-#   [11/11] vendored copies         (scripts/vendor-sync.mjs --check)
+#   [1/12] node engine >= 22
+#   [2/12] pnpm -r lint              (--if-present, all workspace packages)
+#   [3/12] pnpm -r build             (--if-present, all workspace packages)
+#   [4/12] pnpm -r typecheck         (--if-present, all workspace packages)
+#   [5/12] pnpm -r test              (--if-present, all workspace packages)
+#   [6/12] cargo fmt --check          (every crate, incl. the excluded one)
+#   [7/12] cargo check --all         (root Cargo.toml workspace — 11 crates)
+#   [8/12] cargo check           (every package's own Cargo workspace)
+#   [9/12] cargo test            (root workspace + every package workspace)
+#   [10/12] cargo audit             (RustSec advisories, .cargo/audit.toml)
+#   [11/12] pnpm audit              (npm advisories, production deps, >= high)
+#   [12/12] vendored copies         (scripts/vendor-sync.mjs --check)
 #
 # Each stage runs only if the previous one succeeded (`set -e`). A failure
 # trap reports which stage broke so the message in the terminal points at
@@ -108,7 +109,7 @@ stage() {
 
 # -----------------------------------------------------------------------------
 
-stage "[1/11] node engine >= 22"
+stage "[1/12] node engine >= 22"
 NODE_MAJOR="$(node -p "process.versions.node.split('.')[0]")"
 if [ "$NODE_MAJOR" -lt 22 ]; then
   echo "[verify] Node >= 22 is required (engines.node = >=22.0.0)."
@@ -120,17 +121,17 @@ echo "[verify] node $(node -v) ✓"
 
 # -----------------------------------------------------------------------------
 
-stage "[2/11] pnpm -r lint (--if-present)"
+stage "[2/12] pnpm -r lint (--if-present)"
 pnpm -r --filter './packages/*' --if-present run lint
 
 # -----------------------------------------------------------------------------
 
-stage "[3/11] pnpm -r build (--if-present)"
+stage "[3/12] pnpm -r build (--if-present)"
 pnpm -r --filter './packages/*' --if-present run build
 
 # -----------------------------------------------------------------------------
 
-stage "[4/11] pnpm -r typecheck (--if-present)"
+stage "[4/12] pnpm -r typecheck (--if-present)"
 # Source-first packages typically declare `typecheck: tsc --noEmit`; packages
 # with a real build pipeline get typecheck via their build step. --if-present
 # skips packages that have neither (those have nothing to ship the type
@@ -139,7 +140,7 @@ pnpm -r --filter './packages/*' --if-present run typecheck
 
 # -----------------------------------------------------------------------------
 
-stage "[5/11] pnpm -r test (--if-present)"
+stage "[5/12] pnpm -r test (--if-present)"
 # ONE WORKSPACE AT A TIME, unless told otherwise.
 #
 # vitest's per-test timeout is five seconds of WALL CLOCK. Run 29 suites at
@@ -158,7 +159,7 @@ pnpm -r --workspace-concurrency="${VERIFY_TEST_CONCURRENCY:-1}" \
 
 # -----------------------------------------------------------------------------
 
-stage "[6/11] cargo fmt --check (every crate)"
+stage "[6/12] cargo fmt --check (every crate)"
 if ! command -v cargo >/dev/null 2>&1; then
   echo "[verify] cargo not found on PATH."
   echo "[verify] Install via https://rustup.rs/ — the workspace pins toolchain"
@@ -180,7 +181,7 @@ done
 
 # -----------------------------------------------------------------------------
 
-stage "[7/11] cargo check --locked --all (root workspace, 11 crates)"
+stage "[7/12] cargo check --locked --all (root workspace, 11 crates)"
 if ! command -v cargo >/dev/null 2>&1; then
   echo "[verify] cargo not found on PATH."
   echo "[verify] Install via https://rustup.rs/ — the workspace pins toolchain"
@@ -195,7 +196,7 @@ cargo check --locked --all
 
 # -----------------------------------------------------------------------------
 
-stage "[8/11] cargo check, every package workspace"
+stage "[8/12] cargo check, every package workspace"
 # Each package carries its OWN Cargo workspace; the root one holds ream's and
 # atlas's crates and nothing else. This walked `packages/ream-cli` alone and
 # left twelve workspaces unchecked.
@@ -207,7 +208,7 @@ done
 
 # -----------------------------------------------------------------------------
 
-stage "[9/11] cargo test --locked (root and every package workspace)"
+stage "[9/12] cargo test --locked (root and every package workspace)"
 cargo test --locked --all
 # What each package's own `test:rust` sets, and this gate did not: ream-mcp
 # warms the fastembed model on a background thread, and the ONNX runtime's
@@ -222,7 +223,7 @@ done
 
 # -----------------------------------------------------------------------------
 
-stage "[10/11] cargo audit (RustSec advisories)"
+stage "[10/12] cargo audit (RustSec advisories)"
 # The one gate nothing else covered: `cargo check` and `cargo test` say nothing
 # about a dependency with a published vulnerability, and neither does anything
 # on the Node side. Skipped with a message when the tool is absent rather than
@@ -257,7 +258,17 @@ fi
 
 # -----------------------------------------------------------------------------
 
-stage "[11/11] vendored copies match their source"
+stage "[11/12] pnpm audit --prod --audit-level=high"
+# The Node side of the advisory pass. The override floors in
+# pnpm-workspace.yaml were written as "the lowest patched version" and then
+# aged: the lockfile resolved inside them to releases with newer advisories,
+# and nothing read it again. Production dependencies only, high and critical
+# only: what reaches a consumer of a published package and matters.
+pnpm audit --prod --audit-level=high
+
+# -----------------------------------------------------------------------------
+
+stage "[12/12] vendored copies match their source"
 # Code that belongs in several packages and cannot be a dependency: each
 # package is published from its own repository, so the file has to exist in
 # each one. The copies are generated from scripts/vendor/, never edited, and
@@ -267,14 +278,14 @@ node scripts/vendor-sync.mjs --check
 # -----------------------------------------------------------------------------
 
 echo ""
-# The summary has to account for what was SKIPPED. "All 11 stages passed" on a
+# The summary has to account for what was SKIPPED. "All 12 stages passed" on a
 # run where the advisory check never happened is a green light for something
 # nobody looked at — and a gate that misreports is worse than no gate, because
 # it is believed.
 if [ ${#SKIPPED[@]} -eq 0 ]; then
-  echo "[verify] ✅ all 11 stages passed."
+  echo "[verify] ✅ all 12 stages passed."
 else
-  echo "[verify] ⚠️  $((11 - ${#SKIPPED[@]})) of 11 stages passed; ${#SKIPPED[@]} SKIPPED and not verified:"
+  echo "[verify] ⚠️  $((12 - ${#SKIPPED[@]})) of 12 stages passed; ${#SKIPPED[@]} SKIPPED and not verified:"
   for skipped in "${SKIPPED[@]}"; do
     echo "[verify]   - ${skipped}"
   done

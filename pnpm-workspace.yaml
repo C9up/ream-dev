@@ -11,21 +11,38 @@ linkWorkspacePackages: true
 # package.json.
 overrides:
   # Security advisories on transitive dependencies. Each one is the lowest
-  # version the advisory says is patched — pinned here because nothing in the
-  # workspace declares them directly, so there is no package.json to bump.
-  fast-uri: "^3.1.4"
-  hono: "^4.12.25"
-  axios: "^1.18.0"
-  brace-expansion: "^5.0.8"
-  ip-address: "^10.2.2"
+  # version the advisories say is patched — pinned here because nothing in the
+  # workspace declares them directly, so there is no package.json to bump. A
+  # floor ages: a newer advisory lands above it and the lockfile keeps
+  # resolving inside it, so `pnpm audit` (scripts/verify-all.sh) re-reads them.
+  # Raised 2026-11-11 against the GitHub advisory database.
+  fast-uri: "^3.1.9"
+  hono: "^4.13.11"
+  axios: "^1.20.0"
+  brace-expansion: "^5.0.12"
+  # imapflow > socks (goldstone): subnet-check family confusion and a quadratic
+  # parse, everything up to 10.7.3.
+  ip-address: "^10.7.4"
   postcss: "^8.5.23"
   nanoid: "^3.3.18"
   uuid: "^11.1.1"
-  qs: "^6.15.2"
+  qs: "^6.16.1"
   esbuild: "^0.28.1"
-  body-parser: "^2.3.0"
+  body-parser: "^2.4.0"
+  # Critical: IP spoofing through an IPv4-mapped IPv6 trust subnet, under
+  # @modelcontextprotocol/sdk > express (ream-mcp).
+  proxy-addr: "^2.0.8"
+  # Left at 1.x on purpose: the serveStatic double-decode advisory is fixed
+  # only in 2.1.3, a major the MCP SDK does not declare, and ream-mcp runs the
+  # stdio transport only — no static file is served through it.
   "@hono/node-server": "^1.19.15"
-  vite: "^7.3.5"
+  vite: "^7.3.7"
+  # ts-morph > @ts-morph/common asks for minimatch ^10, and the globparts
+  # amplification DoS (GHSA-g3hv-75wg-m249) covers every release from 7.0.0 to
+  # 11.0.0 with no fixed 10.x. 11 keeps the named `minimatch` export that
+  # @ts-morph/common calls; the caret keeps the next major out until it is
+  # checked the same way. It is the only minimatch in the workspace today.
+  minimatch: "^11.0.1"
   # One vitest for the whole workspace. Two packages pinned 4.1.9 while the
   # rest asked for ^4.1.2, so both landed in the store and a package could end
   # up running one version against the other's coverage provider — a mix
@@ -34,12 +51,12 @@ overrides:
   "@vitest/coverage-v8": "4.1.11"
   # Advisory pins, all dev-only. @vitest/browser <4.1.10 lets a Browser Mode
   # provider command bypass the file-access control (GHSA-p63j-vcc4-9vmv);
-  # undici <7.29.0 has the TLS-validation bypass and the cross-origin routing
-  # pair; vite <7.3.5 the server.fs.deny bypass. jsdom asks for undici ^7, so
-  # the pin stays inside 7 rather than forcing 8 on it.
+  # undici <7.30.1 has the TLS-validation bypass, the cross-origin routing
+  # pair and their successors; vite <=7.3.6 the server.fs.deny bypasses. jsdom
+  # asks for undici ^7, so the pin stays inside 7 rather than forcing 8 on it.
   "@vitest/browser": "4.1.11"
   "@vitest/browser-playwright": "4.1.11"
-  undici: "^7.29.0"
+  undici: "^7.30.1"
   # Two high advisories, both dev-only and transitive: unbounded memory growth
   # with no cache bound (GHSA-c83g-rgw3-j3cx) and a crash / prototype write
   # (GHSA-73wf-gq98-2v4g).
@@ -56,18 +73,14 @@ allowBuilds:
   utf-8-validate: true
   es5-ext: false
 
+# How long a published version waits before this workspace installs it, in
+# minutes: one week. A malicious release is usually caught and pulled within
+# days, and every advisory floor above is older than that. Stated rather than
+# left to the pnpm 11+ default (one day): pnpm 10 had no default at all, and an
+# exclusion list under a key nobody set reads as a gate that is not there.
+minimumReleaseAge: 10080
+
+# Our own packages: released by this workspace's maintainer from CI, with
+# provenance, and consumed the day they go out.
 minimumReleaseAgeExclude:
-  - '@biomejs/biome@2.5.12'
-  - '@biomejs/cli-darwin-arm64@2.5.12'
-  - '@biomejs/cli-darwin-x64@2.5.12'
-  - '@biomejs/cli-linux-arm64-musl@2.5.12'
-  - '@biomejs/cli-linux-arm64@2.5.12'
-  - '@biomejs/cli-linux-x64-musl@2.5.12'
-  - '@biomejs/cli-linux-x64@2.5.12'
-  - '@biomejs/cli-win32-arm64@2.5.12'
-  - '@biomejs/cli-win32-x64@2.5.12'
-  - jsdom@30.1.1
-  - '@zone-eu/mailsplit@5.4.21'
-  - imapflow@2.4.2
-  - libbase64@1.3.3
-  - libmime@5.4.8
+  - '@c9up/*'
