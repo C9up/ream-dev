@@ -18,6 +18,19 @@
  *   3. `continue-on-error`, which makes a red job report green
  *   4. `… || true` on a verification command, which throws its exit code away
  *
+ * And three ways the release itself is exposed:
+ *
+ *   5. an action referenced by tag or branch: whoever can move that ref runs
+ *      code in the job, the publish job and its token included. Only a full
+ *      commit SHA is accepted (a local `./` action is the repository itself).
+ *   6. a Rust package with no advisory gate: a Cargo.lock nothing re-audits
+ *      goes red silently. Once the job exists, (1) makes the publish wait.
+ *   7. a workflow-level `cancel-in-progress: true`: a second dispatch then
+ *      cancels a publish in flight, between `npm publish` and the release.
+ *
+ * What it cannot see: a verification step skipped by its own step-level `if:`
+ * (a matrix leg that only builds is legitimate and looks the same).
+ *
  *     node scripts/check-publish-gates.mjs
  */
 
@@ -26,6 +39,12 @@ import { join } from 'node:path'
 import { parse } from 'yaml'
 
 const PACKAGES = 'packages'
+/** `owner/repo[/path]@<40 hex>` — the only way a third-party action is run. */
+const PINNED = /^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/
+/** A job that reaches the registry. */
+const PUBLISHES = /npm publish|pnpm publish|NPM_TOKEN/
+/** An advisory gate over Cargo.lock. */
+const AUDITS = /cargo\s+audit\b|cargo\s+deny\b[^\n]*\bcheck\b[^\n]*\badvisories\b/
 /**
  * Commands whose failure must stop a release.
  *
@@ -34,7 +53,7 @@ const PACKAGES = 'packages'
  * its build job would have left this check with nothing to complain about.
  */
 const VERIFIES =
-  /vitest|cargo\s+(test|clippy|fmt|deny|build)|tsc\b|biome|pnpm\s+(test|lint|build)|npm\s+test|quality-rust/i
+  /vitest|cargo\s+(test|clippy|fmt|deny|audit|build)|tsc\b|biome|pnpm\s+(test|lint|build)|npm\s+test|quality-rust/i
 /** `|| true`, `|| :`, `|| exit 0` — an exit code thrown away. */
 const SWALLOWS = /\|\|\s*(true|:|exit\s+0)\b/
 
@@ -64,8 +83,17 @@ function triggers(doc) {
 
 const problems = []
 
-for (const pkg of readdirSync(PACKAGES).sort()) {
-  const dir = join(PACKAGES, pkg, '.github', 'workflows')
+// The monorepo's own workflows too: they publish nothing, but an unpinned
+// action there runs with this repository's token all the same.
+const repositories = [
+  { pkg: 'ream-dev', root: '.' },
+  ...readdirSync(PACKAGES)
+    .sort()
+    .map((pkg) => ({ pkg, root: join(PACKAGES, pkg) })),
+]
+
+for (const { pkg, root } of repositories) {
+  const dir = join(root, '.github', 'workflows')
   if (!existsSync(dir)) continue
 
   for (const file of readdirSync(dir).filter((f) => /\.ya?ml$/.test(f))) {
@@ -80,9 +108,29 @@ for (const pkg of readdirSync(PACKAGES).sort()) {
     const jobs = doc?.jobs ?? {}
     const where = `${pkg}/${file}`
 
+    // (7) a dispatch must queue behind a publish, not cancel it. A workflow
+    // that publishes nothing may cancel freely.
+    const publishesAny = Object.values(jobs).some((job) => PUBLISHES.test(JSON.stringify(job ?? {})))
+    if (publishesAny && doc?.concurrency?.['cancel-in-progress'] === true) {
+      problems.push(`${where}: 'cancel-in-progress: true' lets a second dispatch cancel a publish in flight`)
+    }
+
+    // (6) the advisory gate, for every package that ships Rust.
+    if (root !== '.' && existsSync(join(root, 'Cargo.lock')) && !AUDITS.test(JSON.stringify(jobs))) {
+      problems.push(`${where}: Cargo.lock is audited by no job (cargo audit / cargo deny check advisories)`)
+    }
+
     for (const [id, job] of Object.entries(jobs)) {
       if (job == null || typeof job !== 'object') continue
       const body = JSON.stringify(job)
+
+      // (5) every action pinned to a commit, a reusable workflow included.
+      for (const ref of [job.uses, ...(job.steps ?? []).map((step) => step?.uses)]) {
+        if (ref == null || String(ref).startsWith('./')) continue
+        if (!PINNED.test(String(ref))) {
+          problems.push(`${where}: '${id}' runs '${ref}' — pin it to a full commit SHA`)
+        }
+      }
 
       // (3) and (4) apply to every job, publish or not: a verification that
       // cannot fail is not a verification.
@@ -99,7 +147,7 @@ for (const pkg of readdirSync(PACKAGES).sort()) {
         }
       }
 
-      const publishes = /npm publish|pnpm publish|NPM_TOKEN/.test(body)
+      const publishes = PUBLISHES.test(body)
       if (!publishes) continue
 
       // (2) a release is a person's decision, so the only way in is a manual

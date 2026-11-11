@@ -1,0 +1,73 @@
+# Runs scripts/check-publish-gates.mjs over every package's workflow.
+#
+# The check existed and nothing ran it: ream-cli's publish went red under it
+# (a publish that did not wait for two verification jobs) and nobody saw. Each
+# package repository has its own workflow, and the script needs them all, so
+# it runs here, where they are all gitlinks.
+#
+# A push or pull request checks the package commits this repository points at.
+# The nightly run checks every package's current main, which is what the next
+# dispatch would publish, so a workflow edited in a package repository is
+# judged before its release rather than at the next gitlink bump.
+
+name: publish-gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  gates:
+    name: Publish gates (every package workflow)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+
+      # The gitlinks are recorded with ssh URLs; the repositories are public,
+      # so an anonymous https fetch reads them without a key.
+      - name: Fetch the package repositories
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          git submodule update --init --depth 1 -- packages
+          if [ "$EVENT" = schedule ] || [ "$EVENT" = workflow_dispatch ]; then
+            git submodule foreach --quiet 'case "$sm_path" in packages/*) git fetch --quiet --depth 1 origin main && git checkout --quiet FETCH_HEAD ;; esac'
+          fi
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+
+      # The script's only dependency, by digest rather than a workspace install
+      # (which would pull every package's tree to read a few YAML files).
+      - name: The YAML parser, pinned by digest
+        run: |
+          set -euo pipefail
+          tarball=$(npm pack --silent yaml@2.9.0 --pack-destination "$RUNNER_TEMP")
+          expected='sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA=='
+          actual="sha512-$(openssl dgst -sha512 -binary "$RUNNER_TEMP/$tarball" | base64 -w0)"
+          if [ "$actual" != "$expected" ]; then
+            echo "::error::yaml@2.9.0 does not match its recorded digest ($actual)"
+            exit 1
+          fi
+          mkdir -p node_modules/yaml
+          tar -xzf "$RUNNER_TEMP/$tarball" -C node_modules/yaml --strip-components=1
+
+      - run: node scripts/check-publish-gates.mjs
