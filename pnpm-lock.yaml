@@ -264,7 +264,7 @@ importers:
         specifier: ^0.2.0
         version: link:../helix
       '@c9up/ream':
-        specifier: ^0.2.25
+        specifier: ^0.2.30
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
