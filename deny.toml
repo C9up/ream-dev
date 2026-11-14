@@ -72,6 +72,21 @@ ignore = [
   # both of these come out. Nothing else in the tree pulls them.
   { id = "RUSTSEC-2026-0206", reason = "rustybuzz via krilla: unmaintained with no fixed release; revisit when krilla moves to harfrust" },
   { id = "RUSTSEC-2026-0192", reason = "ttf-parser via krilla/rustybuzz: unmaintained with no fixed release; revisit when krilla moves to skrifa" },
+  # RUSTSEC-2026-0459 — the bundled SQLite before 3.54 returns stale
+  # page-cache memory when it opens a database together with a `-wal` file of
+  # a different page size. Reached by the root and atlas, through sqlx-sqlite.
+  #
+  # The fix is libsqlite3-sys >= 0.39, and sqlx-sqlite 0.9.0 — the latest
+  # release — caps it below 0.38. Upstream raised the cap on 2026-11-08
+  # (launchbadge/sqlx#4502, commit 10462fa) without releasing it. Taking sqlx
+  # from git instead would put 49 unreleased commits of a database driver into
+  # a published binary to close a local attack: it needs the victim to open a
+  # crafted database and journal pair. atlas's CI skips the same id, with the
+  # same condition.
+  #
+  # DROP WHEN sqlx 0.9.1 (or any sqlx-sqlite accepting libsqlite3-sys 0.39) is
+  # out: bump sqlx, then `cargo update -p libsqlite3-sys`.
+  { id = "RUSTSEC-2026-0459", reason = "libsqlite3-sys via sqlx-sqlite 0.9.0, which caps it below the fix; raised upstream (sqlx#4502) but unreleased. Local attack only. Drop on sqlx 0.9.1" },
 ]
 
 [bans]
