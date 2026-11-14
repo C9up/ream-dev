@@ -15,7 +15,8 @@ overrides:
   # workspace declares them directly, so there is no package.json to bump. A
   # floor ages: a newer advisory lands above it and the lockfile keeps
   # resolving inside it, so `pnpm audit` (scripts/verify-all.sh) re-reads them.
-  # Raised 2026-11-11 against the GitHub advisory database.
+  # Raised 2026-11-11 against the GitHub advisory database, and again on
+  # 2026-11-14 for the entries marked below.
   fast-uri: "^3.1.9"
   hono: "^4.13.11"
   axios: "^1.20.0"
@@ -35,7 +36,7 @@ overrides:
   # Left at 1.x on purpose: the serveStatic double-decode advisory is fixed
   # only in 2.1.3, a major the MCP SDK does not declare, and ream-mcp runs the
   # stdio transport only — no static file is served through it.
-  "@hono/node-server": "^1.19.15"
+  "@hono/node-server": "^1.19.18"
   vite: "^7.3.7"
   # ts-morph > @ts-morph/common asks for minimatch ^10, and the globparts
   # amplification DoS (GHSA-g3hv-75wg-m249) covers every release from 7.0.0 to
@@ -43,24 +44,37 @@ overrides:
   # @ts-morph/common calls; the caret keeps the next major out until it is
   # checked the same way. It is the only minimatch in the workspace today.
   minimatch: "^11.0.1"
+  # 2026-11-14. On a production path: zod under @modelcontextprotocol/sdk
+  # (ream-mcp) and moment under @tdengine/websocket > moment-timezone (eon).
+  # Dev-only: devalue under svelte and source-map-js under the Vue compiler,
+  # both in apps/kitchen-sink. devalue stays inside 5, which svelte declares.
+  zod: "^4.6.6"
+  moment: "^2.31.0"
+  devalue: "^5.9.3"
+  source-map-js: "^1.2.2"
   # One vitest for the whole workspace. Two packages pinned 4.1.9 while the
   # rest asked for ^4.1.2, so both landed in the store and a package could end
   # up running one version against the other's coverage provider — a mix
   # vitest refuses to support.
-  vitest: "4.1.11"
-  "@vitest/coverage-v8": "4.1.11"
-  # Advisory pins, all dev-only. @vitest/browser <4.1.10 lets a Browser Mode
+  vitest: "4.1.12"
+  "@vitest/coverage-v8": "4.1.12"
+  # Advisory pins, all dev-only. 4.1.12 for @vitest/mocker's two moderate
+  # advisories (GHSA-qxg6-89mg-rqv8, GHSA-xp26-3454-mjgp). @vitest/browser <4.1.10 lets a Browser Mode
   # provider command bypass the file-access control (GHSA-p63j-vcc4-9vmv);
   # undici <7.30.1 has the TLS-validation bypass, the cross-origin routing
   # pair and their successors; vite <=7.3.6 the server.fs.deny bypasses. jsdom
   # asks for undici ^7, so the pin stays inside 7 rather than forcing 8 on it.
-  "@vitest/browser": "4.1.11"
-  "@vitest/browser-playwright": "4.1.11"
+  "@vitest/browser": "4.1.12"
+  "@vitest/browser-playwright": "4.1.12"
   undici: "^7.30.1"
   # Two high advisories, both dev-only and transitive: unbounded memory growth
   # with no cache bound (GHSA-c83g-rgw3-j3cx) and a crash / prototype write
   # (GHSA-73wf-gq98-2v4g).
   browserslist: "^4.28.7"
+  # vitest's optional peer, auto-installed and used by no package: no suite
+  # runs in happy-dom. Below 21.0.4 it has two high advisories
+  # (GHSA-c8p4-j97h-3vg8, GHSA-834v-8h66-3h79).
+  happy-dom: "^21.0.4"
 
 # Which dependencies may run install scripts. The native ones have to build or
 # they load nothing at runtime; es5-ext only prints a donation notice.
