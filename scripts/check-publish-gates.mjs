@@ -23,8 +23,14 @@
  *   5. an action referenced by tag or branch: whoever can move that ref runs
  *      code in the job, the publish job and its token included. Only a full
  *      commit SHA is accepted (a local `./` action is the repository itself).
- *   6. a Rust package with no advisory gate: a Cargo.lock nothing re-audits
- *      goes red silently. Once the job exists, (1) makes the publish wait.
+ *   6. a Rust package with no advisory gate, or a gate that lets warnings
+ *      through: a Cargo.lock nothing re-audits goes red silently. Once the job
+ *      exists, (1) makes the publish wait. `cargo audit --deny yanked` passed
+ *      unmaintained and unsound advisories in all seventeen packages, so the
+ *      gate must be `cargo audit --deny warnings` with no flag that narrows it,
+ *      or `cargo deny check advisories` over a deny.toml that denies yanked.
+ *      What a package accepts lives in its `.cargo/audit.toml`, one id at a
+ *      time, each under the comment that says why — nothing else in that file.
  *   7. a workflow-level `cancel-in-progress: true`: a second dispatch then
  *      cancels a publish in flight, between `npm publish` and the release.
  *
@@ -43,8 +49,83 @@ const PACKAGES = 'packages'
 const PINNED = /^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/
 /** A job that reaches the registry. */
 const PUBLISHES = /npm publish|pnpm publish|NPM_TOKEN/
-/** An advisory gate over Cargo.lock. */
-const AUDITS = /cargo\s+audit\b|cargo\s+deny\b[^\n]*\bcheck\b[^\n]*\badvisories\b/
+/** A `cargo audit` invocation, to the end of its command line. */
+const CARGO_AUDIT = /cargo\s+audit\b[^\n]*/g
+/** `cargo deny … check … advisories`, the other accepted advisory gate. */
+const CARGO_DENY = /cargo\s+deny\b[^\n]*\bcheck\b[^\n]*\badvisories\b/
+/** What turns every warning kind (unmaintained, unsound, yanked) into a failure. */
+const DENIES_WARNINGS = /(?:--deny|-D)[\s=]+warnings\b/
+/**
+ * Flags that narrow the audit from the command line: an ignore with no reason
+ * on record, yanked checks off, a stale or unfetched database, a target filter.
+ */
+const NARROWS = /--ignore\b|--no-yanked\b|--stale\b|--no-fetch\b|\s-n\b|--target-(?:os|arch)\b/
+/** The only lines `.cargo/audit.toml` may hold once comments are set aside. */
+const AUDIT_TOML_LINE = /^(?:\[advisories\]|ignore\s*=\s*\[|"RUSTSEC-\d{4}-\d{4}",?|\])$/
+
+/** Every `run:` script in the workflow, one string per step, `\` continuations joined. */
+const runScripts = (jobs) =>
+  Object.values(jobs).flatMap((job) =>
+    (job?.steps ?? []).map((step) => String(step?.run ?? '').replace(/\\\n\s*/g, ' ')),
+  )
+
+/**
+ * `.cargo/audit.toml` is where a package accepts an advisory. It may list ids
+ * and nothing else — no severity threshold, no target filter, no yanked switch,
+ * no `informational_warnings` — and each id sits under a comment giving the
+ * reason and what lets it go.
+ */
+function auditTomlProblems(root, where) {
+  const path = join(root, '.cargo', 'audit.toml')
+  if (!existsSync(path)) return []
+  const problems = []
+  let commented = false
+  for (const raw of readFileSync(path, 'utf8').split('\n')) {
+    const line = raw.trim()
+    if (line === '') {
+      commented = false
+      continue
+    }
+    if (line.startsWith('#')) {
+      commented = true
+      continue
+    }
+    if (!AUDIT_TOML_LINE.test(line)) {
+      problems.push(`${where}: .cargo/audit.toml may only list advisory ids to ignore, found '${line}'`)
+    } else if (line.startsWith('"') && !commented) {
+      problems.push(`${where}: .cargo/audit.toml ignores ${line.replace(/[",]/g, '')} with no comment giving the reason`)
+    }
+  }
+  return problems
+}
+
+/** The advisory gate of a Rust package: present, and denying every warning. */
+function advisoryProblems(root, jobs, where) {
+  const scripts = runScripts(jobs)
+  const audits = scripts.flatMap((run) => run.match(CARGO_AUDIT) ?? [])
+  const denies = scripts.filter((run) => CARGO_DENY.test(run))
+  if (audits.length === 0 && denies.length === 0) {
+    return [`${where}: Cargo.lock is audited by no job (cargo audit --deny warnings / cargo deny check advisories)`]
+  }
+  const problems = []
+  for (const command of audits) {
+    if (!DENIES_WARNINGS.test(command)) {
+      problems.push(`${where}: '${command.trim()}' does not deny every warning (unmaintained, unsound, yanked) — use --deny warnings`)
+    }
+    if (NARROWS.test(command)) {
+      problems.push(
+        `${where}: '${command.trim()}' narrows the audit from the command line — accept an advisory in .cargo/audit.toml, with its reason`,
+      )
+    }
+  }
+  if (denies.length > 0) {
+    const config = join(root, 'deny.toml')
+    if (!existsSync(config) || !/^\s*yanked\s*=\s*"deny"/m.test(readFileSync(config, 'utf8'))) {
+      problems.push(`${where}: cargo deny check advisories without a deny.toml that sets yanked = "deny"`)
+    }
+  }
+  return [...problems, ...auditTomlProblems(root, where)]
+}
 /**
  * Commands whose failure must stop a release.
  *
@@ -116,8 +197,8 @@ for (const { pkg, root } of repositories) {
     }
 
     // (6) the advisory gate, for every package that ships Rust.
-    if (root !== '.' && existsSync(join(root, 'Cargo.lock')) && !AUDITS.test(JSON.stringify(jobs))) {
-      problems.push(`${where}: Cargo.lock is audited by no job (cargo audit / cargo deny check advisories)`)
+    if (root !== '.' && existsSync(join(root, 'Cargo.lock'))) {
+      problems.push(...advisoryProblems(root, jobs, where))
     }
 
     for (const [id, job] of Object.entries(jobs)) {

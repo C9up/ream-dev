@@ -7,7 +7,13 @@
 # Run it with `pnpm quality:rust`, which walks every package workspace.
 
 [advisories]
+# The same policy as every package's CI job, `cargo audit --deny warnings`:
+# yanked, unmaintained and unsound all fail, not only vulnerabilities. The two
+# below are cargo-deny's defaults, written out so a default changing upstream
+# cannot quietly loosen the gate.
 yanked = "deny"
+unmaintained = "all"
+unsound = "all"
 # READ THIS BEFORE DELETING AN ENTRY BELOW.
 #
 # One file, sixteen workspaces. `pnpm quality:rust` runs this against every
@@ -54,12 +60,18 @@ ignore = [
   # identifiers together at compile time: it ships no runtime code, so an
   # unmaintained release is a maintenance risk rather than an exposure. It comes
   # in transitively and cannot be dropped without dropping its parent.
-  # Reached only by ream-mcp, through the ONNX runtime's dependency tree.
+  # Reached by ream-mcp (fastembed: tokenizers, and `image`'s rav1e) and by
+  # prism (`image`'s AVIF encoder rav1e 0.8.1, the latest release). Each of
+  # them accepts it in its own .cargo/audit.toml, with the same condition.
   { id = "RUSTSEC-2024-0436", reason = "paste is a compile-time proc-macro with no runtime surface; transitive and unmaintained upstream" },
   # RUSTSEC-2026-0206 / RUSTSEC-2026-0192 — `rustybuzz` and `ttf-parser` are
   # unmaintained. Both reach vellum through krilla, which is what draws the
   # PDF; krilla 0.8.2 is the latest release and has not moved to the named
   # replacements (`harfrust`, `skrifa`) yet.
+  #
+  # ttf-parser also reaches prism, through ab_glyph 0.2.32 (the latest release),
+  # which parses the font a caller hands to `watermarkText`. prism accepts it in
+  # its own .cargo/audit.toml until ab_glyph, or what replaces it, is on skrifa.
   #
   # These are the only two entries here on code that parses UNTRUSTED input:
   # an application embedding a font it did not author hands these crates bytes
@@ -68,8 +80,9 @@ ignore = [
   # there is no version to move to and no configuration that avoids them short
   # of dropping PDF output entirely.
   #
-  # REVISIT ON EVERY krilla BUMP: the day it ships against harfrust/skrifa,
-  # both of these come out. Nothing else in the tree pulls them.
+  # REVISIT ON EVERY krilla AND ab_glyph BUMP: rustybuzz goes the day krilla
+  # ships against harfrust, ttf-parser the day krilla and ab_glyph are both on
+  # skrifa.
   { id = "RUSTSEC-2026-0206", reason = "rustybuzz via krilla: unmaintained with no fixed release; revisit when krilla moves to harfrust" },
   { id = "RUSTSEC-2026-0192", reason = "ttf-parser via krilla/rustybuzz: unmaintained with no fixed release; revisit when krilla moves to skrifa" },
   # RUSTSEC-2026-0459 — the bundled SQLite before 3.54 returns stale

@@ -230,25 +230,26 @@ stage "[10/12] cargo audit (RustSec advisories)"
 # failing — it is a separate install (`cargo install cargo-audit --locked`) and
 # a missing tool is not a broken workspace.
 #
-# `.cargo/audit.toml` lists what may pass, each entry with the reason it does
-# not reach this code. Anything not listed fails here.
+# `--deny warnings`, as in every package's CI job: unmaintained, unsound and
+# yanked fail too, not only vulnerabilities. Each workspace's own
+# `.cargo/audit.toml` lists what may pass, each entry with its reason and the
+# release that lets it go. Anything not listed fails here.
 # Detected the way it is INVOKED, not the way it is installed. `cargo audit`
 # resolves through cargo's own subcommand lookup, which searches ~/.cargo/bin
 # whether or not that directory is on PATH — so `command -v cargo-audit` said
 # "missing" for a tool that was installed and working, and the gate skipped the
 # advisory check on machines that had it.
 if cargo audit --version >/dev/null 2>&1; then
-  cargo audit
+  cargo audit --deny warnings
   # One lockfile per workspace, and the root's is not the others'. Vellum's —
   # which is where the RSA advisory lives — was outside this pass entirely.
   #
-  # Read from HERE with `--file` rather than by walking into each workspace:
-  # `.cargo/audit.toml` is resolved against the working directory, so a `cd`
-  # left every per-package run without the exception list and failed on
-  # advisories the root had already accounted for.
+  # Run from INSIDE each workspace, the way its CI job runs: `.cargo/audit.toml`
+  # is resolved against the working directory, and each package carries its
+  # own, so the root's exceptions must not leak into a package's run.
   for lockfile in packages/*/Cargo.lock; do
     echo "[verify] → ${lockfile}"
-    cargo audit --file "$lockfile"
+    (cd "$(dirname "$lockfile")" && cargo audit --deny warnings)
   done
 else
   echo "[verify] cargo-audit not installed — RustSec advisories NOT checked."
