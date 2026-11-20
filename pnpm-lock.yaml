@@ -788,7 +788,7 @@ importers:
         specifier: ^2.5.12
         version: 2.6.4
       '@c9up/aurora':
-        specifier: ^0.1.52
+        specifier: ^0.1.53
         version: link:../aurora
       '@vitest/coverage-v8':
         specifier: 4.1.12
