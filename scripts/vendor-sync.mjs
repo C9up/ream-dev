@@ -33,7 +33,7 @@ const UNITS = [
   {
     source: 'nodeEnv.ts',
     target: 'src/vendor/nodeEnv.ts',
-    packages: ['blackhole', 'inker', 'station', 'transit', 'warden'],
+    packages: ['aurora', 'blackhole', 'inker', 'station', 'transit', 'warden'],
   },
   {
     source: 'nativeBinary.ts',
