@@ -129,6 +129,13 @@ universe through the container, never via a static import.
 | `@c9up/parsec` | Metrics — counters, gauges, histograms; zero-dependency Prometheus exporter, optional OpenTelemetry meter, HTTP middleware |
 | `@c9up/rosetta` | Internationalization — locale fallback, message formatting |
 
+### Mobile
+
+| Package | Description |
+|---|---|
+| `@c9up/orbit` | Aurora components as native views on Android — a Rust host lays out and diffs, gestures and motion run on the UI thread, styles come from the app's Tailwind build |
+| `@c9up/robledo` | Over-the-air updates — `ream android:publish` signs the app's JS, the ream server serves it, the phone verifies, switches and rolls back |
+
 ### Testing
 
 | Package | Description |
