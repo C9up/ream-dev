@@ -790,9 +790,15 @@ importers:
       '@c9up/aurora':
         specifier: ^0.1.53
         version: link:../aurora
+      '@tailwindcss/cli':
+        specifier: ^4.3.3
+        version: 4.3.3
       '@vitest/coverage-v8':
         specifier: 4.1.12
         version: 4.1.12(@vitest/browser@4.1.12)(vitest@4.1.12)
+      tailwindcss:
+        specifier: ^4.3.3
+        version: 4.3.3
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
