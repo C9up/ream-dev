@@ -350,6 +350,9 @@ importers:
       '@c9up/comet':
         specifier: ^0.1.0
         version: link:../comet
+      '@c9up/photon':
+        specifier: ^0.1.25
+        version: link:../photon
       '@c9up/ream':
         specifier: ^0.2.0
         version: link:../ream
