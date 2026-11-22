@@ -7,57 +7,12 @@ packages:
 # it is released.
 linkWorkspacePackages: true
 
-# pnpm reads `overrides` and the install-script decisions here, not from
-# package.json.
-overrides:
-  # Security advisories on transitive dependencies. Each one is the lowest
-  # version the advisories say is patched — pinned here because nothing in the
-  # workspace declares them directly, so there is no package.json to bump. A
-  # floor ages: a newer advisory lands above it and the lockfile keeps
-  # resolving inside it, so `pnpm audit` (scripts/verify-all.sh) re-reads them.
-  # Raised 2026-11-11 against the GitHub advisory database, and again on
-  # 2026-11-14 for the entries marked below.
-  hono: "^4.13.11"
-  brace-expansion: "^5.0.12"
-  # imapflow > socks (goldstone): subnet-check family confusion and a quadratic
-  # parse, everything up to 10.7.3.
-  ip-address: "^10.7.4"
-  postcss: "^8.5.23"
-  nanoid: "^3.3.18"
-  esbuild: "^0.28.1"
-  vite: "^7.3.7"
-  # ts-morph > @ts-morph/common asks for minimatch ^10, and the globparts
-  # amplification DoS (GHSA-g3hv-75wg-m249) covers every release from 7.0.0 to
-  # 11.0.0 with no fixed 10.x. 11 keeps the named `minimatch` export that
-  # @ts-morph/common calls; the caret keeps the next major out until it is
-  # checked the same way. It is the only minimatch in the workspace today.
-  minimatch: "^11.0.1"
-  # 2026-11-14. moment comes in under ical-generator (rover's peer, a
-  # devDependency here). Dev-only: devalue under svelte and source-map-js
-  # under the Vue compiler, both in apps/kitchen-sink. devalue stays inside 5,
-  # which svelte declares.
-  moment: "^2.31.0"
-  devalue: "^5.9.3"
-  source-map-js: "^1.2.2"
-  # One vitest for the whole workspace. Two packages pinned 4.1.9 while the
-  # rest asked for ^4.1.2, so both landed in the store and a package could end
-  # up running one version against the other's coverage provider — a mix
-  # vitest refuses to support.
-  vitest: "4.1.12"
-  "@vitest/coverage-v8": "4.1.12"
-  # Advisory pins, all dev-only. 4.1.12 for @vitest/mocker's two moderate
-  # advisories (GHSA-qxg6-89mg-rqv8, GHSA-xp26-3454-mjgp). @vitest/browser <4.1.10 lets a Browser Mode
-  # provider command bypass the file-access control (GHSA-p63j-vcc4-9vmv);
-  # undici <7.30.1 has the TLS-validation bypass, the cross-origin routing
-  # pair and their successors; vite <=7.3.6 the server.fs.deny bypasses. jsdom
-  # asks for undici ^7, so the pin stays inside 7 rather than forcing 8 on it.
-  "@vitest/browser": "4.1.12"
-  "@vitest/browser-playwright": "4.1.12"
-  undici: "^7.30.1"
-  # Two high advisories, both dev-only and transitive: unbounded memory growth
-  # with no cache bound (GHSA-c83g-rgw3-j3cx) and a crash / prototype write
-  # (GHSA-73wf-gq98-2v4g).
-  browserslist: "^4.28.7"
+# No `overrides`. Each package's CI installs it alone, from npm, where the
+# workspace's overrides never apply: an override here only made this lockfile
+# look patched while the CI installs went on resolving what the ranges allow.
+# A fix belongs in the package's own ranges, and every CI run audits what it
+# installed (`npm-audit.mjs --installed`). Removed 2026-11-22 with the vitest
+# toolchain pinned to 4.1.12 in every manifest.
 
 # Which dependencies may run install scripts. The native ones have to build or
 # they load nothing at runtime.
@@ -80,3 +35,8 @@ minimumReleaseAge: 10080
 # provenance, and consumed the day they go out.
 minimumReleaseAgeExclude:
   - '@c9up/*'
+  # A security fix younger than the release age, one exact version: ts-morph
+  # 28 asks for @ts-morph/common ~0.29.0, and 0.29.0 holds minimatch ^10, with
+  # GHSA-g3hv-75wg-m249 and no fixed 10.x; 0.29.1 (2026-11-16) moves to
+  # minimatch ^11. Inert from 2026-11-23, when 0.29.1 is a week old: remove it then.
+  - '@ts-morph/common@0.29.1'
