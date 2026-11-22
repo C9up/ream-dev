@@ -17,26 +17,14 @@ overrides:
   # resolving inside it, so `pnpm audit` (scripts/verify-all.sh) re-reads them.
   # Raised 2026-11-11 against the GitHub advisory database, and again on
   # 2026-11-14 for the entries marked below.
-  fast-uri: "^3.1.9"
   hono: "^4.13.11"
-  axios: "^1.20.0"
   brace-expansion: "^5.0.12"
   # imapflow > socks (goldstone): subnet-check family confusion and a quadratic
   # parse, everything up to 10.7.3.
   ip-address: "^10.7.4"
   postcss: "^8.5.23"
   nanoid: "^3.3.18"
-  uuid: "^11.1.1"
-  qs: "^6.16.1"
   esbuild: "^0.28.1"
-  body-parser: "^2.4.0"
-  # Critical: IP spoofing through an IPv4-mapped IPv6 trust subnet, under
-  # @modelcontextprotocol/sdk > express (ream-mcp).
-  proxy-addr: "^2.0.8"
-  # Left at 1.x on purpose: the serveStatic double-decode advisory is fixed
-  # only in 2.1.3, a major the MCP SDK does not declare, and ream-mcp runs the
-  # stdio transport only — no static file is served through it.
-  "@hono/node-server": "^1.19.18"
   vite: "^7.3.7"
   # ts-morph > @ts-morph/common asks for minimatch ^10, and the globparts
   # amplification DoS (GHSA-g3hv-75wg-m249) covers every release from 7.0.0 to
@@ -44,11 +32,10 @@ overrides:
   # @ts-morph/common calls; the caret keeps the next major out until it is
   # checked the same way. It is the only minimatch in the workspace today.
   minimatch: "^11.0.1"
-  # 2026-11-14. On a production path: zod under @modelcontextprotocol/sdk
-  # (ream-mcp) and moment under @tdengine/websocket > moment-timezone (eon).
-  # Dev-only: devalue under svelte and source-map-js under the Vue compiler,
-  # both in apps/kitchen-sink. devalue stays inside 5, which svelte declares.
-  zod: "^4.6.6"
+  # 2026-11-14. moment comes in under ical-generator (rover's peer, a
+  # devDependency here). Dev-only: devalue under svelte and source-map-js
+  # under the Vue compiler, both in apps/kitchen-sink. devalue stays inside 5,
+  # which svelte declares.
   moment: "^2.31.0"
   devalue: "^5.9.3"
   source-map-js: "^1.2.2"
@@ -71,13 +58,9 @@ overrides:
   # with no cache bound (GHSA-c83g-rgw3-j3cx) and a crash / prototype write
   # (GHSA-73wf-gq98-2v4g).
   browserslist: "^4.28.7"
-  # vitest's optional peer, auto-installed and used by no package: no suite
-  # runs in happy-dom. Below 21.0.4 it has two high advisories
-  # (GHSA-c8p4-j97h-3vg8, GHSA-834v-8h66-3h79).
-  happy-dom: "^21.0.4"
 
 # Which dependencies may run install scripts. The native ones have to build or
-# they load nothing at runtime; es5-ext only prints a donation notice.
+# they load nothing at runtime.
 allowBuilds:
   "@parcel/watcher": true
   "@swc/core": true
@@ -85,7 +68,6 @@ allowBuilds:
   bufferutil: true
   esbuild: true
   utf-8-validate: true
-  es5-ext: false
 
 # How long a published version waits before this workspace installs it, in
 # minutes: one week. A malicious release is usually caught and pulled within
