@@ -130,3 +130,6 @@
 [submodule "packages/orbit-secure-store"]
 	path = packages/orbit-secure-store
 	url = git@github.com:C9up/orbit-secure-store.git
+[submodule "packages/flare"]
+	path = packages/flare
+	url = git@github.com:C9up/flare.git
