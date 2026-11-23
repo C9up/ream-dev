@@ -236,6 +236,9 @@ importers:
 
   packages/archive:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       '@c9up/inker':
         specifier: ^0.1.20
         version: link:../inker
@@ -267,6 +270,9 @@ importers:
       '@c9up/chronos':
         specifier: ^0.1.16
         version: link:../chronos
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -297,6 +303,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/atom:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -315,6 +325,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/aurora:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -354,6 +368,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/bay:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -379,6 +397,9 @@ importers:
 
   packages/blackhole:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       '@c9up/quasar':
         specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
@@ -387,7 +408,7 @@ importers:
         specifier: ^2.6.8
         version: 2.6.8
       '@c9up/ream':
-        specifier: ^0.2.26
+        specifier: ^0.2.32
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -406,6 +427,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/chronos:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -424,6 +449,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/comet:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -442,6 +471,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/echo:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -466,6 +499,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/eclipse:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -491,6 +528,9 @@ importers:
 
   packages/eon:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -518,6 +558,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/ephemeris:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -538,8 +582,29 @@ importers:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
+  packages/flare:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.6.8
+        version: 2.6.8
+      '@types/node':
+        specifier: ^22.20.1
+        version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: 4.1.12
+        version: 4.1.12(@vitest/browser@4.1.12)(vitest@4.1.12)
+      typescript:
+        specifier: ^6.0.3
+        version: 6.0.3
+      vitest:
+        specifier: 4.1.12
+        version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+
   packages/goldstone:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       imapflow:
         specifier: ^2.4.2
         version: 2.4.2
@@ -564,6 +629,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/helix:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -585,6 +654,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/helix-plugin-ream:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -618,6 +691,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/inker:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -642,6 +719,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/lumen:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -660,6 +741,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/nebula:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -697,6 +782,9 @@ importers:
       '@bufbuild/protobuf':
         specifier: ^2.16.0
         version: 2.16.0
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -719,6 +807,9 @@ importers:
 
   packages/nova:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       '@c9up/quasar':
         specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
@@ -730,7 +821,7 @@ importers:
         specifier: ^0.3.0
         version: link:../atlas
       '@c9up/ream':
-        specifier: ^0.2.29
+        specifier: ^0.2.32
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
@@ -749,6 +840,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/orbit:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -776,6 +871,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/orbit-clipboard:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -794,6 +893,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/orbit-secure-store:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -813,6 +916,9 @@ importers:
 
   packages/parsec:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       '@opentelemetry/api':
         specifier: ^1.9.0
         version: 1.9.1
@@ -837,6 +943,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/photon:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -897,6 +1007,10 @@ importers:
         version: 3.5.42(typescript@6.0.3)
 
   packages/prism:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -928,6 +1042,9 @@ importers:
 
   packages/quasar:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       ioredis:
         specifier: ^6.0.0
         version: 6.0.0(supports-color@10.2.2)
@@ -953,6 +1070,9 @@ importers:
 
   packages/ream:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       '@c9up/lumen':
         specifier: ^0.1.2
         version: link:../lumen
@@ -993,6 +1113,9 @@ importers:
 
   packages/ream-mcp:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       ts-morph:
         specifier: ^28.0.0
         version: 28.0.0
@@ -1020,6 +1143,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/relay:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1047,6 +1174,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/robledo:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1065,6 +1196,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/rosetta:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1090,6 +1225,9 @@ importers:
 
   packages/rover:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       nodemailer:
         specifier: ^10.1.4
         version: 10.3.1
@@ -1129,6 +1267,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/rune:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1147,6 +1289,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/sigil:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1168,6 +1314,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/spectrum:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1189,6 +1339,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/station:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1226,6 +1380,9 @@ importers:
 
   packages/transit:
     dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
       '@c9up/quasar':
         specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
@@ -1250,6 +1407,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/vellum:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1274,6 +1435,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/visa:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1295,6 +1460,10 @@ importers:
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
   packages/warden:
+    dependencies:
+      '@c9up/flare':
+        specifier: ^0.1.0
+        version: link:../flare
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.6.8
@@ -1306,7 +1475,7 @@ importers:
         specifier: ^0.1.0 || ^0.2.0
         version: link:../quasar
       '@c9up/ream':
-        specifier: ^0.2.25
+        specifier: ^0.2.32
         version: link:../ream
       '@types/node':
         specifier: ^22.20.1
