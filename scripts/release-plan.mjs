@@ -43,6 +43,22 @@ async function attempt(command, args, cwd) {
   }
 }
 
+/**
+ * The npm names of a package's own platform packages (`npm/<suffix>/package.json`,
+ * the napi-rs layout). Its publish job publishes them right before the package
+ * itself, so its optionalDependencies on them are never siblings to wait for.
+ */
+function platformPackageNames(dir) {
+  const npmDir = join(packagesDir, dir, 'npm')
+  if (!existsSync(npmDir)) return new Set()
+  const names = new Set()
+  for (const suffix of readdirSync(npmDir)) {
+    const manifestPath = join(npmDir, suffix, 'package.json')
+    if (existsSync(manifestPath)) names.add(JSON.parse(readFileSync(manifestPath, 'utf8')).name)
+  }
+  return names
+}
+
 /** Every package of the workspace: npm name, version, and its @c9up ranges. */
 function readPackages() {
   const found = []
@@ -53,6 +69,7 @@ function readPackages() {
       const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
       if (!manifest.name || !manifest.version || manifest.private === true) continue
       const ranges = []
+      const ownPlatforms = platformPackageNames(dir)
       const installed = new Set([
         ...Object.keys(manifest.dependencies ?? {}),
         ...Object.keys(manifest.devDependencies ?? {}),
@@ -60,6 +77,7 @@ function readPackages() {
       for (const section of ['dependencies', 'peerDependencies', 'devDependencies', 'optionalDependencies']) {
         for (const [dep, range] of Object.entries(manifest[section] ?? {})) {
           if (!dep.startsWith('@c9up/') || typeof range !== 'string') continue
+          if (section === 'optionalDependencies' && ownPlatforms.has(dep)) continue
           // A peer range never fails an install by itself (pnpm warns). It only
           // decides what CI fetches when the package does not install the
           // sibling itself and the peer is required — pnpm then installs it from

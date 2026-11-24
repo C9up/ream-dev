@@ -33,6 +33,19 @@
  *      time, each under the comment that says why — nothing else in that file.
  *   7. a workflow-level `cancel-in-progress: true`: a second dispatch then
  *      cancels a publish in flight, between `npm publish` and the release.
+ *   8. a package whose binaries ship as one npm package per platform
+ *      (`npm/<suffix>/package.json`, the napi-rs layout) with a platform
+ *      package at another version than its own, an optionalDependencies pin
+ *      that is not that exact version, or a publish job that does not run
+ *      `platform-packages.mjs --check` first: the main package would then
+ *      install binaries built from other Rust, or none at all.
+ *   9. a package whose Rust binaries ship as platform packages (8), or whose
+ *      publish job writes its npm packages itself (ream-cli), without
+ *      THIRD-PARTY-NOTICES.md (the licence notices of the crates they link)
+ *      in its main package and in every platform package, copied in by the
+ *      publish job, and checked
+ *      against Cargo.lock by `third-party-notices.mjs --check` in a job the
+ *      publish waits for: MIT, BSD and ISC require the notice with every copy.
  *
  * What it cannot see: a verification step skipped by its own step-level `if:`
  * (a matrix leg that only builds is legitimate and looks the same).
@@ -127,6 +140,72 @@ function advisoryProblems(root, jobs, where) {
   return [...problems, ...auditTomlProblems(root, where)]
 }
 /**
+ * (8) The platform packages a package publishes beside itself: each pinned by
+ * the main manifest at its exact version, and checked by the publish job.
+ */
+function platformPackageProblems(root, publishJob, where) {
+  const npmDir = join(root, 'npm')
+  if (!existsSync(npmDir)) return []
+  const main = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
+  const problems = []
+  for (const suffix of readdirSync(npmDir).sort()) {
+    const path = join(npmDir, suffix, 'package.json')
+    if (!existsSync(path)) continue
+    const platform = JSON.parse(readFileSync(path, 'utf8'))
+    if (platform.name !== `${main.name}-${suffix}`) {
+      problems.push(`${where}: npm/${suffix} is named ${platform.name}, not ${main.name}-${suffix}`)
+    }
+    if (platform.version !== main.version) {
+      problems.push(`${where}: npm/${suffix} is at ${platform.version}, ${main.name} at ${main.version}`)
+    }
+    const pin = main.optionalDependencies?.[platform.name]
+    if (pin !== main.version) {
+      problems.push(`${where}: optionalDependencies pins ${platform.name} at ${pin ?? 'nothing'}, not exactly ${main.version}`)
+    }
+  }
+  if (!runScripts({ publishJob }).some((run) => /platform-packages\.mjs\s+--check\b/.test(run))) {
+    problems.push(`${where}: the publish job does not run 'platform-packages.mjs --check' before publishing`)
+  }
+  return problems
+}
+
+/**
+ * (9) The third-party notices shipped beside the binaries: listed by every
+ * manifest that ships a binary, copied in by the publish job, and kept to
+ * Cargo.lock by a check the publish waits for.
+ */
+const NOTICES = 'THIRD-PARTY-NOTICES.md'
+function noticeProblems(root, jobs, publishId, where) {
+  const npmDir = join(root, 'npm')
+  const hasManifest = existsSync(join(root, 'package.json'))
+  // Rust shipped as platform packages, or a Rust-only repository whose publish
+  // job writes its npm manifests itself (ream-cli).
+  if (!existsSync(join(root, 'Cargo.lock')) || (hasManifest && !existsSync(npmDir))) return []
+  const problems = []
+  if (!existsSync(join(root, NOTICES))) problems.push(`${where}: no ${NOTICES} beside the Rust package`)
+  const manifests = hasManifest ? ['package.json'] : []
+  if (existsSync(npmDir)) {
+    for (const suffix of readdirSync(npmDir).sort()) {
+      if (existsSync(join(npmDir, suffix, 'package.json'))) manifests.push(join('npm', suffix, 'package.json'))
+    }
+  }
+  for (const manifest of manifests) {
+    const { files } = JSON.parse(readFileSync(join(root, manifest), 'utf8'))
+    if (!Array.isArray(files) || !files.includes(NOTICES)) {
+      problems.push(`${where}: ${manifest} does not list ${NOTICES} in files`)
+    }
+  }
+  if (!runScripts({ publish: jobs[publishId] }).some((run) => /\bcp\b[^\n]*THIRD-PARTY-NOTICES\.md/.test(run))) {
+    problems.push(`${where}: the publish job does not copy ${NOTICES} into the packages it publishes`)
+  }
+  const waitsFor = [...transitiveNeeds(jobs, publishId)].map((id) => jobs[id])
+  if (!runScripts(waitsFor).some((run) => /third-party-notices\.mjs\s+--check\b/.test(run))) {
+    problems.push(`${where}: no job the publish waits for runs 'third-party-notices.mjs --check'`)
+  }
+  return problems
+}
+
+/**
  * Commands whose failure must stop a release.
  *
  * `cargo build` and `pnpm build` are in here because a build IS a
@@ -134,7 +213,7 @@ function advisoryProblems(root, jobs, where) {
  * its build job would have left this check with nothing to complain about.
  */
 const VERIFIES =
-  /vitest|cargo\s+(test|clippy|fmt|deny|audit|build)|tsc\b|biome|pnpm\s+(test|lint|build)|npm\s+test|quality-rust/i
+  /vitest|cargo\s+(test|clippy|fmt|deny|audit|build)|tsc\b|biome|pnpm\s+(test|lint|build)|npm\s+test|quality-rust|third-party-notices\.mjs/i
 /** `|| true`, `|| :`, `|| exit 0` — an exit code thrown away. */
 const SWALLOWS = /\|\|\s*(true|:|exit\s+0)\b/
 
@@ -144,7 +223,8 @@ const asList = (value) => (value == null ? [] : Array.isArray(value) ? value : [
 /** Everything a job waits for, including what those jobs wait for. */
 function transitiveNeeds(jobs, id) {
   const seen = new Set()
-  const stack = asList(jobs[id]?.needs)
+  // A copy: popping the job's own list would empty its `needs` for the next caller.
+  const stack = [...asList(jobs[id]?.needs)]
   while (stack.length > 0) {
     const next = stack.pop()
     if (seen.has(next) || !(next in jobs)) continue
@@ -238,6 +318,12 @@ for (const { pkg, root } of repositories) {
       if (!fileIsManual && !jobIsManual) {
         problems.push(`${where}: '${id}' publishes without a workflow_dispatch gate`)
       }
+
+      // (8) the platform packages published beside the package.
+      if (root !== '.') problems.push(...platformPackageProblems(root, job, where))
+
+      // (9) the licence notices of what the binaries link.
+      if (root !== '.') problems.push(...noticeProblems(root, jobs, id, where))
 
       // (1) the one that actually bit.
       const waitsFor = transitiveNeeds(jobs, id)

@@ -31,16 +31,9 @@ bus.subscribe('user.*', (eventJson) => {
   logger.child({ module: 'bus' }).info(`Event: ${event.name}`, { data: event.data })
 })
 
-const serverFactory = createHyperServerFactory()
-if (!serverFactory) {
-  throw new Error(
-    'Demo requires the HyperServer NAPI binary; no prebuilt for this platform.',
-  )
-}
-
 const app = new Ignitor({
   port: 3000,
-  serverFactory,
+  serverFactory: createHyperServerFactory(),
 }).httpServer()
 
 app.use(async (ctx, next) => {

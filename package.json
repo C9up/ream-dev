@@ -12,6 +12,8 @@
     "lint": "pnpm -r --workspace-concurrency=1 run lint",
     "quality:duplicates": "bash scripts/duplicate-report.sh",
     "quality:gates": "node scripts/check-publish-gates.mjs",
+    "notices:sync": "node scripts/third-party-notices.mjs",
+    "notices:check": "node scripts/third-party-notices.mjs --check",
     "quality:rust": "bash scripts/quality-rust.sh",
     "quality:duplicates:strict": "bash scripts/duplicate-report.sh --strict",
     "quality:duplicates:actionable": "bash scripts/duplicate-report.sh --actionable",

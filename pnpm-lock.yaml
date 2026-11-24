@@ -1126,6 +1126,9 @@ importers:
       '@c9up/atlas':
         specifier: ^0.3.3
         version: link:../atlas
+      '@c9up/inker':
+        specifier: ^0.1.24
+        version: link:../inker
       '@types/node':
         specifier: ^22.20.1
         version: 22.20.1
@@ -1477,6 +1480,9 @@ importers:
       '@c9up/ream':
         specifier: ^0.2.32
         version: link:../ream
+      '@c9up/sigil':
+        specifier: ^0.1.20
+        version: link:../sigil
       '@types/node':
         specifier: ^22.20.1
         version: 22.20.1
