@@ -301,6 +301,22 @@ importers:
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+    optionalDependencies:
+      '@c9up/atlas-darwin-arm64':
+        specifier: 0.3.25
+        version: 0.3.25
+      '@c9up/atlas-darwin-x64':
+        specifier: 0.3.25
+        version: 0.3.25
+      '@c9up/atlas-linux-arm64-gnu':
+        specifier: 0.3.25
+        version: 0.3.25
+      '@c9up/atlas-linux-x64-gnu':
+        specifier: 0.3.25
+        version: 0.3.25
+      '@c9up/atlas-win32-x64-msvc':
+        specifier: 0.3.25
+        version: 0.3.25
 
   packages/atom:
     dependencies:
@@ -627,6 +643,19 @@ importers:
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.1.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+    optionalDependencies:
+      '@c9up/goldstone-darwin-arm64':
+        specifier: 0.1.1
+        version: 0.1.1
+      '@c9up/goldstone-darwin-x64':
+        specifier: 0.1.1
+        version: 0.1.1
+      '@c9up/goldstone-linux-arm64-gnu':
+        specifier: 0.1.1
+        version: 0.1.1
+      '@c9up/goldstone-linux-x64-gnu':
+        specifier: 0.1.1
+        version: 0.1.1
 
   packages/helix:
     dependencies:
@@ -652,6 +681,22 @@ importers:
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+    optionalDependencies:
+      '@c9up/helix-darwin-arm64':
+        specifier: 0.2.16
+        version: 0.2.16
+      '@c9up/helix-darwin-x64':
+        specifier: 0.2.16
+        version: 0.2.16
+      '@c9up/helix-linux-arm64-gnu':
+        specifier: 0.2.16
+        version: 0.2.16
+      '@c9up/helix-linux-x64-gnu':
+        specifier: 0.2.16
+        version: 0.2.16
+      '@c9up/helix-win32-x64-msvc':
+        specifier: 0.2.16
+        version: 0.2.16
 
   packages/helix-plugin-ream:
     dependencies:
@@ -1039,6 +1084,22 @@ importers:
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+    optionalDependencies:
+      '@c9up/prism-darwin-arm64':
+        specifier: 0.1.8
+        version: 0.1.8
+      '@c9up/prism-darwin-x64':
+        specifier: 0.1.8
+        version: 0.1.8
+      '@c9up/prism-linux-arm64-gnu':
+        specifier: 0.1.8
+        version: 0.1.8
+      '@c9up/prism-linux-x64-gnu':
+        specifier: 0.1.8
+        version: 0.1.8
+      '@c9up/prism-win32-x64-msvc':
+        specifier: 0.1.8
+        version: 0.1.8
 
   packages/quasar:
     dependencies:
@@ -1107,6 +1168,9 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
+      vite:
+        specifier: ^7.3.7
+        version: 7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
@@ -1315,6 +1379,22 @@ importers:
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+    optionalDependencies:
+      '@c9up/sigil-darwin-arm64':
+        specifier: 0.1.21
+        version: 0.1.21
+      '@c9up/sigil-darwin-x64':
+        specifier: 0.1.21
+        version: 0.1.21
+      '@c9up/sigil-linux-arm64-gnu':
+        specifier: 0.1.21
+        version: 0.1.21
+      '@c9up/sigil-linux-x64-gnu':
+        specifier: 0.1.21
+        version: 0.1.21
+      '@c9up/sigil-win32-x64-msvc':
+        specifier: 0.1.21
+        version: 0.1.21
 
   packages/spectrum:
     dependencies:
@@ -1436,6 +1516,22 @@ importers:
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+    optionalDependencies:
+      '@c9up/vellum-darwin-arm64':
+        specifier: 0.1.10
+        version: 0.1.10
+      '@c9up/vellum-darwin-x64':
+        specifier: 0.1.10
+        version: 0.1.10
+      '@c9up/vellum-linux-arm64-gnu':
+        specifier: 0.1.10
+        version: 0.1.10
+      '@c9up/vellum-linux-x64-gnu':
+        specifier: 0.1.10
+        version: 0.1.10
+      '@c9up/vellum-win32-x64-msvc':
+        specifier: 0.1.10
+        version: 0.1.10
 
   packages/visa:
     dependencies:
@@ -1682,6 +1778,192 @@ packages:
 
   '@bufbuild/protobuf@2.16.0':
     resolution: {integrity: sha512-FWa0sPlqYGJgpTs6OxBRcL/AW4JT0OIO+W1ajerluoTVh8CV0B7XM1qsNCRgnkSCkRCgOICKHRQlY17jrsm0+Q==}
+
+  '@c9up/atlas-darwin-arm64@0.3.25':
+    resolution: {integrity: sha512-EBlimxAgP06Z1gyIdpA+FskhwFDsIvdkV4hYVWUoIRdUc6DNtjF4ba91yMCwn02+q1tH7S6xFD/xlRba3B18qQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@c9up/atlas-darwin-x64@0.3.25':
+    resolution: {integrity: sha512-wcs7ZB1eecBGl83OcmEpDT44DF6irNMXXhJzGG6q9zXwOLF++zBDdjDAfa/p93vI8mJqHdbOz3VQJj6DDel/mg==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@c9up/atlas-linux-arm64-gnu@0.3.25':
+    resolution: {integrity: sha512-Oe81gn/5hHAAeKoSJZ52zoRjXfOUSYOkjhvz+m0B3JJCYIBwNXipVOFcZs+wTzZboZIDAZ/Ynk73s0w95u5B+g==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/atlas-linux-x64-gnu@0.3.25':
+    resolution: {integrity: sha512-nli1hL3nBY2uUr/9ytHlPTNCUYMjgLtLN9e94KIDKG6fr8GqHRotgC3PXkLlc0sc+WnCJ3hDVgXRfl4YXxL5PQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/atlas-win32-x64-msvc@0.3.25':
+    resolution: {integrity: sha512-m0WGv4j72JwPfh+OCrluiNi2MvxOSqXBKo4BtT4mLdX2X5Go9pd6liVsBlIHMOt/aiA1wMtvGltKpDrS6BwRGg==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@c9up/goldstone-darwin-arm64@0.1.1':
+    resolution: {integrity: sha512-rkSXmaup5gbZ5ltlktre4GGvj3E0iWMCSrfd8eizE1E4ygI61U15bXgI0+5vEriVrsWun+3FcypdqGIOmidGOg==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@c9up/goldstone-darwin-x64@0.1.1':
+    resolution: {integrity: sha512-2bPOArcDMxD2QDWKJ3gtoUTMMisoCV72x9W/m8fJv3j7gxfsx2vLLkLEZtyWvjx/Z4P7Svf2DnCrkQ6MFsmZ+w==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@c9up/goldstone-linux-arm64-gnu@0.1.1':
+    resolution: {integrity: sha512-fFMmqet8gXpLitl5M3KjM73cVkbyc98pNsMZJ1hwLp23gojrKaAjMjmBTIQ5NfjVLc20xcfEtAK9Gbhm+ErlrQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/goldstone-linux-x64-gnu@0.1.1':
+    resolution: {integrity: sha512-rAS1885CbUAjvgo+UHnXHQVMwgj/Uc6oTJ8J1S4gQToiAiLdBiBE4QEQ8WpXMujwf9QoJw0O/jaAOxG3HBU08A==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/helix-darwin-arm64@0.2.16':
+    resolution: {integrity: sha512-+U8amxT2EsjQWHhzhf7JHpz4R1YUyGriL7HBEzvM5/UOBLbtf0trBPZhDnkOhLdNI3HNMP3Ny6Z4o8Ym+e6GRQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@c9up/helix-darwin-x64@0.2.16':
+    resolution: {integrity: sha512-0rOQrFlQ7uiIvc0eLpyNi11kK4yrItTq7Bp8Gy1ul83U2DfZjLaupi0gJJVTl+Oz50DInwkmuPuZpnCMLsKsBQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@c9up/helix-linux-arm64-gnu@0.2.16':
+    resolution: {integrity: sha512-JHB2gZ5PEzPog+TQ0sXCDPM9vp6mDNEP56ZkSv0oaV3MS9Kj2Mcf09F6fJuT+NqEKhv01523s3Ih9M9ugxiuCA==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/helix-linux-x64-gnu@0.2.16':
+    resolution: {integrity: sha512-E1a6iquxgzFp91REV0QaDZF4lKh3uJhwlSflBg0UKb1JG9HWy0jXKa1V3dEnNcvdglmrUU8Suj8XrNAn12M9LA==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/helix-win32-x64-msvc@0.2.16':
+    resolution: {integrity: sha512-b/5nrrwpcK76lLUu5bFVCGmpr46rkRr/fF3BWqEs5v0tFYJAO9cnNXvzXW1IrwqnbMromuT0VYziTKE41UY/9A==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@c9up/prism-darwin-arm64@0.1.8':
+    resolution: {integrity: sha512-kom0GO5zTT4+eZEU1xzxKY/4nva497G9H6tLFdMzesTtpxIiZyTOpTSQQ/tzfDRz1CKukzE7OSQysYfKRC0Ngw==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@c9up/prism-darwin-x64@0.1.8':
+    resolution: {integrity: sha512-GUOmZT/kgHYEG7kmv7pr2hmR768iEVi1zT+fG9qyGtxT4B+DKlf/JLCVbMxf2xahBYX6DMx4ejptAETgicMZ2A==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@c9up/prism-linux-arm64-gnu@0.1.8':
+    resolution: {integrity: sha512-+ARmr666+2yroVq6VkTrff1xuXWDcjq30gaPnBO2A6G1XYOU6kzqC4A1VUoe/wt/Is69zaeUlrmjXJe4bVDMOQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/prism-linux-x64-gnu@0.1.8':
+    resolution: {integrity: sha512-tRl5RBPQMjKmZOaQuD7w11U7e3A66yFYIS7zo9typZnjxHIeMODZp0hLgqNdelyTYjveRsu5VZVcJfgwlJlg3Q==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/prism-win32-x64-msvc@0.1.8':
+    resolution: {integrity: sha512-DmzYg6ng5wrUgnQRapFE+e+XGP6r0s6bXUoNQlpgmFl2de9JyETg2A7y0YW1L5zAin3w1yV4DmWNplaBtXM4ZQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@c9up/sigil-darwin-arm64@0.1.21':
+    resolution: {integrity: sha512-mAnKHv0ahZovSvF7AWggF46MiFJgCeB3yOdkJTExBXNlRniGAKMw7hxHtp4ET3schkum2u2cosaiDv7UbwXisQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@c9up/sigil-darwin-x64@0.1.21':
+    resolution: {integrity: sha512-1S2A/7yV4AnIY52XtlmS3EBulXqBQ+179qahHjOa8QFRf5RALDAin8BMcXPZ+He5xmURk9hQIa/nws1ckuEUAw==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@c9up/sigil-linux-arm64-gnu@0.1.21':
+    resolution: {integrity: sha512-niPdO4USweQXBkILEcnj0wlDpf5SxorIcpHJOQsN19GErnrOl20WrmEu/LazykH8VY1qTGSAR64fdwmhyAoPJA==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/sigil-linux-x64-gnu@0.1.21':
+    resolution: {integrity: sha512-Bn3IGHv7nwCjWDGFlRUZ4NiBv4Y/LNrFNa/ga2EYG3xJKDJag/T/piH7ZA7atTPGLndjx6ZQT/s2qCtrQmvemg==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/sigil-win32-x64-msvc@0.1.21':
+    resolution: {integrity: sha512-bQn87sPwppbRLFcsvUA88q9oZDIimQwzDJHP1ULHgOaRNMFOpy0eJYVFLl5RfCr/awtxD8VuNvV1EBAfFae8Vg==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@c9up/vellum-darwin-arm64@0.1.10':
+    resolution: {integrity: sha512-7wGT8dFbj7ovXw/UgBWNUCYj9yO2qyZywmXa12Dz3imz8U736iCcrDvqXy6nHPMvx2tzqirlmhvkIApVXVeywA==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@c9up/vellum-darwin-x64@0.1.10':
+    resolution: {integrity: sha512-61E5dz0sThJEzFfkJMH5RgJj2byvNF69xeq43zyNJNDTSl1/ndsBO3N344euv3GTyx22KM6gLHpXmV/YcgzWfw==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@c9up/vellum-linux-arm64-gnu@0.1.10':
+    resolution: {integrity: sha512-LOAP16gzHeMGVMK9e7lRZDezAKz0rKd1JWRJ6iRsF7KK8mAV9DxbvgoPGe4NVJXZvmSCPS+j8ClPz7pDeaE5Ig==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/vellum-linux-x64-gnu@0.1.10':
+    resolution: {integrity: sha512-DTAGoVBOB2tDoBXHCYiS9r280KQf3r72tPJrlLhjhWEsZkJ3X1OU9QzkycRYs5D8OP8ts0suv0f5kiC9ffk1aQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/vellum-win32-x64-msvc@0.1.10':
+    resolution: {integrity: sha512-cVapgcCq4oUuyD/LYvSwPTo9DtSSPVR6vhmIyb8+FIz6XbYdVvEUfyrSARdXxZvEf5k91nQWPYVDz0a2crXMbQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [win32]
 
   '@csstools/color-helpers@6.1.1':
     resolution: {integrity: sha512-gLNsunvwf3mCi5u5o46/Z/JcJMnhbHSaZ69rkgPzNM3J4s8hWwpPUQB6/tt0EDFyCiWzxANlx+2LJwpYj4zS1w==}
@@ -4138,6 +4420,93 @@ snapshots:
       css-tree: 3.2.1
 
   '@bufbuild/protobuf@2.16.0': {}
+
+  '@c9up/atlas-darwin-arm64@0.3.25':
+    optional: true
+
+  '@c9up/atlas-darwin-x64@0.3.25':
+    optional: true
+
+  '@c9up/atlas-linux-arm64-gnu@0.3.25':
+    optional: true
+
+  '@c9up/atlas-linux-x64-gnu@0.3.25':
+    optional: true
+
+  '@c9up/atlas-win32-x64-msvc@0.3.25':
+    optional: true
+
+  '@c9up/goldstone-darwin-arm64@0.1.1':
+    optional: true
+
+  '@c9up/goldstone-darwin-x64@0.1.1':
+    optional: true
+
+  '@c9up/goldstone-linux-arm64-gnu@0.1.1':
+    optional: true
+
+  '@c9up/goldstone-linux-x64-gnu@0.1.1':
+    optional: true
+
+  '@c9up/helix-darwin-arm64@0.2.16':
+    optional: true
+
+  '@c9up/helix-darwin-x64@0.2.16':
+    optional: true
+
+  '@c9up/helix-linux-arm64-gnu@0.2.16':
+    optional: true
+
+  '@c9up/helix-linux-x64-gnu@0.2.16':
+    optional: true
+
+  '@c9up/helix-win32-x64-msvc@0.2.16':
+    optional: true
+
+  '@c9up/prism-darwin-arm64@0.1.8':
+    optional: true
+
+  '@c9up/prism-darwin-x64@0.1.8':
+    optional: true
+
+  '@c9up/prism-linux-arm64-gnu@0.1.8':
+    optional: true
+
+  '@c9up/prism-linux-x64-gnu@0.1.8':
+    optional: true
+
+  '@c9up/prism-win32-x64-msvc@0.1.8':
+    optional: true
+
+  '@c9up/sigil-darwin-arm64@0.1.21':
+    optional: true
+
+  '@c9up/sigil-darwin-x64@0.1.21':
+    optional: true
+
+  '@c9up/sigil-linux-arm64-gnu@0.1.21':
+    optional: true
+
+  '@c9up/sigil-linux-x64-gnu@0.1.21':
+    optional: true
+
+  '@c9up/sigil-win32-x64-msvc@0.1.21':
+    optional: true
+
+  '@c9up/vellum-darwin-arm64@0.1.10':
+    optional: true
+
+  '@c9up/vellum-darwin-x64@0.1.10':
+    optional: true
+
+  '@c9up/vellum-linux-arm64-gnu@0.1.10':
+    optional: true
+
+  '@c9up/vellum-linux-x64-gnu@0.1.10':
+    optional: true
+
+  '@c9up/vellum-win32-x64-msvc@0.1.10':
+    optional: true
 
   '@csstools/color-helpers@6.1.1': {}
 
