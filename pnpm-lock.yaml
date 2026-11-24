@@ -463,6 +463,22 @@ importers:
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+    optionalDependencies:
+      '@c9up/chronos-darwin-arm64':
+        specifier: 0.1.18
+        version: 0.1.18
+      '@c9up/chronos-darwin-x64':
+        specifier: 0.1.18
+        version: 0.1.18
+      '@c9up/chronos-linux-arm64-gnu':
+        specifier: 0.1.18
+        version: 0.1.18
+      '@c9up/chronos-linux-x64-gnu':
+        specifier: 0.1.18
+        version: 0.1.18
+      '@c9up/chronos-win32-x64-msvc':
+        specifier: 0.1.18
+        version: 0.1.18
 
   packages/comet:
     dependencies:
@@ -654,6 +670,9 @@ importers:
         specifier: 0.1.1
         version: 0.1.1
       '@c9up/goldstone-linux-x64-gnu':
+        specifier: 0.1.1
+        version: 0.1.1
+      '@c9up/goldstone-win32-x64-msvc':
         specifier: 0.1.1
         version: 0.1.1
 
@@ -1168,9 +1187,6 @@ importers:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
-      vite:
-        specifier: ^7.3.7
-        version: 7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
@@ -1332,6 +1348,22 @@ importers:
       vitest:
         specifier: 4.1.12
         version: 4.1.12(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(@vitest/browser-playwright@4.1.12)(@vitest/coverage-v8@4.1.12)(jsdom@30.0.1(@noble/hashes@1.8.0))(vite@7.3.7(@types/node@22.20.1)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+    optionalDependencies:
+      '@c9up/rover-darwin-arm64':
+        specifier: 0.1.24
+        version: 0.1.24
+      '@c9up/rover-darwin-x64':
+        specifier: 0.1.24
+        version: 0.1.24
+      '@c9up/rover-linux-arm64-gnu':
+        specifier: 0.1.24
+        version: 0.1.24
+      '@c9up/rover-linux-x64-gnu':
+        specifier: 0.1.24
+        version: 0.1.24
+      '@c9up/rover-win32-x64-msvc':
+        specifier: 0.1.24
+        version: 0.1.24
 
   packages/rune:
     dependencies:
@@ -1811,6 +1843,38 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@c9up/chronos-darwin-arm64@0.1.18':
+    resolution: {integrity: sha512-JngRqW8jOeLxexPEWDKlfPSTqUy2rGPc+Gf43cFMFKV15INAhouwjyMjdKS1QMgl0FlmtcNvWHXGuchh98QeCA==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@c9up/chronos-darwin-x64@0.1.18':
+    resolution: {integrity: sha512-dHCTaHQbt0I64OKmVI6NY/Bv7g0lqr94o9QzjVYipmvncZNrssRJu+7d6wdzsZAAHRlz7qoVibaudURIiQzZhQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@c9up/chronos-linux-arm64-gnu@0.1.18':
+    resolution: {integrity: sha512-YF5mX2tTsXX4W9Q3D4iTF1qP857oKyk8oaSNFtKpiZ5XnYjWXl+n4RdQah2vZRbg+fIDM58NXKnuEKCc+tqYWg==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/chronos-linux-x64-gnu@0.1.18':
+    resolution: {integrity: sha512-lUYFUhzDKVZl0WwW+sDzR1BO5laBptO3Cb1tCIZ9v2p0DrmQ6WbNomtsHXHZFzVNm+DogAcZcxsOR5GD67mOTA==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/chronos-win32-x64-msvc@0.1.18':
+    resolution: {integrity: sha512-T9Q7I5hufA1nDPy2Yf/rzho33bIUvcwVPDUKnZ8xg4VkF0jijOyixSxmDBDsNYCqiCHDJ4biFw92nA03/eh7WQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [win32]
+
   '@c9up/goldstone-darwin-arm64@0.1.1':
     resolution: {integrity: sha512-rkSXmaup5gbZ5ltlktre4GGvj3E0iWMCSrfd8eizE1E4ygI61U15bXgI0+5vEriVrsWun+3FcypdqGIOmidGOg==}
     engines: {node: '>=24.0.0'}
@@ -1836,6 +1900,12 @@ packages:
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+
+  '@c9up/goldstone-win32-x64-msvc@0.1.1':
+    resolution: {integrity: sha512-zoECvzLv+cz8/px0ZfuxFrZgpd3hN9dH+2kdNya5olMWBqyzjOn0O0HlXB9dh2wSSIMltid651WaJkUDqRODZw==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [win32]
 
   '@c9up/helix-darwin-arm64@0.2.16':
     resolution: {integrity: sha512-+U8amxT2EsjQWHhzhf7JHpz4R1YUyGriL7HBEzvM5/UOBLbtf0trBPZhDnkOhLdNI3HNMP3Ny6Z4o8Ym+e6GRQ==}
@@ -1897,6 +1967,38 @@ packages:
 
   '@c9up/prism-win32-x64-msvc@0.1.8':
     resolution: {integrity: sha512-DmzYg6ng5wrUgnQRapFE+e+XGP6r0s6bXUoNQlpgmFl2de9JyETg2A7y0YW1L5zAin3w1yV4DmWNplaBtXM4ZQ==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@c9up/rover-darwin-arm64@0.1.24':
+    resolution: {integrity: sha512-r/vEWsFulUCL1h3g7+XzomBS1x+bxLe+VQwAUGzefVop9FHDAAxtOFy8ic/eCtw3stLDU5Dnm5xm39WS/bIVXA==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@c9up/rover-darwin-x64@0.1.24':
+    resolution: {integrity: sha512-1LRVHDO+L1i6iE0IFbYQenyhEXwQtxJpv1ut9B+5pv5NeL3OCfrLukUILmIc7xffy08rXfTl4zYO6qZ6GGpvVA==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@c9up/rover-linux-arm64-gnu@0.1.24':
+    resolution: {integrity: sha512-YCz6cuVqt9/gb+dafCIF55jWV2apj7BUiDOZd9iq4tOV2WaA1yA8wy8fudlv4rC8UoO672+XhdIZ9u1TWTJWfg==}
+    engines: {node: '>=24.0.0'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/rover-linux-x64-gnu@0.1.24':
+    resolution: {integrity: sha512-6p7HybvmAF3AU2Axbxh5rNCJATNUzJjUyLoNcl2sWPye96fCFiwtuiTHzx3lducULvmDarxcc8lWgc5ZTg/Y5w==}
+    engines: {node: '>=24.0.0'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@c9up/rover-win32-x64-msvc@0.1.24':
+    resolution: {integrity: sha512-bfhN/IECX9C9dwqhP+r88P53l8vVGsPog8OkE5zEyhkvT4ysTBpKB6w9LYlRpy8foQ5Hcsp4tFLwSEUGRu2lHA==}
     engines: {node: '>=24.0.0'}
     cpu: [x64]
     os: [win32]
@@ -4436,6 +4538,21 @@ snapshots:
   '@c9up/atlas-win32-x64-msvc@0.3.25':
     optional: true
 
+  '@c9up/chronos-darwin-arm64@0.1.18':
+    optional: true
+
+  '@c9up/chronos-darwin-x64@0.1.18':
+    optional: true
+
+  '@c9up/chronos-linux-arm64-gnu@0.1.18':
+    optional: true
+
+  '@c9up/chronos-linux-x64-gnu@0.1.18':
+    optional: true
+
+  '@c9up/chronos-win32-x64-msvc@0.1.18':
+    optional: true
+
   '@c9up/goldstone-darwin-arm64@0.1.1':
     optional: true
 
@@ -4446,6 +4563,9 @@ snapshots:
     optional: true
 
   '@c9up/goldstone-linux-x64-gnu@0.1.1':
+    optional: true
+
+  '@c9up/goldstone-win32-x64-msvc@0.1.1':
     optional: true
 
   '@c9up/helix-darwin-arm64@0.2.16':
@@ -4476,6 +4596,21 @@ snapshots:
     optional: true
 
   '@c9up/prism-win32-x64-msvc@0.1.8':
+    optional: true
+
+  '@c9up/rover-darwin-arm64@0.1.24':
+    optional: true
+
+  '@c9up/rover-darwin-x64@0.1.24':
+    optional: true
+
+  '@c9up/rover-linux-arm64-gnu@0.1.24':
+    optional: true
+
+  '@c9up/rover-linux-x64-gnu@0.1.24':
+    optional: true
+
+  '@c9up/rover-win32-x64-msvc@0.1.24':
     optional: true
 
   '@c9up/sigil-darwin-arm64@0.1.21':
