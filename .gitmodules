@@ -133,3 +133,6 @@
 [submodule "packages/flare"]
 	path = packages/flare
 	url = git@github.com:C9up/flare.git
+[submodule "packages/polaris"]
+	path = packages/polaris
+	url = git@github.com:C9up/polaris.git
